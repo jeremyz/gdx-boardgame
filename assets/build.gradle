@@ -1,0 +1,33 @@
+configurations {
+    texturePacker
+}
+
+dependencies {
+    texturePacker "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+}
+
+defaultTasks 'build'
+
+task clean(type: Delete) {
+    delete '../android/assets'
+}
+
+task copyData(type: Copy) {
+    from 'data'
+    into '../android/assets/data'
+}
+
+task packLoading(type: JavaExec) {
+    main = 'com.badlogic.gdx.tools.texturepacker.TexturePacker'
+    classpath = configurations.texturePacker
+    args = ['./loading', '../android/assets/data', 'loading']
+}
+
+/* task buildUI(dependsOn: ["processXHDPI"]) { */
+task build(dependsOn: clean) {
+    description "Builds the skin at various DPIs"
+}
+
+build.dependsOn {
+    tasks.findAll { task -> (task.name.startsWith('pack') || task.name.startsWith('copy')) }
+}

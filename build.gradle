@@ -91,6 +91,10 @@ project(":core") {
     }
 }
 
+project(":assets") {
+    configurations { texturePacker }
+}
+
 task ctags(type: Exec) {
     executable "ctags"
     args "-R", "--language-force=java", "--exclude=*~", "-f.tags", "core/src/"

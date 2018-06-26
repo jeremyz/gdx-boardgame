@@ -8,6 +8,12 @@ function gradlew_do()
 }
 
 case "$1" in
+# clean
+    "c")
+        shift;
+        ARGS="clean assets:build $ARGS"
+        gradlew_do
+        ;;
 # dist
     "d")
         shift;
