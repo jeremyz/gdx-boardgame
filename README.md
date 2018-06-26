@@ -1,6 +1,5 @@
 
 # TODO
- - Assets
  - LoadingScreen
  - Fonts
  - UI widgets
@@ -13,3 +12,4 @@
 # DONE
  - GameScreen
  - BoardCamera
+ - Assets

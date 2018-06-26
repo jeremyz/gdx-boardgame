@@ -17,6 +17,8 @@ public class ZProject extends Game
     }
     private State state;
 
+    public final Assets assets = new Assets();
+
     @Override public void create()
     {
         this.state = State.NONE;
@@ -28,6 +30,7 @@ public class ZProject extends Game
     @Override public void dispose()
     {
         switchToNone();
+        assets.dispose();
     }
 
     public static void error(String msg)
@@ -51,6 +54,9 @@ public class ZProject extends Game
             error("switch from and to " + state);
             return;
         }
+        switch(state) {
+            case GAME: assets.unloadGame(); break;
+        }
         if (state != State.NONE) {
             getScreen().dispose();
         }
@@ -65,6 +71,8 @@ public class ZProject extends Game
 
     public void switchToGame()
     {
+        assets.loadGame();
+        assets.finishLoading();
         switchTo(new GameScreen(this), State.GAME);
     }
 }

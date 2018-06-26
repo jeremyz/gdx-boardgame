@@ -9,9 +9,9 @@ public class Board implements Disposable
 {
     private final Texture map;
 
-    public Board()
+    public Board(final Assets assets)
     {
-        this.map = new Texture("data/map_00.png");
+        this.map = assets.getTexture(assets.MAP_00);
     }
 
     @Override public void dispose()

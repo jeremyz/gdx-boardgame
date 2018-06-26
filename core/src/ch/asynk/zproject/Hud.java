@@ -10,9 +10,9 @@ public class Hud implements Disposable
 {
     private final Sprite hud;
 
-    public Hud()
+    public Hud(final Assets assets)
     {
-        this.hud = new Sprite(new Texture("data/corner.png"));
+        this.hud = new Sprite(assets.getTexture(assets.CORNER));
     }
 
     @Override public void dispose()

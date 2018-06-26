@@ -40,8 +40,8 @@ public class GameScreen implements Screen
     public GameScreen(final ZProject zproject)
     {
         this.zproject = zproject;
-        this.hud = new Hud();
-        this.board = new Board();
+        this.hud = new Hud(zproject.assets);
+        this.board = new Board(zproject.assets);
         this.batch = new SpriteBatch();
         this.camera = new GameCamera(10, board.getWidth(), board.getHeight(), 1.0f, 0.3f, false);
         Gdx.input.setInputProcessor(getMultiplexer());
