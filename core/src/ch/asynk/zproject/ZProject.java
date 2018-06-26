@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 import ch.asynk.zproject.screens.GameScreen;
+import ch.asynk.zproject.screens.LoadingScreen;
 
 public class ZProject extends Game
 {
@@ -13,7 +14,8 @@ public class ZProject extends Game
     private enum State
     {
         NONE,
-        GAME
+        LOADING,
+        GAME,
     }
     private State state;
 
@@ -24,7 +26,7 @@ public class ZProject extends Game
         this.state = State.NONE;
         Gdx.app.setLogLevel(Gdx.app.LOG_DEBUG);
         debug(String.format("create() [%d;%d] %f", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getDensity()));
-        switchToGame();
+        switchToLoading();
     }
 
     @Override public void dispose()
@@ -55,6 +57,7 @@ public class ZProject extends Game
             return;
         }
         switch(state) {
+            case LOADING: assets.unloadLoading(); break;
             case GAME: assets.unloadGame(); break;
         }
         if (state != State.NONE) {
@@ -69,10 +72,15 @@ public class ZProject extends Game
         switchTo(null, State.NONE);
     }
 
+    public void switchToLoading()
+    {
+        assets.loadLoading();
+        assets.finishLoading();
+        switchTo(new LoadingScreen(this, () -> assets.loadGame(), () -> switchToGame()), State.LOADING);
+    }
+
     public void switchToGame()
     {
-        assets.loadGame();
-        assets.finishLoading();
         switchTo(new GameScreen(this), State.GAME);
     }
 }

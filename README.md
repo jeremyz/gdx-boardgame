@@ -1,6 +1,5 @@
 
 # TODO
- - LoadingScreen
  - Fonts
  - UI widgets
  - SquareMap
@@ -13,3 +12,4 @@
  - GameScreen
  - BoardCamera
  - Assets
+ - LoadingScreen

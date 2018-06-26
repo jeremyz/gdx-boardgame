@@ -9,6 +9,7 @@ public class Assets extends AssetManager implements Disposable
 {
     public static final String CORNER = "data/corner.png";
     public static final String MAP_00 = "data/map_00.png";
+    public static final String LOADING = "data/loading.atlas";
 
     @Override public void dispose()
     {
@@ -25,6 +26,16 @@ public class Assets extends AssetManager implements Disposable
     public TextureAtlas getAtlas(String assetName)
     {
         return get(assetName, TextureAtlas.class);
+    }
+
+    public void loadLoading()
+    {
+        load(LOADING, TextureAtlas.class);
+    }
+
+    public void unloadLoading()
+    {
+        unload(LOADING);
     }
 
     public void loadGame()
