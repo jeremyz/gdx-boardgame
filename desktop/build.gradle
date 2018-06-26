@@ -2,7 +2,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 apply plugin: "java"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "ch.asynk.zproject.desktop.DesktopLauncher"
