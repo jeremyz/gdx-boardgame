@@ -1,0 +1,22 @@
+#! /bin/bash
+
+ARGS="ctags desktop:run"
+
+function gradlew_do()
+{
+    echo "./gradlew $ARGS" && ./gradlew $ARGS || exit 1
+}
+
+case "$1" in
+# dist
+    "d")
+        shift;
+        ARGS="desktop:dist $@"
+        gradlew_do
+        ;;
+    *)
+        ARGS="$ARGS $@"
+        gradlew_do
+        ;;
+esac
+
