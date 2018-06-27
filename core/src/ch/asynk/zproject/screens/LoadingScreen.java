@@ -18,7 +18,7 @@ public class LoadingScreen implements Screen
     private final Color c;
     private final OrthographicCamera camera;
 
-    private final float DELAY_AFTER = 1f;
+    private final float BLINK_AFTER = 2f;
     private final float ALPHA_FACTOR = 1.5f;
 
     private boolean paused;
@@ -29,7 +29,7 @@ public class LoadingScreen implements Screen
     private  AtlasRegion loaded;
 
     private int x, y;
-    private float acc;
+    private int count;
     private float percent;
     private float alpha;
     private boolean incr;
@@ -75,21 +75,20 @@ public class LoadingScreen implements Screen
     {
         if (paused) return;
 
-        percent = zproject.assets.getProgress();
-        if (!isLoaded && percent >= 1f) {
-            acc = 0f;
-            alpha = 1f;
-            incr = false;
+        if (!isLoaded) {
+            if (zproject.assets.update()) {
+                ZProject.debug("LoadingScreen", "assets loaded");
+                isLoaded = true;
+                percent = 1f;
+            } else {
+                percent = zproject.assets.getProgress();
+            }
         }
 
-        if (isLoaded) {
-            acc += delta;
-            if (acc >= DELAY_AFTER) {
-                // FIXME callback
-                // zproject.switchToGame();
-                onLoaded.call();
-                return;
-            }
+        if (!isLoaded && percent >= 1f) {
+            count = 0;
+            alpha = 1f;
+            incr = false;
         }
 
         delta *= ALPHA_FACTOR;
@@ -98,19 +97,17 @@ public class LoadingScreen implements Screen
             if (alpha >= 1f ) {
                 alpha = 1f;
                 incr = false;
+                if (isLoaded) count += 1;
+                if (count >= BLINK_AFTER) {
+                    onLoaded.call();
+                    return;
+                }
             }
         } else {
             alpha -= delta;
             if (alpha <= 0f ) {
                 alpha = 0f;
                 incr = true;
-            }
-        }
-
-        if (!isLoaded) {
-            if (zproject.assets.update()) {
-                ZProject.debug("LoadingScreen", "assets loaded");
-                isLoaded = true;
             }
         }
 
