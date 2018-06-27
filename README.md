@@ -1,6 +1,5 @@
 
 # TODO
- - Fonts
  - UI widgets
  - SquareMap
  - HexMap
@@ -13,3 +12,4 @@
  - BoardCamera
  - Assets
  - LoadingScreen
+ - Fonts

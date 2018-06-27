@@ -1,7 +1,9 @@
 package ch.asynk.zproject;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
@@ -9,10 +11,16 @@ import com.badlogic.gdx.utils.Disposable;
 public class Hud implements Disposable
 {
     private final Sprite hud;
+    private final GlyphLayout glyphLayout;
+    private final BitmapFont font20;
+    private final BitmapFont font25;
 
     public Hud(final Assets assets)
     {
         this.hud = new Sprite(assets.getTexture(assets.CORNER));
+        this.glyphLayout = new GlyphLayout();
+        font20 = assets.getFont(assets.FONT_20);
+        font25 = assets.getFont(assets.FONT_25);
     }
 
     @Override public void dispose()
@@ -36,5 +44,9 @@ public class Hud implements Disposable
         hud.setPosition(right, top);
         hud.setRotation(270);
         hud.draw(batch);
+        glyphLayout.setText(font20, "Hello");
+        font20.draw(batch, glyphLayout, 60, 30);
+        glyphLayout.setText(font25, "worlD");
+        font25.draw(batch, glyphLayout, 120, 32);
     }
 }
