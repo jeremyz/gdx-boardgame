@@ -1,9 +1,9 @@
 package ch.asynk.zproject;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
@@ -28,7 +28,7 @@ public class Hud implements Disposable
         hud.getTexture().dispose();
     }
 
-    public void draw(SpriteBatch batch, final Rectangle rect)
+    public void draw(Batch batch, final Rectangle rect)
     {
         float right = rect.x + rect.width - hud.getWidth();
         float top = rect.y + rect.height - hud.getHeight();

@@ -1,6 +1,6 @@
 package ch.asynk.zproject;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
@@ -29,7 +29,7 @@ public class Board implements Disposable
         return map.getHeight();
     }
 
-    public void draw(SpriteBatch batch, Rectangle viewPort)
+    public void draw(Batch batch, Rectangle viewPort)
     {
         batch.draw(map, 0, 0);
     }
