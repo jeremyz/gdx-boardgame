@@ -1,7 +1,5 @@
 
 # TODO
- - GameScreen
- - BoardCamera
  - Assets
  - LoadingScreen
  - Fonts
@@ -11,3 +9,7 @@
  - TriangleMap
  - CircleMap
  - gfx
+
+# DONE
+ - GameScreen
+ - BoardCamera

@@ -1,33 +1,70 @@
 package ch.asynk.zproject;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Screen;
 
-public class ZProject extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+import ch.asynk.zproject.screens.GameScreen;
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+public class ZProject extends Game
+{
+    public static final String DOM = "ZProject";
+
+    private enum State
+    {
+        NONE,
+        GAME
+    }
+    private State state;
+
+    @Override public void create()
+    {
+        this.state = State.NONE;
+        Gdx.app.setLogLevel(Gdx.app.LOG_DEBUG);
+        debug(String.format("create() [%d;%d] %f", Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getDensity()));
+        switchToGame();
+    }
+
+    @Override public void dispose()
+    {
+        switchToNone();
+    }
+
+    public static void error(String msg)
+    {
+        Gdx.app.error(DOM, msg);
+    }
+
+    public static void debug(String msg)
+    {
+        Gdx.app.debug(DOM, msg);
+    }
+
+    public static void debug(String from, String msg)
+    {
+        Gdx.app.debug(DOM, String.format("%s : %s", from, msg));
+    }
+
+    private void switchTo(Screen nextScreen, State nextState)
+    {
+        if (state == nextState) {
+            error("switch from and to " + state);
+            return;
+        }
+        if (state != State.NONE) {
+            getScreen().dispose();
+        }
+        setScreen(nextScreen);
+        this.state = nextState;
+    }
+
+    public void switchToNone()
+    {
+        switchTo(null, State.NONE);
+    }
+
+    public void switchToGame()
+    {
+        switchTo(new GameScreen(this), State.GAME);
+    }
 }
