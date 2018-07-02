@@ -44,7 +44,7 @@ public class GameScreen implements Screen
         this.board = new Board(zproject.assets);
         this.batch = new SpriteBatch();
         this.camera = new GameCamera(10, board.getWidth(), board.getHeight(), 1.0f, 0.3f, false);
-        Gdx.input.setInputProcessor(getMultiplexer());
+        Gdx.input.setInputProcessor(getMultiplexer(this));
         this.paused = false;
         this.inputDelay = 0f;
         this.inputBlocked = false;
@@ -114,13 +114,19 @@ public class GameScreen implements Screen
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    private InputMultiplexer getMultiplexer()
+    private void zoom(float dz)
+    {
+        camera.zoom(dz);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    private InputMultiplexer getMultiplexer(final GameScreen screen)
     {
         final InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(new InputAdapter() {
             @Override public boolean scrolled(int amount)
             {
-                camera.zoom(amount * ZOOM_SCROLL_FACTOR);
+                screen.zoom(amount * ZOOM_SCROLL_FACTOR);
                 return true;
             }
             @Override public boolean touchDown(int x, int y, int pointer, int button)
@@ -148,9 +154,9 @@ public class GameScreen implements Screen
             @Override public boolean zoom(float initialDistance, float distance)
             {
                 if (initialDistance > distance)
-                    camera.zoom(ZOOM_GESTURE_FACTOR);
+                    screen.zoom(ZOOM_GESTURE_FACTOR);
                 else
-                    camera.zoom(-ZOOM_GESTURE_FACTOR);
+                    screen.zoom(-ZOOM_GESTURE_FACTOR);
                 inputBlocked = true;
                 inputDelay = INPUT_DELAY;
                 return true;

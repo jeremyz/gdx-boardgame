@@ -128,7 +128,6 @@ public class GameCamera extends OrthographicCamera
     {
         zoom += dz;
         clampZoom();
-        updateViewport(screenWidth, screenHeight); // zoom impacts viewport
     }
 
     public void clampZoom()
