@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Board implements Disposable
+import ch.asynk.zproject.engine.Touchable;
+
+public class Board implements Disposable, Touchable
 {
     private final Texture map;
 
@@ -16,6 +18,12 @@ public class Board implements Disposable
     @Override public void dispose()
     {
         map.dispose();
+    }
+
+    @Override public boolean touch(float x, float y)
+    {
+        ZProject.debug("Board", String.format("touchDown : %f %f", x, y));
+        return true;
     }
 
     public int getWidth()

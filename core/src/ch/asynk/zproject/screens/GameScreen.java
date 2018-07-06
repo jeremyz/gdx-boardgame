@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -23,11 +24,14 @@ public class GameScreen implements Screen
     private static final float ZOOM_SCROLL_FACTOR = .1f;
     private static final float ZOOM_GESTURE_FACTOR = .01f;
 
+    private static final boolean DEBUG = true;
+
     private final ZProject zproject;
     private final Hud hud;
     private final Board board;
     private final GameCamera camera;
     private final SpriteBatch batch;
+    private ShapeRenderer debugShapes = null;
 
     private final Vector2 dragPos = new Vector2();
     private final Vector3 boardTouch = new Vector3();
@@ -48,6 +52,7 @@ public class GameScreen implements Screen
         this.paused = false;
         this.inputDelay = 0f;
         this.inputBlocked = false;
+        if (DEBUG) this.debugShapes = new ShapeRenderer();
     }
 
     @Override public void render(float delta)
@@ -74,6 +79,16 @@ public class GameScreen implements Screen
         batch.begin();
         hud.draw(batch);
         batch.end();
+
+        if (DEBUG) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            debugShapes.setAutoShapeType(true);
+            debugShapes.setProjectionMatrix(camera.getHudMatrix());
+            debugShapes.begin();
+            hud.drawDebug(debugShapes);
+            debugShapes.end();
+        }
+
     }
 
     @Override public void resize(int width, int height)
@@ -88,6 +103,7 @@ public class GameScreen implements Screen
     {
         ZProject.debug("GameScreen", "dispose()");
         batch.dispose();
+        if (debugShapes != null) debugShapes.dispose();
         hud.dispose();
         board.dispose();
     }
@@ -137,8 +153,8 @@ public class GameScreen implements Screen
                     dragPos.set(x, y);
                     camera.unproject(x, y, boardTouch);
                     camera.unprojectHud(x, y, hudTouch);
-                    ZProject.debug("touchDown MAP : " + boardTouch);
-                    ZProject.debug("touchDown HUD : " + hudTouch);
+                    if(!hud.touch(hudTouch.x, hudTouch.y))
+                        board.touch(boardTouch.x, boardTouch.y);
                 }
                 return true;
             }
