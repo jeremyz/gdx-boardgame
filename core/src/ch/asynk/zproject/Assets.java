@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
@@ -20,6 +21,7 @@ public class Assets extends AssetManager implements Disposable
     public static final String FONT = "data/veteran-typewriter.ttf";
     public static final String FONT_20 = "size20.ttf";
     public static final String FONT_25 = "size25.ttf";
+    public static final String PATCH = "data/ui-patch.png";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
@@ -50,6 +52,11 @@ public class Assets extends AssetManager implements Disposable
         return get(assetName, Texture.class);
     }
 
+    public NinePatch getNinePatch(String assetName, int left, int right, int top, int bottom)
+    {
+        return new NinePatch(get(assetName, Texture.class), left, right, top, bottom);
+    }
+
     public TextureAtlas getAtlas(String assetName)
     {
         return get(assetName, TextureAtlas.class);
@@ -74,6 +81,7 @@ public class Assets extends AssetManager implements Disposable
     {
         load(MAP_00, Texture.class);
         load(CORNER, Texture.class);
+        load(PATCH, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
         load(FONT_25, BitmapFont.class, params25);
     }
@@ -82,6 +90,7 @@ public class Assets extends AssetManager implements Disposable
     {
         unload(MAP_00);
         unload(CORNER);
+        unload(PATCH);
         unload(FONT_20);
         unload(FONT_25);
     }
