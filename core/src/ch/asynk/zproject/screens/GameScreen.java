@@ -66,13 +66,13 @@ public class GameScreen implements Screen
         camera.applyMapViewport();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        board.draw(batch, camera.getViewport());
+        board.draw(batch);
         batch.end();
 
         camera.applyHudViewport();
         batch.setProjectionMatrix(camera.getHudMatrix());
         batch.begin();
-        hud.draw(batch, camera.getHud());
+        hud.draw(batch);
         batch.end();
     }
 
@@ -81,6 +81,7 @@ public class GameScreen implements Screen
         if (paused) return;
         ZProject.debug("GameScreen", String.format("resize (%d,%d)",width, height));
         camera.updateViewport(width, height);
+        hud.resize(camera.getHud().width, camera.getHud().height);
     }
 
     @Override public void dispose()

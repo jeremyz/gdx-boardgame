@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class Hud implements Disposable
 {
+    private final Rectangle rect;
     private final Sprite hud;
     private final GlyphLayout glyphLayout;
     private final BitmapFont font20;
@@ -17,6 +18,7 @@ public class Hud implements Disposable
 
     public Hud(final Assets assets)
     {
+        this.rect = new Rectangle(0, 0, 0, 0);
         this.hud = new Sprite(assets.getTexture(assets.CORNER));
         this.glyphLayout = new GlyphLayout();
         font20 = assets.getFont(assets.FONT_20);
@@ -28,7 +30,12 @@ public class Hud implements Disposable
         hud.getTexture().dispose();
     }
 
-    public void draw(Batch batch, final Rectangle rect)
+    public void resize(float width, float height)
+    {
+        rect.set(0, 0, width, height);
+    }
+
+    public void draw(Batch batch)
     {
         float right = rect.x + rect.width - hud.getWidth();
         float top = rect.y + rect.height - hud.getHeight();
