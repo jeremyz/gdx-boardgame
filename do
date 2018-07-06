@@ -14,6 +14,12 @@ case "$1" in
         ARGS="clean assets:build $ARGS"
         gradlew_do
         ;;
+# build
+    "b")
+        shift;
+        ARGS="desktop:build"
+        gradlew_do
+        ;;
 # dist
     "d")
         shift;
