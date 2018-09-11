@@ -6,11 +6,11 @@ import com.badlogic.gdx.utils.Disposable;
 
 import ch.asynk.zproject.engine.Touchable;
 
-public class Board implements Disposable, Touchable
+public class GameBoard implements Disposable, Touchable
 {
     private final Texture map;
 
-    public Board(final Assets assets)
+    public GameBoard(final Assets assets)
     {
         this.map = assets.getTexture(assets.MAP_00);
     }
@@ -22,7 +22,7 @@ public class Board implements Disposable, Touchable
 
     @Override public boolean touch(float x, float y)
     {
-        ZProject.debug("Board", String.format("touchDown : %f %f", x, y));
+        ZProject.debug("GameBoard", String.format("touchDown : %f %f", x, y));
         return true;
     }
 

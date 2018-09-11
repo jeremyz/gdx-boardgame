@@ -13,7 +13,7 @@ import ch.asynk.zproject.engine.ui.Alignment;
 import ch.asynk.zproject.engine.ui.Root;
 import ch.asynk.zproject.engine.Touchable;
 
-public class Hud implements Disposable, Touchable
+public class GameHud implements Disposable, Touchable
 {
     private final Rectangle rect;
     private final Sprite corner;
@@ -21,7 +21,7 @@ public class Hud implements Disposable, Touchable
     private final Button hello;
     private final Button next;
 
-    public Hud(final Assets assets)
+    public GameHud(final Assets assets)
     {
         this.corner = new Sprite(assets.getTexture(assets.CORNER));
         this.rect = new Rectangle(0, 0, 0 ,0);
@@ -48,7 +48,7 @@ public class Hud implements Disposable, Touchable
     {
         if (rect.contains(x, y)) {
             if (root.touch(x, y)) {
-                ZProject.debug("Hud", String.format("touchDown : %f %f", x, y));
+                ZProject.debug("GameHud", String.format("touchDown : %f %f", x, y));
                 return true;
             }
         }

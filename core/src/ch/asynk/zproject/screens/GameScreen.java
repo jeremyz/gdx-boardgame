@@ -15,8 +15,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import ch.asynk.zproject.ZProject;
-import ch.asynk.zproject.Hud;
-import ch.asynk.zproject.Board;
+import ch.asynk.zproject.GameHud;
+import ch.asynk.zproject.GameBoard;
 
 public class GameScreen implements Screen
 {
@@ -27,8 +27,8 @@ public class GameScreen implements Screen
     private static final boolean DEBUG = true;
 
     private final ZProject zproject;
-    private final Hud hud;
-    private final Board board;
+    private final GameHud hud;
+    private final GameBoard board;
     private final GameCamera camera;
     private final SpriteBatch batch;
     private ShapeRenderer debugShapes = null;
@@ -44,8 +44,8 @@ public class GameScreen implements Screen
     public GameScreen(final ZProject zproject)
     {
         this.zproject = zproject;
-        this.hud = new Hud(zproject.assets);
-        this.board = new Board(zproject.assets);
+        this.hud = new GameHud(zproject.assets);
+        this.board = new GameBoard(zproject.assets);
         this.batch = new SpriteBatch();
         this.camera = new GameCamera(10, board.getWidth(), board.getHeight(), 1.0f, 0.3f, false);
         Gdx.input.setInputProcessor(getMultiplexer(this));
