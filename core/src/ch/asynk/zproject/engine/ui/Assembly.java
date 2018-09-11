@@ -8,6 +8,7 @@ import ch.asynk.zproject.engine.util.IterableSet;
 public abstract class Assembly extends Element
 {
     private IterableSet<Element> children;
+    private Element touched;
 
     public Assembly(int c)
     {
@@ -28,11 +29,19 @@ public abstract class Assembly extends Element
         }
     }
 
+    public Element touched()
+    {
+        return touched;
+    }
+
     @Override public boolean touch(float x, float y)
     {
         for (Element e : children)
-            if (e.touch(x, y))
+            if (e.touch(x, y)) {
+                touched = e;
                 return true;
+            }
+        touched = null;
         return false;
     }
 
