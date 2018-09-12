@@ -35,7 +35,9 @@ public class GameHud implements Disposable, Touchable
 
         this.next = new Button(assets.getFont(assets.FONT_25), assets.getNinePatch(assets.PATCH, 23, 23, 23 ,23), 20, 0);
         this.next.write("NEXT");
-        this.next.setPosition(100, 100);
+        this.next.setPosition(50, 50);
+        this.next.setAlignment(Alignment.MIDDLE_CENTER);
+        this.next.setLabelAlignment(Alignment.MIDDLE_CENTER);
         this.root.add(this.next);
     }
 
@@ -88,17 +90,17 @@ public class GameHud implements Disposable, Touchable
     private void drawButtons(Batch batch)
     {
         hello.setAlignment(Alignment.TOP_LEFT);
-        hello.setLabelAlignment(Alignment.BOTTOM_CENTER);
+        hello.setLabelAlignment(Alignment.BOTTOM_RIGHT);
         hello.update();
         root.draw(batch);
-        drawHello(batch, Alignment.TOP_CENTER, Alignment.BOTTOM_RIGHT);
-        drawHello(batch, Alignment.TOP_RIGHT, Alignment.TOP_LEFT);
-        drawHello(batch, Alignment.MIDDLE_LEFT, Alignment.TOP_CENTER);
-        drawHello(batch, Alignment.MIDDLE_CENTER, Alignment.TOP_RIGHT);
+        drawHello(batch, Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER);
+        drawHello(batch, Alignment.TOP_RIGHT, Alignment.BOTTOM_LEFT);
+        drawHello(batch, Alignment.MIDDLE_LEFT, Alignment.MIDDLE_RIGHT);
+        // drawHello(batch, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER);
         drawHello(batch, Alignment.MIDDLE_RIGHT, Alignment.MIDDLE_LEFT);
-        drawHello(batch, Alignment.BOTTOM_LEFT, Alignment.MIDDLE_CENTER);
-        drawHello(batch, Alignment.BOTTOM_CENTER, Alignment.MIDDLE_RIGHT);
-        drawHello(batch, Alignment.BOTTOM_RIGHT, Alignment.BOTTOM_LEFT);
+        drawHello(batch, Alignment.BOTTOM_LEFT, Alignment.TOP_RIGHT);
+        drawHello(batch, Alignment.BOTTOM_CENTER, Alignment.TOP_CENTER);
+        drawHello(batch, Alignment.BOTTOM_RIGHT, Alignment.TOP_LEFT);
     }
 
     private void drawHello(Batch batch, Alignment alignment1, Alignment alignment2)
