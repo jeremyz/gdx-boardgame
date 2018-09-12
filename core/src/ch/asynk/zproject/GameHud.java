@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.zproject.engine.ui.Button;
 import ch.asynk.zproject.engine.ui.Patch;
@@ -15,7 +14,6 @@ import ch.asynk.zproject.engine.Touchable;
 
 public class GameHud implements Disposable, Touchable
 {
-    private final Rectangle rect;
     private final Sprite corner;
     private final Root root;
     private final Button hello;
@@ -24,7 +22,6 @@ public class GameHud implements Disposable, Touchable
     public GameHud(final Assets assets)
     {
         this.corner = new Sprite(assets.getTexture(assets.CORNER));
-        this.rect = new Rectangle(0, 0, 0 ,0);
 
         this.root = new Root(2);
         this.root.setPadding(30);
@@ -48,18 +45,15 @@ public class GameHud implements Disposable, Touchable
 
     @Override public boolean touch(float x, float y)
     {
-        if (rect.contains(x, y)) {
-            if (root.touch(x, y)) {
-                ZProject.debug("GameHud", String.format("touchDown : %f %f", x, y));
-                return true;
-            }
+        if (root.touch(x, y)) {
+            ZProject.debug("GameHud", String.format("touchDown : %f %f", x, y));
+            return true;
         }
         return false;
     }
 
     public void resize(float width, float height)
     {
-        rect.set(0, 0, width, height);
         this.root.resize(width, height);
     }
 
@@ -71,16 +65,16 @@ public class GameHud implements Disposable, Touchable
 
     public void drawCorners(Batch batch)
     {
-        float right = rect.x + rect.width - corner.getWidth();
-        float top = rect.y + rect.height - corner.getHeight();
+        float right = root.getX() + root.getWidth() - corner.getWidth();
+        float top = root.getY() + root.getHeight() - corner.getHeight();
         corner.setRotation(0);
-        corner.setPosition(rect.x, top);
+        corner.setPosition(root.getX(), top);
         corner.draw(batch);
         corner.setRotation(90);
-        corner.setPosition(rect.x, rect.y);
+        corner.setPosition(root.getX(), root.getY());
         corner.draw(batch);
         corner.setRotation(180);
-        corner.setPosition(right, rect.y);
+        corner.setPosition(right, root.getY());
         corner.draw(batch);
         corner.setPosition(right, top);
         corner.setRotation(270);
