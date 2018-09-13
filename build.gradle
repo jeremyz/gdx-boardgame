@@ -28,7 +28,7 @@ allprojects {
     }
 }
 
-project(":desktop") {
+project(":test") {
     apply plugin: "java"
 
     dependencies {

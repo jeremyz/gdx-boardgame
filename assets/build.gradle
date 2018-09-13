@@ -9,18 +9,18 @@ dependencies {
 defaultTasks 'build'
 
 task clean(type: Delete) {
-    delete '../desktop/build/assets'
+    delete '../test/build/assets'
 }
 
 task copyData(type: Copy) {
     from 'data'
-    into '../desktop/build/assets'
+    into '../test/build/assets'
 }
 
 task packLoading(type: JavaExec) {
     main = 'com.badlogic.gdx.tools.texturepacker.TexturePacker'
     classpath = configurations.texturePacker
-    args = ['./loading', '../desktop/build/assets', 'loading']
+    args = ['./loading', '../test/build/assets', 'loading']
 }
 
 /* task buildUI(dependsOn: ["processXHDPI"]) { */
