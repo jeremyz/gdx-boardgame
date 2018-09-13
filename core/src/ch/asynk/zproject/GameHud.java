@@ -1,5 +1,7 @@
 package ch.asynk.zproject;
 
+import java.util.function.Supplier;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,9 +18,13 @@ public class GameHud implements Disposable, Touchable
     private final Root root;
     private final Button hello;
     private final Button next;
+    private GameScreen.State state;
+    private final Supplier<GameScreen.State> nextState;
 
-    public GameHud(final Assets assets)
+    public GameHud(final Assets assets, GameScreen.State state, Supplier<GameScreen.State> nextState)
     {
+        this.state = state;
+        this.nextState = nextState;
         this.corner = new Sprite(assets.getTexture(assets.CORNER));
 
         this.root = new Root(2);
@@ -45,6 +51,8 @@ public class GameHud implements Disposable, Touchable
     {
         if (root.touch(x, y)) {
             ZProject.debug("GameHud", String.format("touchDown : %f %f", x, y));
+            if (root.touched() == this.next)
+                onNext();
             return true;
         }
         return false;
@@ -55,13 +63,50 @@ public class GameHud implements Disposable, Touchable
         this.root.resize(width, height);
     }
 
-    public void draw(Batch batch)
+    public void onNext()
     {
-        drawButtons(batch);
-        drawCorners(batch);
+        this.state = nextState.get();
+        switch (this.state) {
+            case UI:
+                updateNext(50, Alignment.MIDDLE_CENTER);
+                this.root.add(this.hello);
+                break;
+            case HEX_V:
+                updateNext(0, Alignment.BOTTOM_RIGHT);
+                this.root.remove(this.hello);
+                break;
+            case HEX_H:
+                break;
+        }
     }
 
-    public void drawCorners(Batch batch)
+    private void updateNext(int p, Alignment a)
+    {
+        this.next.setPosition(p, p);
+        this.next.setAlignment(a);
+        this.next.update();
+    }
+
+    public void draw(Batch batch)
+    {
+        switch (this.state) {
+            case UI:
+                drawButtons(batch);
+                drawCorners(batch);
+                break;
+            case HEX_V:
+            case HEX_H:
+                drawRoot(batch);
+                break;
+        }
+    }
+
+    private void drawRoot(Batch batch)
+    {
+        root.draw(batch);
+    }
+
+    private void drawCorners(Batch batch)
     {
         float right = root.getX() + root.getWidth() - corner.getWidth();
         float top = root.getY() + root.getHeight() - corner.getHeight();

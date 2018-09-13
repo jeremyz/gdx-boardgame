@@ -38,10 +38,29 @@ public class GameScreen implements Screen
     private float inputDelay;
     private boolean inputBlocked;
 
+    public enum State
+    {
+        UI, HEX_V, HEX_H;
+        public State next()
+        {
+            switch(this) {
+                case UI:
+                    return HEX_V;
+                case HEX_V:
+                    return HEX_H;
+                case HEX_H:
+                    return UI;
+                default:
+                    return UI;
+            }
+        }
+    }
+    private State state;
+
     public GameScreen(final ZProject zproject)
     {
         this.zproject = zproject;
-        this.hud = new GameHud(zproject.assets);
+        this.hud = new GameHud(zproject.assets, State.UI, () -> nextState());
         this.board = new GameBoard(zproject.assets);
         this.batch = new SpriteBatch();
         this.camera = new Camera(10, board.getWidth(), board.getHeight(), 1.0f, 0.3f, false);
@@ -49,7 +68,17 @@ public class GameScreen implements Screen
         this.paused = false;
         this.inputDelay = 0f;
         this.inputBlocked = false;
+        this.state = State.UI;
         if (DEBUG) this.debugShapes = new ShapeRenderer();
+    }
+
+    public State nextState()
+    {
+        this.state = this.state.next();
+        this.board.setState(this.state);
+        this.camera.setDimension(board.getWidth(), board.getHeight());
+        zoom(1);
+        return this.state;
     }
 
     @Override public void render(float delta)
@@ -150,8 +179,10 @@ public class GameScreen implements Screen
                     dragPos.set(x, y);
                     camera.unproject(x, y, boardTouch);
                     camera.unprojectHud(x, y, hudTouch);
-                    if(!hud.touch(hudTouch.x, hudTouch.y))
-                        board.touch(boardTouch.x, boardTouch.y);
+                    if (!hud.touch(hudTouch.x, hudTouch.y)) {
+                        if (state != State.UI)
+                            board.touch(boardTouch.x, boardTouch.y);
+                    }
                 }
                 return true;
             }
