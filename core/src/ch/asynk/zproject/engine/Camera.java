@@ -48,6 +48,14 @@ public class Camera extends OrthographicCamera
         this.hudInvProjMatrix = new Matrix4();
     }
 
+    public void setDimension(float boardWidth, float boardHeight)
+    {
+        setToOrtho(false, boardWidth, boardHeight);
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        this.boardAspectRatio = (boardWidth / boardHeight);
+    }
+
     public void updateViewport(int screenWidth, int screenHeight)
     {
         this.screenWidth = screenWidth;
