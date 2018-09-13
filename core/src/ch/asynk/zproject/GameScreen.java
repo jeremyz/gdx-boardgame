@@ -1,4 +1,4 @@
-package ch.asynk.zproject;
+package ch.asynk.gdx.board;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import ch.asynk.zproject.engine.Camera;
+import ch.asynk.gdx.board.engine.Camera;
 
 public class GameScreen implements Screen
 {

@@ -1,6 +1,6 @@
-package ch.asynk.zproject.engine.board;
+package ch.asynk.gdx.board.engine.board;
 
-import ch.asynk.zproject.engine.Board;
+import ch.asynk.gdx.board.engine.Board;
 
 public class BoardFactory
 {

@@ -1,4 +1,4 @@
-package ch.asynk.zproject.engine.util;
+package ch.asynk.gdx.board.engine.util;
 
 public class IterableSet<E> extends IterableArray<E>
 {

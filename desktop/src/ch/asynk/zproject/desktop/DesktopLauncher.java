@@ -1,8 +1,8 @@
-package ch.asynk.zproject.desktop;
+package ch.asynk.gdx.board.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import ch.asynk.zproject.ZProject;
+import ch.asynk.gdx.board.ZProject;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

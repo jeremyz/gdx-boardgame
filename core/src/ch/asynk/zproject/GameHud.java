@@ -1,4 +1,4 @@
-package ch.asynk.zproject;
+package ch.asynk.gdx.board;
 
 import java.util.function.Supplier;
 
@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
-import ch.asynk.zproject.engine.ui.Button;
-import ch.asynk.zproject.engine.ui.Alignment;
-import ch.asynk.zproject.engine.ui.Root;
-import ch.asynk.zproject.engine.Touchable;
+import ch.asynk.gdx.board.engine.ui.Button;
+import ch.asynk.gdx.board.engine.ui.Alignment;
+import ch.asynk.gdx.board.engine.ui.Root;
+import ch.asynk.gdx.board.engine.Touchable;
 
 public class GameHud implements Disposable, Touchable
 {

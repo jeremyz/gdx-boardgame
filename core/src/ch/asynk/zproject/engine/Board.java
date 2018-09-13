@@ -1,4 +1,4 @@
-package ch.asynk.zproject.engine;
+package ch.asynk.gdx.board.engine;
 
 import com.badlogic.gdx.math.Vector2;
 

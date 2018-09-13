@@ -1,13 +1,13 @@
-package ch.asynk.zproject;
+package ch.asynk.gdx.board;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.math.Vector2;
 
-import ch.asynk.zproject.engine.Touchable;
-import ch.asynk.zproject.engine.Board;
-import ch.asynk.zproject.engine.board.BoardFactory;
+import ch.asynk.gdx.board.engine.Touchable;
+import ch.asynk.gdx.board.engine.Board;
+import ch.asynk.gdx.board.engine.board.BoardFactory;
 
 public class GameBoard implements Disposable, Touchable
 {

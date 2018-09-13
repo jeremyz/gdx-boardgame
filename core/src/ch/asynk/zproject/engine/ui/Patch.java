@@ -1,4 +1,4 @@
-package ch.asynk.zproject.engine.ui;
+package ch.asynk.gdx.board.engine.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;

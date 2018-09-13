@@ -16,7 +16,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "zproject"
+        appName = "gdx-board"
         gdxVersion = '1.9.8'
     }
 

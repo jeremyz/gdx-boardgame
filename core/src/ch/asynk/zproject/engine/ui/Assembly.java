@@ -1,9 +1,9 @@
-package ch.asynk.zproject.engine.ui;
+package ch.asynk.gdx.board.engine.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import ch.asynk.zproject.engine.util.IterableSet;
+import ch.asynk.gdx.board.engine.util.IterableSet;
 
 public abstract class Assembly extends Element
 {

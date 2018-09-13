@@ -1,4 +1,4 @@
-package ch.asynk.zproject;
+package ch.asynk.gdx.board;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

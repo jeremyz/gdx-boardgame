@@ -1,8 +1,8 @@
-package ch.asynk.zproject.engine.board;
+package ch.asynk.gdx.board.engine.board;
 
 import com.badlogic.gdx.math.Vector2;
 
-import ch.asynk.zproject.engine.Board;
+import ch.asynk.gdx.board.engine.Board;
 
 public class SquareBoard implements Board
 {
