@@ -1,4 +1,4 @@
-package ch.asynk.zproject.screens;
+package ch.asynk.zproject.engine;
 
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 
-public class GameCamera extends OrthographicCamera
+public class Camera extends OrthographicCamera
 {
     private static final float ZEROF = 0.01f;
 
@@ -31,7 +31,7 @@ public class GameCamera extends OrthographicCamera
     private int hudBottom;
     private boolean hudInBoard;
 
-    public GameCamera(int padding, float boardWidth, float boardHeight, float zoomMax, float zoomMin, boolean hudInBoard)
+    public Camera(int padding, float boardWidth, float boardHeight, float zoomMax, float zoomMin, boolean hudInBoard)
     {
         super(boardWidth, boardHeight);
         this.boardWidth = boardWidth;
