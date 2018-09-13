@@ -11,7 +11,8 @@ import ch.asynk.zproject.engine.board.BoardFactory;
 
 public class GameBoard implements Disposable, Touchable
 {
-    private final Texture map;
+    private final Assets assets;
+    private Texture map;
     private Board board;
 
     private int dx;
@@ -24,7 +25,7 @@ public class GameBoard implements Disposable, Touchable
 
     public GameBoard(final Assets assets)
     {
-        this.map = assets.getTexture(assets.MAP_00);
+        this.assets = assets;
         this.v = new Vector2();
         setState(GameScreen.State.UI);
     }
@@ -53,27 +54,43 @@ public class GameBoard implements Disposable, Touchable
             case HEX_H:
                 setHEX_H();
                 break;
+            case SQUARE:
+                setSQUARE();
+                break;
         }
     }
 
     private void setHEX_V()
     {
+        this.map = assets.getTexture(assets.MAP_00);
         r = 0;
         dx = 0;
         dy = 0;
-        w = map.getWidth();
-        h = map.getHeight();
-        this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 10, 9, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
+        w = this.map.getWidth();
+        h = this.map.getHeight();
+        this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
     }
 
     private void setHEX_H()
     {
+        this.map = assets.getTexture(assets.MAP_00);
         r = 90;
-        dx = - ( map.getWidth() - map.getHeight() ) / 2;
+        dx = - ( this.map.getWidth() - this.map.getHeight() ) / 2;
         dy = - dx;
+        w = this.map.getWidth();
+        h = this.map.getHeight();
+        this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
+    }
+
+    private void setSQUARE()
+    {
+        this.map = assets.getTexture(assets.CHESS);
+        r = 0;
+        dx = 0;
+        dy = 0;
         w = map.getHeight();
         h = map.getWidth();
-        this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 9, 10, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
+        this.board = BoardFactory.getBoard(BoardFactory.BoardType.SQUARE, 83, 5, 5);
     }
 
     public int getWidth()

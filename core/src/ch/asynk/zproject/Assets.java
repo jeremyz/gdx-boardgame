@@ -16,6 +16,7 @@ public class Assets extends ch.asynk.zproject.engine.Assets
 
     public static final String CORNER = "data/corner.png";
     public static final String MAP_00 = "data/map_00.png";
+    public static final String CHESS = "data/chess.jpg";
     public static final String FONT = "data/veteran-typewriter.ttf";
     public static final String FONT_20 = "size20.ttf";
     public static final String FONT_25 = "size25.ttf";
@@ -58,6 +59,7 @@ public class Assets extends ch.asynk.zproject.engine.Assets
     public void loadGame()
     {
         load(MAP_00, Texture.class);
+        load(CHESS, Texture.class);
         load(CORNER, Texture.class);
         load(PATCH, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
@@ -67,6 +69,7 @@ public class Assets extends ch.asynk.zproject.engine.Assets
     public void unloadGame()
     {
         unload(MAP_00);
+        unload(CHESS);
         unload(CORNER);
         unload(PATCH);
         unload(FONT_20);

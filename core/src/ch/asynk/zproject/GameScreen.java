@@ -40,7 +40,7 @@ public class GameScreen implements Screen
 
     public enum State
     {
-        UI, HEX_V, HEX_H;
+        UI, HEX_V, HEX_H, SQUARE;
         public State next()
         {
             switch(this) {
@@ -49,6 +49,8 @@ public class GameScreen implements Screen
                 case HEX_V:
                     return HEX_H;
                 case HEX_H:
+                    return SQUARE;
+                case SQUARE:
                     return UI;
                 default:
                     return UI;
