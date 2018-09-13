@@ -4,9 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import ch.asynk.zproject.screens.GameScreen;
-import ch.asynk.zproject.screens.LoadingScreen;
-
 public class ZProject extends Game
 {
     public static final String DOM = "ZProject";

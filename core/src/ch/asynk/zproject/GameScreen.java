@@ -1,4 +1,4 @@
-package ch.asynk.zproject.screens;
+package ch.asynk.zproject;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
