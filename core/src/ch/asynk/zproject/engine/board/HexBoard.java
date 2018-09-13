@@ -6,8 +6,6 @@ import ch.asynk.zproject.engine.Board;
 
 public class HexBoard implements Board
 {
-    private int cols;       // # columns
-    private int rows;       // # rows
     private float side;     // length of the side of the hex
     private float x0;       // bottom left x offset
     private float y0;       // bottom left y offset
@@ -37,10 +35,8 @@ public class HexBoard implements Board
     //   rows are vertical°
     //   bottom left is the left vertice of the most bottom-left horizontal hex side of the map
 
-    public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
+    public HexBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
-        this.cols = cols;
-        this.rows = rows;
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;

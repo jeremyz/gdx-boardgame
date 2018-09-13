@@ -15,22 +15,22 @@ public class BoardFactory
         HORIZONTAL,
     }
 
-    public static Board getBoard(BoardType boardType, int cols, int rows, float side)
+    public static Board getBoard(BoardType boardType, float side)
     {
-        return getBoard(boardType, cols, rows, side, 0f, 0f, BoardOrientation.VERTICAL);
+        return getBoard(boardType, side, 0f, 0f, BoardOrientation.VERTICAL);
     }
 
-    public static Board getBoard(BoardType boardType, int cols, int rows, float side, float x0, float y0)
+    public static Board getBoard(BoardType boardType, float side, float x0, float y0)
     {
-        return getBoard(boardType, cols, rows, side, x0, y0, BoardOrientation.VERTICAL);
+        return getBoard(boardType, side, x0, y0, BoardOrientation.VERTICAL);
     }
 
-    public static Board getBoard(BoardType boardType, int cols, int rows, float side, float x0, float y0, BoardOrientation boardOrientation)
+    public static Board getBoard(BoardType boardType, float side, float x0, float y0, BoardOrientation boardOrientation)
     {
         switch(boardType)
         {
             case HEX:
-                return new HexBoard(cols, rows, side, x0, y0, boardOrientation);
+                return new HexBoard(side, x0, y0, boardOrientation);
             default:
                 throw new RuntimeException( String.format("%s board type is not implemented yet.", boardType) );
         }
