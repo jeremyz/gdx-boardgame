@@ -12,15 +12,15 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoa
 
 public class Assets extends ch.asynk.zproject.engine.Assets
 {
-    public static final String LOADING = "data/loading.atlas";
+    public static final String LOADING = "loading.atlas";
 
-    public static final String CORNER = "data/corner.png";
-    public static final String MAP_00 = "data/map_00.png";
-    public static final String CHESS = "data/chess.jpg";
-    public static final String FONT = "data/veteran-typewriter.ttf";
+    public static final String CORNER = "corner.png";
+    public static final String MAP_00 = "map_00.png";
+    public static final String CHESS = "chess.jpg";
+    public static final String FONT = "veteran-typewriter.ttf";
     public static final String FONT_20 = "size20.ttf";
     public static final String FONT_25 = "size25.ttf";
-    public static final String PATCH = "data/ui-patch.png";
+    public static final String PATCH = "ui-patch.png";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;

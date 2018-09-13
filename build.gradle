@@ -9,22 +9,15 @@ buildscript {
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
-        classpath 'com.android.tools.build:gradle:3.1.0'
     }
 }
 
 allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
 
     version = '1.0'
     ext {
         appName = "zproject"
         gdxVersion = '1.9.8'
-        roboVMVersion = '2.3.3'
-        box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
     }
 
     repositories {
@@ -46,28 +39,6 @@ project(":desktop") {
     }
 }
 
-project(":android") {
-    apply plugin: "android"
-
-    configurations { natives }
-
-    dependencies {
-        implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
-    }
-}
-
 project(":core") {
     apply plugin: "java"
 
@@ -84,9 +55,4 @@ project(":assets") {
 task ctags(type: Exec) {
     executable "ctags"
     args "-R", "--language-force=java", "--exclude=*~", "-f.tags", "core/src/"
-}
-
-
-tasks.eclipse.doLast {
-    delete ".project"
 }
