@@ -1,23 +1,21 @@
 package ch.asynk.zproject;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 
-public class Assets extends AssetManager implements Disposable
+public class Assets extends ch.asynk.zproject.engine.Assets
 {
+    public static final String LOADING = "data/loading.atlas";
+
     public static final String CORNER = "data/corner.png";
     public static final String MAP_00 = "data/map_00.png";
-    public static final String LOADING = "data/loading.atlas";
     public static final String FONT = "data/veteran-typewriter.ttf";
     public static final String FONT_20 = "size20.ttf";
     public static final String FONT_25 = "size25.ttf";
@@ -45,26 +43,6 @@ public class Assets extends AssetManager implements Disposable
         ZProject.debug("diagnostics:\n" + getDiagnostics() );
         clear();
         super.dispose();
-    }
-
-    public Texture getTexture(String assetName)
-    {
-        return get(assetName, Texture.class);
-    }
-
-    public NinePatch getNinePatch(String assetName, int left, int right, int top, int bottom)
-    {
-        return new NinePatch(get(assetName, Texture.class), left, right, top, bottom);
-    }
-
-    public TextureAtlas getAtlas(String assetName)
-    {
-        return get(assetName, TextureAtlas.class);
-    }
-
-    public BitmapFont getFont(String assetName)
-    {
-        return get(assetName, BitmapFont.class);
     }
 
     public void loadLoading()
