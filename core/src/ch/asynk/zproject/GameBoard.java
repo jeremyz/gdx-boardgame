@@ -38,9 +38,9 @@ public class GameBoard implements Disposable, Touchable
     @Override public boolean touch(float x, float y)
     {
         board.toBoard(x, y, v);
-        ZProject.debug("BoardGame", String.format("touchDown [%d;%d] => [%d;%d]", (int)x, (int)y, (int)v.x, (int)v.y));
+        GdxBoardTest.debug("BoardGame", String.format("touchDown [%d;%d] => [%d;%d]", (int)x, (int)y, (int)v.x, (int)v.y));
         board.centerOf((int)v.x, (int)v.y, v);
-        ZProject.debug("BoardGame", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+        GdxBoardTest.debug("BoardGame", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
         return true;
     }
 

@@ -50,7 +50,7 @@ public class GameHud implements Disposable, Touchable
     @Override public boolean touch(float x, float y)
     {
         if (root.touch(x, y)) {
-            ZProject.debug("GameHud", String.format("touchDown : %f %f", x, y));
+            GdxBoardTest.debug("GameHud", String.format("touchDown : %f %f", x, y));
             if (root.touched() == this.next)
                 onNext();
             return true;

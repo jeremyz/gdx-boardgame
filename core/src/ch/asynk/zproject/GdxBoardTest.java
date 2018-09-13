@@ -4,9 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-public class ZProject extends Game
+public class GdxBoardTest extends Game
 {
-    public static final String DOM = "ZProject";
+    public static final String DOM = "GdxBoardTest";
 
     private enum State
     {

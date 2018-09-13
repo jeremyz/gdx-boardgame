@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 public class LoadingScreen implements Screen
 {
-    private final ZProject zproject;
+    private final GdxBoardTest app;
     private final SpriteBatch batch;
     private final Color c;
     private final OrthographicCamera camera;
@@ -38,9 +38,9 @@ public class LoadingScreen implements Screen
     }
     private LoadAction onLoaded;
 
-    public LoadingScreen(final ZProject zproject, LoadAction startLoading, LoadAction onLoaded)
+    public LoadingScreen(final GdxBoardTest app, LoadAction startLoading, LoadAction onLoaded)
     {
-        this.zproject = zproject;
+        this.app = app;
         this.onLoaded = onLoaded;
         this.batch = new SpriteBatch();
         this.c = batch.getColor();
@@ -50,7 +50,7 @@ public class LoadingScreen implements Screen
         this.camera.setToOrtho(false, w, h);
         this.camera.update();
         this.paused = false;
-        atlas = zproject.assets.getAtlas(zproject.assets.LOADING);
+        atlas = app.assets.getAtlas(app.assets.LOADING);
         bar = atlas.findRegion("bar");
         border = atlas.findRegion("border");
         loading = atlas.findRegion("loading");
@@ -74,12 +74,12 @@ public class LoadingScreen implements Screen
         if (paused) return;
 
         if (!isLoaded) {
-            if (zproject.assets.update()) {
-                ZProject.debug("LoadingScreen", "assets loaded");
+            if (app.assets.update()) {
+                GdxBoardTest.debug("LoadingScreen", "assets loaded");
                 isLoaded = true;
                 percent = 1f;
             } else {
-                percent = zproject.assets.getProgress();
+                percent = app.assets.getProgress();
             }
         }
 
@@ -129,7 +129,7 @@ public class LoadingScreen implements Screen
     @Override public void resize(int width, int height)
     {
         if (paused) return;
-        ZProject.debug("LoadingScreen", String.format("resize (%d,%d)",width, height));
+        GdxBoardTest.debug("LoadingScreen", String.format("resize (%d,%d)",width, height));
         this.camera.setToOrtho(false, width, height);
         this.camera.update();
         computeCoords(width, height);
@@ -137,29 +137,29 @@ public class LoadingScreen implements Screen
 
     @Override public void dispose()
     {
-        ZProject.debug("LoadingScreen", "dispose()");
+        GdxBoardTest.debug("LoadingScreen", "dispose()");
         batch.dispose();
     }
 
     @Override public void show()
     {
-        ZProject.debug("LoadingScreen", "show()");
+        GdxBoardTest.debug("LoadingScreen", "show()");
     }
 
     @Override public void hide()
     {
-        ZProject.debug("LoadingScreen", "hide()");
+        GdxBoardTest.debug("LoadingScreen", "hide()");
     }
 
     @Override public void pause()
     {
         paused = true;
-        ZProject.debug("pause() ");
+        GdxBoardTest.debug("pause() ");
     }
 
     @Override public void resume()
     {
-        ZProject.debug("resume() ");
+        GdxBoardTest.debug("resume() ");
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         paused = false;
     }

@@ -41,7 +41,7 @@ public class Assets extends ch.asynk.gdx.board.engine.Assets
 
     @Override public void dispose()
     {
-        ZProject.debug("diagnostics:\n" + getDiagnostics() );
+        GdxBoardTest.debug("diagnostics:\n" + getDiagnostics() );
         clear();
         super.dispose();
     }

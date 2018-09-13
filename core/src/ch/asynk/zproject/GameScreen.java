@@ -23,7 +23,7 @@ public class GameScreen implements Screen
 
     private static final boolean DEBUG = true;
 
-    private final ZProject zproject;
+    private final GdxBoardTest app;
     private final GameHud hud;
     private final GameBoard board;
     private final Camera camera;
@@ -59,11 +59,11 @@ public class GameScreen implements Screen
     }
     private State state;
 
-    public GameScreen(final ZProject zproject)
+    public GameScreen(final GdxBoardTest app)
     {
-        this.zproject = zproject;
-        this.hud = new GameHud(zproject.assets, State.UI, () -> nextState());
-        this.board = new GameBoard(zproject.assets);
+        this.app = app;
+        this.hud = new GameHud(app.assets, State.UI, () -> nextState());
+        this.board = new GameBoard(app.assets);
         this.batch = new SpriteBatch();
         this.camera = new Camera(10, board.getWidth(), board.getHeight(), 1.0f, 0.3f, false);
         Gdx.input.setInputProcessor(getMultiplexer(this));
@@ -122,14 +122,14 @@ public class GameScreen implements Screen
     @Override public void resize(int width, int height)
     {
         if (paused) return;
-        ZProject.debug("GameScreen", String.format("resize (%d,%d)",width, height));
+        GdxBoardTest.debug("GameScreen", String.format("resize (%d,%d)",width, height));
         camera.updateViewport(width, height);
         hud.resize(camera.getHud().width, camera.getHud().height);
     }
 
     @Override public void dispose()
     {
-        ZProject.debug("GameScreen", "dispose()");
+        GdxBoardTest.debug("GameScreen", "dispose()");
         batch.dispose();
         if (debugShapes != null) debugShapes.dispose();
         hud.dispose();
@@ -138,23 +138,23 @@ public class GameScreen implements Screen
 
     @Override public void show()
     {
-        ZProject.debug("GameScreen", "show()");
+        GdxBoardTest.debug("GameScreen", "show()");
     }
 
     @Override public void hide()
     {
-        ZProject.debug("GameScreen", "hide()");
+        GdxBoardTest.debug("GameScreen", "hide()");
     }
 
     @Override public void pause()
     {
-        ZProject.debug("pause() ");
+        GdxBoardTest.debug("pause() ");
         paused = true;
     }
 
     @Override public void resume()
     {
-        ZProject.debug("resume() ");
+        GdxBoardTest.debug("resume() ");
         paused = false;
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
