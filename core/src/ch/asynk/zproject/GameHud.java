@@ -3,11 +3,9 @@ package ch.asynk.zproject;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 
 import ch.asynk.zproject.engine.ui.Button;
-import ch.asynk.zproject.engine.ui.Patch;
 import ch.asynk.zproject.engine.ui.Alignment;
 import ch.asynk.zproject.engine.ui.Root;
 import ch.asynk.zproject.engine.Touchable;
