@@ -77,8 +77,8 @@ public class GameBoard implements Disposable, Touchable
         r = 90;
         dx = - ( this.map.getWidth() - this.map.getHeight() ) / 2;
         dy = - dx;
-        w = this.map.getWidth();
-        h = this.map.getHeight();
+        w = this.map.getHeight();
+        h = this.map.getWidth();
         this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
     }
 
