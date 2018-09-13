@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board;
+package ch.asynk.gdx.board.test;
 
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;

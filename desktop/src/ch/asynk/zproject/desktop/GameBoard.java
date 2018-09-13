@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board;
+package ch.asynk.gdx.board.test;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.Texture;

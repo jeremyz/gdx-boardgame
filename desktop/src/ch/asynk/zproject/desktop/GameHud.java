@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board;
+package ch.asynk.gdx.board.test;
 
 import java.util.function.Supplier;
 
