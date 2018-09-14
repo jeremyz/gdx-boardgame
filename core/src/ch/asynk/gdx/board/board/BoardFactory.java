@@ -6,7 +6,7 @@ public class BoardFactory
 {
     public enum BoardType
     {
-        HEX, SQUARE,
+        HEX, SQUARE, TRIANGLE
     }
 
     public enum BoardOrientation
@@ -33,6 +33,8 @@ public class BoardFactory
                 return new HexBoard(side, x0, y0, boardOrientation);
             case SQUARE:
                 return new SquareBoard(side, x0, y0);
+            case TRIANGLE:
+                return new TriangleBoard(side, x0, y0, boardOrientation);
             default:
                 throw new RuntimeException( String.format("%s board type is not implemented yet.", boardType) );
         }
