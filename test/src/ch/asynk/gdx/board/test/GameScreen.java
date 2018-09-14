@@ -21,7 +21,7 @@ public class GameScreen implements Screen
     private static final float ZOOM_SCROLL_FACTOR = .1f;
     private static final float ZOOM_GESTURE_FACTOR = .01f;
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final GdxBoardTest app;
     private final GameHud hud;
