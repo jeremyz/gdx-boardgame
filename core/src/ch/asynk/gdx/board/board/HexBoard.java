@@ -6,16 +6,16 @@ import ch.asynk.gdx.board.Board;
 
 public class HexBoard implements Board
 {
-    private float side;     // length of the side of the hex
-    private float x0;       // bottom left x offset
-    private float y0;       // bottom left y offset
-    private BoardFactory.BoardOrientation orientation;
+    private final float side;   // length of the side of the hex
+    private final float x0;     // bottom left x offset
+    private final float y0;     // bottom left y offset
+    private final BoardFactory.BoardOrientation orientation;
 
-    private float w;        // side to side orthogonal distance
-    private float dw;       // half hex : w/2
-    private float dh;       // hex top : s/2
-    private float h;        // square height : s + dh
-    private float slope;    // dh / dw
+    private final float w;      // side to side orthogonal distance
+    private final float dw;     // half hex : w/2
+    private final float dh;     // hex top : s/2
+    private final float h;      // square height : s + dh
+    private final float slope;  // dh / dw
 
     //  BoardOrientation.VERTICAL : 2 vertical sides : 2 vertices pointing up and down
     //  coordinates

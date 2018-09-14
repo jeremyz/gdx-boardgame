@@ -6,9 +6,9 @@ import ch.asynk.gdx.board.Board;
 
 public class SquareBoard implements Board
 {
-    private float side;     // length of the side of a square
-    private float x0;       // bottom left x offset
-    private float y0;       // bottom left y offset
+    private final float side;   // length of the side of a square
+    private final float x0;     // bottom left x offset
+    private final float y0;     // bottom left y offset
 
     public SquareBoard(float side, float x0, float y0)
     {
