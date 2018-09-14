@@ -21,7 +21,7 @@ public class GameScreen implements Screen
     private static final float ZOOM_SCROLL_FACTOR = .1f;
     private static final float ZOOM_GESTURE_FACTOR = .01f;
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private final GdxBoardTest app;
     private final GameHud hud;
@@ -108,7 +108,7 @@ public class GameScreen implements Screen
         hud.draw(batch);
         batch.end();
 
-        if (DEBUG) {
+        if (DEBUG && this.state == State.UI) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             debugShapes.setAutoShapeType(true);
             debugShapes.setProjectionMatrix(camera.getHudMatrix());
