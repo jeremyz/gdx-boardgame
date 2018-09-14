@@ -75,7 +75,7 @@ public class GameHud implements Disposable, Touchable
                 updateNext(0, Alignment.BOTTOM_RIGHT);
                 this.root.remove(this.hello);
                 break;
-            case HEX_H:
+            default:
                 break;
         }
     }
@@ -94,9 +94,7 @@ public class GameHud implements Disposable, Touchable
                 drawButtons(batch);
                 drawCorners(batch);
                 break;
-            case HEX_V:
-            case HEX_H:
-            case SQUARE:
+            default:
                 drawRoot(batch);
                 break;
         }

@@ -57,6 +57,12 @@ public class GameBoard implements Disposable, Touchable
             case SQUARE:
                 setSQUARE();
                 break;
+            case TRI_H:
+                setTRI_H();
+                break;
+            case TRI_V:
+                setTRI_V();
+                break;
         }
     }
 
@@ -88,9 +94,31 @@ public class GameBoard implements Disposable, Touchable
         r = 0;
         dx = 0;
         dy = 0;
+        w = map.getWidth();
+        h = map.getHeight();
+        this.board = BoardFactory.getBoard(BoardFactory.BoardType.SQUARE, 83, 5, 5);
+    }
+
+    private void setTRI_H()
+    {
+        this.map = assets.getTexture(assets.TRI);
+        r = 0;
+        dx = 0;
+        dy = 0;
+        w = map.getWidth();
+        h = map.getHeight();
+        this.board = BoardFactory.getBoard(BoardFactory.BoardType.TRIANGLE, 150, 109, 53, BoardFactory.BoardOrientation.HORIZONTAL);
+    }
+
+    private void setTRI_V()
+    {
+        this.map = assets.getTexture(assets.TRI);
+        r = 90;
+        dx = - ( this.map.getWidth() - this.map.getHeight() ) / 2;
+        dy = - dx;
         w = map.getHeight();
         h = map.getWidth();
-        this.board = BoardFactory.getBoard(BoardFactory.BoardType.SQUARE, 83, 5, 5);
+        this.board = BoardFactory.getBoard(BoardFactory.BoardType.TRIANGLE, 150, 16, 110, BoardFactory.BoardOrientation.VERTICAL);
     }
 
     public int getWidth()

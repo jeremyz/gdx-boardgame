@@ -17,6 +17,7 @@ public class Assets extends ch.asynk.gdx.board.Assets
     public static final String CORNER = "corner.png";
     public static final String MAP_00 = "map_00.png";
     public static final String CHESS = "chess.jpg";
+    public static final String TRI = "triangle.png";
     public static final String FONT = "veteran-typewriter.ttf";
     public static final String FONT_20 = "size20.ttf";
     public static final String FONT_25 = "size25.ttf";
@@ -60,6 +61,7 @@ public class Assets extends ch.asynk.gdx.board.Assets
     {
         load(MAP_00, Texture.class);
         load(CHESS, Texture.class);
+        load(TRI, Texture.class);
         load(CORNER, Texture.class);
         load(PATCH, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
@@ -70,6 +72,7 @@ public class Assets extends ch.asynk.gdx.board.Assets
     {
         unload(MAP_00);
         unload(CHESS);
+        unload(TRI);
         unload(CORNER);
         unload(PATCH);
         unload(FONT_20);
