@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.engine;
+package ch.asynk.gdx.board;
 
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.OrthographicCamera;

@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.engine;
+package ch.asynk.gdx.board;
 
 import com.badlogic.gdx.math.Vector2;
 

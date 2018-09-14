@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.engine.ui;
+package ch.asynk.gdx.board.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

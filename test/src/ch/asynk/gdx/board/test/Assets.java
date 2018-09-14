@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 
-public class Assets extends ch.asynk.gdx.board.engine.Assets
+public class Assets extends ch.asynk.gdx.board.Assets
 {
     public static final String LOADING = "loading.atlas";
 

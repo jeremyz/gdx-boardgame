@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.math.Vector2;
 
-import ch.asynk.gdx.board.engine.Touchable;
-import ch.asynk.gdx.board.engine.Board;
-import ch.asynk.gdx.board.engine.board.BoardFactory;
+import ch.asynk.gdx.board.Touchable;
+import ch.asynk.gdx.board.Board;
+import ch.asynk.gdx.board.board.BoardFactory;
 
 public class GameBoard implements Disposable, Touchable
 {

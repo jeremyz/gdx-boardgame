@@ -13,7 +13,7 @@ import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import ch.asynk.gdx.board.engine.Camera;
+import ch.asynk.gdx.board.Camera;
 
 public class GameScreen implements Screen
 {
