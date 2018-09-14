@@ -74,16 +74,12 @@ public class HexBoard implements Board
             // compute row
             float dy = y - this.y0;
             row = (int) (dy / this.h);
-            if (dy < 0.f) {
-                row -= 1;
-            }
+            if (dy < 0f) row -= 1;
 
             // compute col
             float dx = x - this.x0 + (row * this.dw);
             col = (int) (dx / this.w);
-            if (dx < 0f) {
-                col -= 1;
-            }
+            if (dx < 0f) col -= 1;
 
             // upper rectangle or hex body
             if (dy > ((row * this.h) + this.side)) {
@@ -108,16 +104,12 @@ public class HexBoard implements Board
             // compute col
             float dx = x - this.x0;
             col = (int) (dx / this.h);
-            if (dx < 0.f) {
-                col -= 1;
-            }
+            if (dx < 0f) col -= 1;
 
             // compute row
             float dy = y - this.y0 + (col * this.dw);
             row = (int) (dy / this.w);
-            if (dy < 0f) {
-                row -= 1;
-            }
+            if (dy < 0f) row -= 1;
 
             // right rectangle or hex body
             if (dx > ((col * this.h) + this.side)) {
