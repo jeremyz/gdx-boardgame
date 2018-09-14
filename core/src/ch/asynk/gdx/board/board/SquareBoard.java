@@ -27,8 +27,12 @@ public class SquareBoard implements Board
 
     @Override public void toBoard(float x, float y, Vector2 v)
     {
-        int col = (int) ((x - this.x0) / this.side);
-        int row = (int) ((y - this.y0) / this.side);
+        float dx = x - this.x0;
+        float dy = y - this.y0;
+        int col = (int) (dx / this.side);
+        int row = (int) (dy / this.side);
+        if (dx < 0) col -=1;
+        if (dy < 0) row -=1;
 
         v.set(col, row);
     }
