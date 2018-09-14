@@ -96,6 +96,7 @@ public class GameHud implements Disposable, Touchable
                 break;
             case HEX_V:
             case HEX_H:
+            case SQUARE:
                 drawRoot(batch);
                 break;
         }
