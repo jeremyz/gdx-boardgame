@@ -6,7 +6,7 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "ch.asynk.gdx.board.test.DesktopLauncher"
-project.ext.assetsDir = new File("build/assets");
+project.ext.assetsDir = new File("../assets/data");
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -29,7 +29,7 @@ task debug(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
-    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}
     from files(project.assetsDir);

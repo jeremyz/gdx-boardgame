@@ -8,26 +8,16 @@ dependencies {
 
 defaultTasks 'build'
 
-task clean(type: Delete) {
-    delete '../test/build/assets'
-}
-
-task copyData(type: Copy) {
-    from 'data'
-    into '../test/build/assets'
-}
-
 task packLoading(type: JavaExec) {
     main = 'com.badlogic.gdx.tools.texturepacker.TexturePacker'
     classpath = configurations.texturePacker
-    args = ['./loading', '../test/build/assets', 'loading']
+    args = ['loading', 'data', 'loading']
 }
 
-/* task buildUI(dependsOn: ["processXHDPI"]) { */
-task build(dependsOn: clean) {
+task build() {
     description "Builds the skin at various DPIs"
 }
 
 build.dependsOn {
-    tasks.findAll { task -> (task.name.startsWith('pack') || task.name.startsWith('copy')) }
+    tasks.findAll { task -> task.name.startsWith('pack') }
 }
