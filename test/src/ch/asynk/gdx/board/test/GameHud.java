@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.test;
+package ch.asynk.gdx.tabletop.test;
 
 import java.util.function.Supplier;
 
@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
-import ch.asynk.gdx.board.ui.Button;
-import ch.asynk.gdx.board.ui.Alignment;
-import ch.asynk.gdx.board.ui.Root;
-import ch.asynk.gdx.board.Touchable;
+import ch.asynk.gdx.tabletop.ui.Button;
+import ch.asynk.gdx.tabletop.ui.Alignment;
+import ch.asynk.gdx.tabletop.ui.Root;
+import ch.asynk.gdx.tabletop.Touchable;
 
 public class GameHud implements Disposable, Touchable
 {

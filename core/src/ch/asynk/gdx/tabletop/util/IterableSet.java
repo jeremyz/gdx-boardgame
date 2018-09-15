@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.util;
+package ch.asynk.gdx.tabletop.util;
 
 public class IterableSet<E> extends IterableArray<E>
 {

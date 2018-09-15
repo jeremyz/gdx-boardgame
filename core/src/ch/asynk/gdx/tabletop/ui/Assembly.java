@@ -1,9 +1,9 @@
-package ch.asynk.gdx.board.ui;
+package ch.asynk.gdx.tabletop.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import ch.asynk.gdx.board.util.IterableSet;
+import ch.asynk.gdx.tabletop.util.IterableSet;
 
 public abstract class Assembly extends Element
 {

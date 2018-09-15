@@ -16,7 +16,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "gdx-board"
+        appName = "gdx-tabletop"
         gdxVersion = '1.9.8'
     }
 

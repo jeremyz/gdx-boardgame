@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.ui;
+package ch.asynk.gdx.tabletop.ui;
 
 public enum Alignment
 {

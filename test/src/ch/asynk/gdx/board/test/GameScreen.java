@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.test;
+package ch.asynk.gdx.tabletop.test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import ch.asynk.gdx.board.Camera;
+import ch.asynk.gdx.tabletop.Camera;
 
 public class GameScreen implements Screen
 {

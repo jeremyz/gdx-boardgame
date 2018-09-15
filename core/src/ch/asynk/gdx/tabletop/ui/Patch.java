@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.ui;
+package ch.asynk.gdx.tabletop.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;

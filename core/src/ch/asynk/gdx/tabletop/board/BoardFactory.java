@@ -1,6 +1,6 @@
-package ch.asynk.gdx.board.board;
+package ch.asynk.gdx.tabletop.board;
 
-import ch.asynk.gdx.board.Board;
+import ch.asynk.gdx.tabletop.Board;
 
 public class BoardFactory
 {

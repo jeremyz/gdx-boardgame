@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.test;
+package ch.asynk.gdx.tabletop.test;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;

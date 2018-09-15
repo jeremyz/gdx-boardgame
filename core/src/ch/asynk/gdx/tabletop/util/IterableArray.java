@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.util;
+package ch.asynk.gdx.tabletop.util;
 
 import java.util.Arrays;
 import java.util.Iterator;

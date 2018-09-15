@@ -1,4 +1,4 @@
-package ch.asynk.gdx.board.test;
+package ch.asynk.gdx.tabletop.test;
 
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 
-public class Assets extends ch.asynk.gdx.board.Assets
+public class Assets extends ch.asynk.gdx.tabletop.Assets
 {
     public static final String LOADING = "loading.atlas";
 

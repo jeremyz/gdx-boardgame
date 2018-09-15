@@ -5,7 +5,7 @@ apply plugin: "java"
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-project.ext.mainClassName = "ch.asynk.gdx.board.test.DesktopLauncher"
+project.ext.mainClassName = "ch.asynk.gdx.tabletop.test.DesktopLauncher"
 project.ext.assetsDir = new File("../assets/data");
 
 task run(dependsOn: classes, type: JavaExec) {

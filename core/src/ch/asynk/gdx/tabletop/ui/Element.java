@@ -1,10 +1,10 @@
-package ch.asynk.gdx.board.ui;
+package ch.asynk.gdx.tabletop.ui;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import ch.asynk.gdx.board.Drawable;
-import ch.asynk.gdx.board.Touchable;
+import ch.asynk.gdx.tabletop.Drawable;
+import ch.asynk.gdx.tabletop.Touchable;
 
 public abstract class Element implements Drawable, Touchable
 {
