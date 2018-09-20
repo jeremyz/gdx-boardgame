@@ -14,6 +14,9 @@ public class TriangleBoard implements Board
     private final float d;      // side / 2
     private final float h;      // height of the triangle
     private final float m;      // h / d
+    private final float h13;    // 1/3 height of the triangle
+    private final float h23;    // 2/3 height of the triangle
+    private final float h43;    // 4/3 height of the triangle
 
     public TriangleBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
@@ -25,6 +28,9 @@ public class TriangleBoard implements Board
         this.d = side / 2f;
         this.h = side * 0.866f;
         this.m = this.h / this.d;
+        this.h13 = this.h * 0.33333f;
+        this.h23 = this.h * 0.66666f;
+        this.h43 = this.h * 1.33333f;
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)
@@ -34,10 +40,10 @@ public class TriangleBoard implements Board
 
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
             cy += (y * this.d);
-            cx += ((this.h * ( (y % 2 == 0) ? 0.33333f : 0.66666f )) + (x * this.h));
+            cx += ((x * this.h) + (((x + y) % 2 == 0) ? this.h23 : this.h13));
         } else {
             cx += (this.d + (x * this.d));
-            cy += ((this.h * ( (x % 2 == 0) ? 0.33333f : 0.66666f )) + (y * this.h));
+            cy += ((y * this.h) + (((x + y) % 2 == 0) ? this.h13 : this.h23));
         }
 
         v.set(cx, cy);
