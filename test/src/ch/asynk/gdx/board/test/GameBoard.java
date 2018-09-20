@@ -13,6 +13,7 @@ public class GameBoard implements Disposable, Touchable
 {
     private final Assets assets;
     private Texture map;
+    private Texture sherman;
     private Board board;
 
     private int dx;
@@ -27,6 +28,7 @@ public class GameBoard implements Disposable, Touchable
     {
         this.assets = assets;
         this.v = new Vector2();
+        this.sherman = assets.getTexture(assets.SHERMAN);
         setState(GameScreen.State.UI);
     }
 
@@ -64,6 +66,7 @@ public class GameBoard implements Disposable, Touchable
                 setTRI_V();
                 break;
         }
+        board.centerOf(0, 0, v);
     }
 
     private void setHEX_V()
@@ -134,5 +137,6 @@ public class GameBoard implements Disposable, Touchable
     public void draw(Batch batch)
     {
         batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
+        batch.draw(sherman, v.x - (sherman.getWidth() / 2), v.y - (sherman.getHeight() / 2));
     }
 }
