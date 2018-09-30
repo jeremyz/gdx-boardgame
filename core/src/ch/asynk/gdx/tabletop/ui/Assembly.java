@@ -45,9 +45,9 @@ public abstract class Assembly extends Element
         return false;
     }
 
-    @Override public void update()
+    @Override public void taint()
     {
-        children.forEach( c -> c.update() );
+        children.forEach( c -> c.taint() );
     }
 
     @Override public void draw(Batch batch)

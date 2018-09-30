@@ -8,11 +8,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Button extends Patch
 {
     private Label label;
-    private float spacing;
+    private float spacing;      // for label alignment;
 
     public Button(BitmapFont font, NinePatch patch)
     {
-        this(font, patch, 0, 0);
+        this(font, patch, 0);
+    }
+
+    public Button(BitmapFont font, NinePatch patch, float padding)
+    {
+        this(font, patch, padding, 0);
     }
 
     public Button(BitmapFont font, NinePatch patch, float padding, float spacing)
@@ -27,12 +32,8 @@ public class Button extends Patch
 
     public void write(String text)
     {
-        write(text, getX(), getY());
-    }
-
-    public void write(String text, float x, float y)
-    {
-        label.write(text, x, y);
+        label.write(text);
+        this.tainted = true;    // might impact Button's geometry
     }
 
     public void setLabelAlignment(Alignment alignment)
@@ -40,19 +41,19 @@ public class Button extends Patch
         label.setAlignment(alignment);
     }
 
-    @Override public void update()
+    @Override public void computeGeometry()
     {
-        label.preUpdate();      // compute width and height
-        rect.width = label.getWidth() + 2 * (padding + spacing);
-        rect.height = label.getHeight() + 2 * (padding + spacing);
-        super.update();
-        label.doUpdate();       // compute x and y
-        label.postUpdate();     // compute fx and fy
+        float dd = 2 * (padding + spacing);
+        rect.width = label.getWidth() + dd;
+        rect.height = label.getHeight() + dd;
+        super.computeGeometry();
+        label.computeGeometry();
     }
 
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
+        if (tainted) computeGeometry();
         super.draw(batch);
         label.draw(batch);
     }

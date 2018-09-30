@@ -17,6 +17,7 @@ public class Patch extends Element
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
+        if (tainted) computeGeometry();
         patch.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
 }

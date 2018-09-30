@@ -11,6 +11,6 @@ public class Root extends Assembly
     public void resize(float width, float height)
     {
         setPosition(0, 0, width, height);
-        update();
+        taint();
     }
 }

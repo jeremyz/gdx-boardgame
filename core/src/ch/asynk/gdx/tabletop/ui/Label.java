@@ -39,17 +39,15 @@ public class Label extends Element
     public void write(String text, float x, float y)
     {
         this.text = text;
-        setPosition(x, y);
-    }
-
-    @Override protected void preUpdate()
-    {
         this.layout.setText(font, (text == null) ? "" : text);
-        super.setPosition(x, y, (layout.width + (2 * padding)), (layout.height + (2 * padding)));
+        this.rect.width = (layout.width + (2 * padding));
+        this.rect.height = (layout.height + (2 * padding));
+        this.tainted = true;
     }
 
-    @Override protected void postUpdate()
+    @Override protected void computeGeometry()
     {
+        super.computeGeometry();
         fx = getInnerX();
         fy = getInnerY() + layout.height;
     }
@@ -57,6 +55,7 @@ public class Label extends Element
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
+        if (tainted) computeGeometry();
         font.draw(batch, layout, fx, fy);
     }
 }
