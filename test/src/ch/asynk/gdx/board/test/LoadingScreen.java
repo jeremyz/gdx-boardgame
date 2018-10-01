@@ -11,12 +11,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 public class LoadingScreen implements Screen
 {
+    private static final String DOM = "LoadingScreen";
+
     private final GdxBoardTest app;
     private final SpriteBatch batch;
     private final Color c;
     private final OrthographicCamera camera;
 
-    private final float BLINK_AFTER = 2f;
+    private final float BLINK_AFTER = 1f;
     private final float ALPHA_FACTOR = 1.5f;
 
     private boolean paused;
@@ -75,7 +77,7 @@ public class LoadingScreen implements Screen
 
         if (!isLoaded) {
             if (app.assets.update()) {
-                GdxBoardTest.debug("LoadingScreen", "assets loaded");
+                GdxBoardTest.debug(DOM, "assets loaded");
                 isLoaded = true;
                 percent = 1f;
             } else {
@@ -154,12 +156,12 @@ public class LoadingScreen implements Screen
     @Override public void pause()
     {
         paused = true;
-        GdxBoardTest.debug("pause() ");
+        GdxBoardTest.debug("LoadingScreen", "pause() ");
     }
 
     @Override public void resume()
     {
-        GdxBoardTest.debug("resume() ");
+        GdxBoardTest.debug("LoadingScreen", "resume() ");
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         paused = false;
     }
