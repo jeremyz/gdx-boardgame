@@ -125,7 +125,6 @@ public class GameScreen implements Screen
 
     @Override public void resize(int width, int height)
     {
-        if (paused) return;
         GdxBoardTest.debug("GameScreen", String.format("resize (%d,%d)",width, height));
         camera.updateViewport(width, height);
         hud.resize(camera.getHud().width, camera.getHud().height);
@@ -143,11 +142,13 @@ public class GameScreen implements Screen
     @Override public void show()
     {
         GdxBoardTest.debug("GameScreen", "show()");
+        paused = false;
     }
 
     @Override public void hide()
     {
         GdxBoardTest.debug("GameScreen", "hide()");
+        paused = true;
     }
 
     @Override public void pause()
@@ -159,8 +160,8 @@ public class GameScreen implements Screen
     @Override public void resume()
     {
         GdxBoardTest.debug("resume() ");
-        paused = false;
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        paused = false;
     }
 
     private void zoom(float dz)
