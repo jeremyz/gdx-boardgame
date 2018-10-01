@@ -52,6 +52,7 @@ public abstract class Assembly extends Element
 
     @Override public void draw(Batch batch)
     {
+        if (tainted) computeGeometry();
         children.forEach( c -> c.draw(batch) );
     }
 

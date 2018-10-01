@@ -10,7 +10,12 @@ public class Root extends Assembly
 
     public void resize(float width, float height)
     {
-        setPosition(0, 0, width, height);
+        resize(getX(), getY(), width, height);
+    }
+
+    public void resize(float x, float y, float width, float height)
+    {
+        setPosition(x, y, width, height);
         taint();
     }
 }
