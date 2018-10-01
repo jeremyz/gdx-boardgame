@@ -40,13 +40,13 @@ public class Label extends Element
     {
         this.text = text;
         this.layout.setText(font, (text == null) ? "" : text);
-        this.rect.width = (layout.width + (2 * padding));
-        this.rect.height = (layout.height + (2 * padding));
         this.tainted = true;
     }
 
     @Override protected void computeGeometry()
     {
+        this.rect.width = (layout.width + (2 * padding));
+        this.rect.height = (layout.height + (2 * padding));
         super.computeGeometry();
         fx = getInnerX();
         fy = getInnerY() + layout.height;

@@ -111,5 +111,6 @@ public abstract class Element implements Drawable, Touchable
             rect.y = y + alignment.getY(parent, rect.height);
         }
         this.tainted = false;
+        // System.err.println(String.format("%s : %s", this, rect));
     }
 }

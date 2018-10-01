@@ -44,10 +44,11 @@ public class Button extends Patch
     @Override public void computeGeometry()
     {
         float dd = 2 * (padding + spacing);
+        label.computeGeometry();    // update dimensions
         rect.width = label.getWidth() + dd;
         rect.height = label.getHeight() + dd;
         super.computeGeometry();
-        label.computeGeometry();
+        label.computeGeometry();    // update position
     }
 
     @Override public void draw(Batch batch)
