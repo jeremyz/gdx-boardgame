@@ -58,7 +58,7 @@ public class Assets extends ch.asynk.gdx.tabletop.Assets
         unload(LOADING);
     }
 
-    public void loadGame()
+    public void loadApp()
     {
         load(MAP_00, Texture.class);
         load(CHESS, Texture.class);
@@ -70,7 +70,7 @@ public class Assets extends ch.asynk.gdx.tabletop.Assets
         load(FONT_25, BitmapFont.class, params25);
     }
 
-    public void unloadGame()
+    public void unloadApp()
     {
         unload(MAP_00);
         unload(CHESS);

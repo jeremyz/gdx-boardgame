@@ -6,13 +6,16 @@ import com.badlogic.gdx.Screen;
 
 public class GdxBoardTest extends Game
 {
-    public static final String DOM = "GdxBoardTest";
+    private static final String DOM = "GdxBoardTest";
 
     private enum State
     {
         NONE,
         LOADING,
-        GAME,
+        MENU,
+        UI,
+        BOARD,
+        EXIT
     }
     private State state;
 
@@ -28,7 +31,8 @@ public class GdxBoardTest extends Game
 
     @Override public void dispose()
     {
-        switchToNone();
+        debug("dispose()");
+        assets.clear();
         assets.dispose();
     }
 
@@ -53,9 +57,8 @@ public class GdxBoardTest extends Game
             error("switch from and to " + state);
             return;
         }
-        switch(state) {
-            case LOADING: assets.unloadLoading(); break;
-            case GAME: assets.unloadGame(); break;
+        if (state == State.LOADING) {
+            assets.unloadLoading();
         }
         if (state != State.NONE) {
             getScreen().dispose();
@@ -64,20 +67,31 @@ public class GdxBoardTest extends Game
         this.state = nextState;
     }
 
-    public void switchToNone()
-    {
-        switchTo(null, State.NONE);
-    }
-
     public void switchToLoading()
     {
         assets.loadLoading();
         assets.finishLoading();
-        switchTo(new LoadingScreen(this, () -> assets.loadGame(), () -> switchToGame()), State.LOADING);
+        switchTo(new LoadingScreen(this, () -> assets.loadApp(), () -> switchToMenu()), State.LOADING);
     }
 
-    public void switchToGame()
+    public void switchToMenu()
     {
-        switchTo(new GameScreen(this), State.GAME);
+        switchTo(new MenuScreen(this), State.MENU);
+    }
+
+    public void switchToUi()
+    {
+        switchTo(new UiScreen(this), State.UI);
+    }
+
+    public void switchToBoard()
+    {
+        switchTo(new BoardScreen(this), State.BOARD);
+    }
+
+    public void switchToExit()
+    {
+        Gdx.app.exit();
+        switchTo(null, State.EXIT);
     }
 }
