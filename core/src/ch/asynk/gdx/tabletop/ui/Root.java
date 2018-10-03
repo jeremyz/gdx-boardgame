@@ -1,11 +1,18 @@
 package ch.asynk.gdx.tabletop.ui;
 
+import com.badlogic.gdx.math.Rectangle;
+
 public class Root extends Assembly
 {
     public Root(int c)
     {
         super(c);
         this.alignment = Alignment.ABSOLUTE;
+    }
+
+    public void resize(Rectangle r)
+    {
+        resize(r.x, r.y, r.width, r.height);
     }
 
     public void resize(float width, float height)
