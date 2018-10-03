@@ -114,7 +114,7 @@ public class Camera extends OrthographicCamera
         Matrix4.inv(hudInvProjMatrix.val);
     }
 
-    public void applyMapViewport()
+    public void applyBoardViewport()
     {
         HdpiUtils.glViewport((int)viewport.x, (int)viewport.y, (int)viewport.width, (int)viewport.height);
     }
@@ -124,7 +124,7 @@ public class Camera extends OrthographicCamera
         if (hudInBoard)
             HdpiUtils.glViewport(0, 0, screenWidth, screenHeight);
         else
-            applyMapViewport();
+            applyBoardViewport();
     }
 
     public void centerOnWorld()

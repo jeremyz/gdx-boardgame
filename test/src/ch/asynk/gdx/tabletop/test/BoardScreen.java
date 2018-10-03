@@ -170,7 +170,7 @@ public class BoardScreen extends AbstractScreen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cam.applyMapViewport();
+        cam.applyBoardViewport();
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         board.draw(batch);
