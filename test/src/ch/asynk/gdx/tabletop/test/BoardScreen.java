@@ -9,7 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import ch.asynk.gdx.tabletop.Camera;
 import ch.asynk.gdx.tabletop.Board;
 import ch.asynk.gdx.tabletop.board.BoardFactory;
+import ch.asynk.gdx.tabletop.ui.Alignment;
 import ch.asynk.gdx.tabletop.ui.Button;
+import ch.asynk.gdx.tabletop.ui.Root;
 
 public class BoardScreen extends AbstractScreen
 {
@@ -138,6 +140,7 @@ public class BoardScreen extends AbstractScreen
     private Camera cam;
     private MyBoard board;
     private Button btn;
+    private Root root;
 
     public BoardScreen(final GdxBoardTest app)
     {
@@ -152,7 +155,11 @@ public class BoardScreen extends AbstractScreen
                 app.assets.getFont(app.assets.FONT_25),
                 app.assets.getNinePatch(app.assets.PATCH, 23, 23, 23 ,23),
                 15);
+        this.btn.setAlignment(Alignment.BOTTOM_RIGHT);
         this.btn.write("next");
+        this.root = new Root(1);
+        this.root.add(btn);
+        this.root.setPadding(5);
         setState(State.HEX_V);
     }
 
@@ -179,7 +186,7 @@ public class BoardScreen extends AbstractScreen
         cam.applyHudViewport();
         batch.setProjectionMatrix(cam.getHudMatrix());
         batch.begin();
-        btn.draw(batch);
+        root.draw(batch);
         batch.end();
     }
 
@@ -187,6 +194,7 @@ public class BoardScreen extends AbstractScreen
     {
         GdxBoardTest.debug("BoardScrean", String.format("resize (%d,%d)",width, height));
         cam.updateViewport(width, height);
+        root.resize(cam.getHud());
     }
 
     @Override protected void onDragged(int dx, int dy)
