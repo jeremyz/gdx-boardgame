@@ -93,13 +93,13 @@ public class Camera extends OrthographicCamera
         }
 
         if (hudInBoard) {
+            hud.width = (viewport.width - (2 * hud.x));
+            hud.height = (viewport.height - (2 * hud.y));
+        } else {
             hud.x = 0;
             hud.y = 0;
             hud.width = screenWidth;
             hud.height = screenHeight;
-        } else {
-            hud.width = (viewport.width - (2 * hud.x));
-            hud.height = (viewport.height - (2 * hud.y));
         }
 
         // ratio viewport -> camera
@@ -122,9 +122,9 @@ public class Camera extends OrthographicCamera
     public void applyHudViewport()
     {
         if (hudInBoard)
-            HdpiUtils.glViewport(0, 0, screenWidth, screenHeight);
-        else
             applyBoardViewport();
+        else
+            HdpiUtils.glViewport(0, 0, screenWidth, screenHeight);
     }
 
     public void centerOnWorld()
@@ -181,7 +181,7 @@ public class Camera extends OrthographicCamera
 
     public void unprojectHud(float x, float y, Vector3 v)
     {
-        Rectangle r = (hudInBoard ? hud : viewport);
+        Rectangle r = (hudInBoard ? viewport : hud);
         x = x - r.x;
         y = screenHeight - y - 1;
         y = y - r.y;
