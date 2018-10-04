@@ -15,9 +15,6 @@ import ch.asynk.gdx.boardgame.ui.Root;
 
 public class BoardScreen extends AbstractScreen
 {
-
-    private static final boolean DEBUG = true;
-
     private class MyBoard
     {
         private final Assets assets;
