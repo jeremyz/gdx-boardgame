@@ -137,18 +137,14 @@ public class BoardScreen extends AbstractScreen
     }
     private State state;
 
-    private Camera cam;
-    private MyBoard board;
-    private Button btn;
-    private Root root;
+    private final Camera cam;
+    private final MyBoard board;
+    private final Button btn;
+    private final Root root;
 
     public BoardScreen(final GdxBoardTest app)
     {
         super(app, "");
-    }
-
-    @Override protected void feed()
-    {
         this.board = new MyBoard(app.assets);
         this.camera = this.cam = new Camera(10, board.w, board.h, 1.0f, 0.3f, false);
         this.btn = new Button(

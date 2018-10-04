@@ -36,7 +36,6 @@ public abstract class AbstractScreen implements Screen
     protected float inputDelay;
     protected boolean paused;
 
-    protected abstract void feed();
     public AbstractScreen(final GdxBoardTest app, final String dom)
     {
         this.app = app;
@@ -45,7 +44,6 @@ public abstract class AbstractScreen implements Screen
         this.bg = app.assets.getTexture(app.assets.MAP_00);
         this.root = new Root(1);
         this.root.setPadding(15);
-        feed();
         Gdx.input.setInputProcessor(getMultiplexer());
         this.inputBlocked = false;
         this.inputDelay = 0f;

@@ -11,12 +11,7 @@ import ch.asynk.gdx.boardgame.ui.Button;
 public class UiScreen extends AbstractScreen
 {
     private final float WORLD_RATIO = 0.5f;
-    private Button hello;
-
-    public UiScreen(final GdxBoardTest app)
-    {
-        super(app, "UiScreen");
-    }
+    private final Button hello;
 
     public enum State
     {
@@ -33,8 +28,11 @@ public class UiScreen extends AbstractScreen
     }
     private State state;
 
-    @Override protected void feed()
+
+    public UiScreen(final GdxBoardTest app)
     {
+        super(app, "UiScreen");
+
         final NinePatch patch = app.assets.getNinePatch(app.assets.PATCH, 23, 23, 23 ,23);
         final BitmapFont font = app.assets.getFont(app.assets.FONT_25);
 

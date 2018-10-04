@@ -10,16 +10,13 @@ import ch.asynk.gdx.boardgame.ui.Menu;
 public class MenuScreen extends AbstractScreen
 {
     private final float WORLD_RATIO = 0.5f;
-    private Sprite corner;
-    private Menu menu;
+    private final Sprite corner;
+    private final Menu menu;
 
     public MenuScreen(final GdxBoardTest app)
     {
         super(app, "MenuScreen");
-    }
 
-    @Override protected void feed()
-    {
         final Assets assets = app.assets;
         this.corner = new Sprite(assets.getTexture(assets.CORNER));
 
