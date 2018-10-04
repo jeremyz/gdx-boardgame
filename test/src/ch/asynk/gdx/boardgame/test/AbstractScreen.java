@@ -18,7 +18,6 @@ import ch.asynk.gdx.boardgame.ui.Root;
 
 public abstract class AbstractScreen implements Screen
 {
-    protected final float WORLD_RATIO = 0.5f;
     private static final float INPUT_DELAY = 0.1f;              // filter out touches after gesture
     private static final float ZOOM_SCROLL_FACTOR = .1f;
     private static final float ZOOM_GESTURE_FACTOR = .01f;
@@ -68,9 +67,9 @@ public abstract class AbstractScreen implements Screen
         batch.end();
     }
 
-    @Override public void resize(int width, int height)
+    public void resize(int width, int height, float ratio)
     {
-        GdxBoardTest.debug(dom, String.format("resize (%d,%d)",width, height));
+        GdxBoardTest.debug(dom, String.format("resize (%d,%d)", width, height));
         if (width >= height) {
             camera.viewportWidth = bg.getWidth();
             camera.viewportHeight = bg.getHeight() / (float)width * (float)height;
@@ -78,8 +77,8 @@ public abstract class AbstractScreen implements Screen
             camera.viewportHeight = bg.getHeight();
             camera.viewportWidth = bg.getWidth() / (float)height * (float)width;
         }
-        camera.viewportWidth *= WORLD_RATIO;
-        camera.viewportHeight *= WORLD_RATIO;
+        camera.viewportWidth *= ratio;
+        camera.viewportHeight *= ratio;
         camera.update();
         root.resize(
                 camera.position.x - (camera.viewportWidth / 2f),

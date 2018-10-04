@@ -9,6 +9,7 @@ import ch.asynk.gdx.boardgame.ui.Menu;
 
 public class MenuScreen extends AbstractScreen
 {
+    private final float WORLD_RATIO = 0.5f;
     private Sprite corner;
     private Menu menu;
 
@@ -61,6 +62,11 @@ public class MenuScreen extends AbstractScreen
         corner.setPosition(right, top);
         corner.setRotation(270);
         corner.draw(batch);
+    }
+
+    @Override public void resize(int width, int height)
+    {
+        resize(width, height, WORLD_RATIO);
     }
 
     @Override protected void onZoom(float dz) { }
