@@ -23,7 +23,7 @@ public class MenuScreen extends AbstractScreen
         this.menu = new Menu(
                 assets.getFont(assets.FONT_25),
                 assets.getNinePatch(assets.PATCH, 23, 23, 23 ,23),
-                "Menu", new String[]{"UI","Board","Exit"});
+                "Menu", new String[]{"UI", "Animations", "Board", "Exit"});
         this.menu.setAlignment(Alignment.MIDDLE_CENTER);
         this.menu.setPaddings(5, 5);
         this.menu.setSpacings(10, 5);
@@ -78,9 +78,12 @@ public class MenuScreen extends AbstractScreen
                     app.switchToUi();
                     break;
                 case 1:
-                    app.switchToBoard();
+                    app.switchToAnimations();
                     break;
                 case 2:
+                    app.switchToBoard();
+                    break;
+                case 3:
                     app.switchToExit();
                     break;
             }

@@ -14,6 +14,7 @@ public class GdxBoardTest extends Game
         LOADING,
         MENU,
         UI,
+        ANIMATIONS,
         BOARD,
         EXIT
     }
@@ -82,6 +83,11 @@ public class GdxBoardTest extends Game
     public void switchToUi()
     {
         switchTo(new UiScreen(this), State.UI);
+    }
+
+    public void switchToAnimations()
+    {
+        switchTo(new AnimationsScreen(this), State.ANIMATIONS);
     }
 
     public void switchToBoard()
