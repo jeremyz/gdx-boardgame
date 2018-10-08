@@ -221,7 +221,6 @@ public class BoardScreen extends AbstractScreen
             case TRI_H: board.setTRI_H(); break;
             case TRI_V: board.setTRI_V(); break;
             case DONE:
-                cam.applyScreenViewport();
                 this.app.switchToMenu();
                 return;
         }
