@@ -3,7 +3,7 @@ package ch.asynk.gdx.boardgame.ui;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import ch.asynk.gdx.boardgame.util.IterableSet;
+import ch.asynk.gdx.boardgame.utils.IterableSet;
 
 public abstract class Assembly extends Element
 {

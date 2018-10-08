@@ -1,4 +1,4 @@
-package ch.asynk.gdx.boardgame.util;
+package ch.asynk.gdx.boardgame.utils;
 
 import java.util.Iterator;
 
