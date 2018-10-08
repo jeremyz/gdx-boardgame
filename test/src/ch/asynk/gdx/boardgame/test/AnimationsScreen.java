@@ -10,8 +10,8 @@ import ch.asynk.gdx.boardgame.Camera;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
-import ch.asynk.gdx.boardgame.ui.Button;
-import ch.asynk.gdx.boardgame.ui.Root;
+import ch.asynk.gdx.boardgame.animations.Animation;
+import ch.asynk.gdx.boardgame.animations.BounceAnimation;
 
 public class AnimationsScreen extends AbstractScreen
 {
@@ -31,41 +31,34 @@ public class AnimationsScreen extends AbstractScreen
     private State state;
 
     private final Texture map;
-    private final Texture sherman;
-    private final Vector2 v;
+    private final Sherman sherman;
     private final Camera cam;
     private final Board board;
-    private final Button btn;
-    private final Root root;
+    private Animation animation;
 
     public AnimationsScreen(final GdxBoardTest app)
     {
         super(app, "");
 
         this.map = app.assets.getTexture(app.assets.MAP_00);
-        this.sherman = app.assets.getTexture(app.assets.SHERMAN);
-        this.v = new Vector2();
         this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
-        this.board.centerOf(7, 4, v);
 
-        this.btn = new Button(
-                app.assets.getFont(app.assets.FONT_25),
-                app.assets.getNinePatch(app.assets.PATCH, 23, 23, 23 ,23),
-                15);
-        this.btn.setAlignment(Alignment.BOTTOM_RIGHT);
-        this.btn.write("next");
-        this.root = new Root(1);
-        this.root.add(btn);
-        this.root.setPadding(5);
-        setState(State.BOUNCE);
+        this.sherman = new Sherman(app);
+        Vector2 v = new Vector2();
+        this.board.centerOf(7, 4, v);
+        this.sherman.setPosition(v.x - (sherman.getWidth() / 2), v.y - (sherman.getHeight() / 2));
+
         cam.zoom(-0.3f);
         cam.centerOnWorld();
+        setState(State.BOUNCE);
     }
 
     private void setState(State state)
     {
         switch (state) {
+            case BOUNCE:
+                animation = BounceAnimation.get(sherman, 2f, 3f);
             case DONE:
                 app.switchToMenu();
         }
@@ -90,30 +83,22 @@ public class AnimationsScreen extends AbstractScreen
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         batch.draw(map, 0, 0);
-        batch.draw(sherman, v.x - (sherman.getWidth() / 2), v.y - (sherman.getHeight() / 2));
+        animation.animate(delta);
+        animation.draw(batch);
         batch.end();
 
-        cam.applyHudViewport();
-        batch.setProjectionMatrix(cam.getHudMatrix());
-        batch.begin();
-        root.draw(batch);
-        batch.end();
+        if (animation.completed()) {
+            setState(state.next());
+        }
     }
 
     @Override public void resize(int width, int height)
     {
         GdxBoardTest.debug("BoardScrean", String.format("resize (%d,%d)",width, height));
         cam.updateViewport(width, height);
-        root.resize(cam.getHud());
     }
 
     @Override protected void onZoom(float dz) { }
     @Override protected void onDragged(int dx, int dy) { }
-    @Override protected void onTouch(int x, int y)
-    {
-        cam.unprojectHud(x, y, hudTouch);
-        if (btn.touch(hudTouch.x, hudTouch.y)) {
-            setState(state.next());
-        }
-    }
+    @Override protected void onTouch(int x, int y) { }
 }
