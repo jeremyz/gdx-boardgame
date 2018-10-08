@@ -1,8 +1,6 @@
-package ch.asynk.gdx.boardgame.board;
+package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
-
-import ch.asynk.gdx.boardgame.Board;
 
 public class HexBoard implements Board
 {

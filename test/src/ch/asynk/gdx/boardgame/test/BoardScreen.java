@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Camera;
-import ch.asynk.gdx.boardgame.Board;
-import ch.asynk.gdx.boardgame.board.BoardFactory;
+import ch.asynk.gdx.boardgame.boards.Board;
+import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
 import ch.asynk.gdx.boardgame.ui.Root;
