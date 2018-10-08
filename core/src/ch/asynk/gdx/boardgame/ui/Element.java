@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.Drawable;
+import ch.asynk.gdx.boardgame.Paddable;
+import ch.asynk.gdx.boardgame.Positionable;
 import ch.asynk.gdx.boardgame.Touchable;
 
-public abstract class Element implements Drawable, Touchable
+public abstract class Element implements Drawable, Paddable, Positionable, Touchable
 {
     public boolean blocked;
     public boolean visible;
@@ -71,7 +73,7 @@ public abstract class Element implements Drawable, Touchable
         this.tainted = true;
     }
 
-    public void setPadding(float padding)
+    @Override public void setPadding(float padding)
     {
         this.padding = padding;
         this.tainted = true;
