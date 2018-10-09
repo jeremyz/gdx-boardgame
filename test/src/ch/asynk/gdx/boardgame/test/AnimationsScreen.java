@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Camera;
+import ch.asynk.gdx.boardgame.pieces.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
@@ -31,7 +32,7 @@ public class AnimationsScreen extends AbstractScreen
     private State state;
 
     private final Texture map;
-    private final Panzer panzer;
+    private final Piece panzer;
     private final Camera cam;
     private final Board board;
     private Animation animation;
@@ -44,7 +45,7 @@ public class AnimationsScreen extends AbstractScreen
         this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
 
-        this.panzer = new Panzer(app);
+        this.panzer = new Piece(app.assets.getTexture(app.assets.PANZER));
         Vector2 v = new Vector2();
         this.board.centerOf(7, 4, v);
         this.panzer.setPosition(v.x - (panzer.getWidth() / 2), v.y - (panzer.getHeight() / 2));

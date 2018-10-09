@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import ch.asynk.gdx.boardgame.Scalable;
+import ch.asynk.gdx.boardgame.pieces.Piece;
 
 public class BounceAnimation extends TimedAnimation
 {
@@ -18,27 +18,27 @@ public class BounceAnimation extends TimedAnimation
         }
     };
 
-    public static BounceAnimation get(Scalable scalable, float duration, float bounceFactor)
+    public static BounceAnimation get(Piece piece, float duration, float bounceFactor)
     {
         BounceAnimation a = bounceAnimationPool.obtain();
 
-        a.scalable = scalable;
+        a.piece = piece;
         a.duration = duration;
         a.bounceFactor = bounceFactor;
 
         return a;
     }
 
-    private Scalable scalable;
+    private Piece piece;
     private float bounceFactor;
 
     private BounceAnimation()
     {
     }
 
-    public BounceAnimation(Scalable scalable, float duration, float bounceFactor)
+    public BounceAnimation(Piece piece, float duration, float bounceFactor)
     {
-        this.scalable = scalable;
+        this.piece = piece;
         this.duration = duration;
         this.bounceFactor = bounceFactor;
     }
@@ -54,17 +54,17 @@ public class BounceAnimation extends TimedAnimation
 
     @Override protected void end()
     {
-        scalable.setScale(1f);
+        piece.setScale(1f);
     }
 
     @Override protected void update(float percent)
     {
-        scalable.setScale(1 + bounceFactor * (float) Math.sin(percent * Math.PI));
+        piece.setScale(1 + bounceFactor * (float) Math.sin(percent * Math.PI));
     }
 
     @Override public void draw(Batch batch)
     {
-        scalable.draw(batch);
+        piece.draw(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer debugShapes)
