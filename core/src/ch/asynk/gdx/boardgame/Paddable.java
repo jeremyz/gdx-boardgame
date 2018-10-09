@@ -7,5 +7,6 @@ public interface Paddable
     public float getInnerWidth();
     public float getInnerHeight();
     public void setPadding(float padding);
+    public void setPosition(float x, float y, float w, float h);
 }
 

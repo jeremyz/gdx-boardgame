@@ -6,5 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public interface Drawable
 {
     public void draw(Batch batch);
+    default public void setAlpha(float alpha) { }
     default public void drawDebug(ShapeRenderer debugShapes) { }
 }
