@@ -31,7 +31,7 @@ public class BoardScreen extends AbstractScreen
         public MyBoard(final Assets assets)
         {
             this.assets = assets;
-            this.sherman = assets.getTexture(assets.SHERMAN);
+            this.sherman = assets.getTexture(assets.PANZER);
             this.v = new Vector2();
         }
 

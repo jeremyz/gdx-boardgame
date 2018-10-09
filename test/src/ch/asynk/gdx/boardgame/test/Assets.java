@@ -22,7 +22,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String FONT_20 = "size20.ttf";
     public static final String FONT_25 = "size25.ttf";
     public static final String PATCH = "ui-patch.png";
-    public static final String SHERMAN = "sherman.png";
+    public static final String PANZER = "panzer.png";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
@@ -65,7 +65,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(TRI, Texture.class);
         load(CORNER, Texture.class);
         load(PATCH, Texture.class);
-        load(SHERMAN, Texture.class);
+        load(PANZER, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
         load(FONT_25, BitmapFont.class, params25);
     }
@@ -77,7 +77,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(TRI);
         unload(CORNER);
         unload(PATCH);
-        unload(SHERMAN);
+        unload(PANZER);
         unload(FONT_20);
         unload(FONT_25);
     }

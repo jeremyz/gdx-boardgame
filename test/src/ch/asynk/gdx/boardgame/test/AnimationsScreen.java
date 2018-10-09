@@ -31,7 +31,7 @@ public class AnimationsScreen extends AbstractScreen
     private State state;
 
     private final Texture map;
-    private final Sherman sherman;
+    private final Panzer panzer;
     private final Camera cam;
     private final Board board;
     private Animation animation;
@@ -44,10 +44,10 @@ public class AnimationsScreen extends AbstractScreen
         this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
 
-        this.sherman = new Sherman(app);
+        this.panzer = new Panzer(app);
         Vector2 v = new Vector2();
         this.board.centerOf(7, 4, v);
-        this.sherman.setPosition(v.x - (sherman.getWidth() / 2), v.y - (sherman.getHeight() / 2));
+        this.panzer.setPosition(v.x - (panzer.getWidth() / 2), v.y - (panzer.getHeight() / 2));
 
         cam.zoom(-0.3f);
         cam.centerOnWorld();
@@ -58,7 +58,7 @@ public class AnimationsScreen extends AbstractScreen
     {
         switch (state) {
             case BOUNCE:
-                animation = BounceAnimation.get(sherman, 2f, 3f);
+                animation = BounceAnimation.get(panzer, 2f, 3f);
             case DONE:
                 app.switchToMenu();
         }
