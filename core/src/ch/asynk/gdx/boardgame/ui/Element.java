@@ -85,7 +85,12 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.tainted = true;
     }
 
-    public final void translate(float dx, float dy)
+    @Override public final void centerOn(float cx, float cy)
+    {
+        setPosition((cx - (rect.width / 2f)), (cy - (rect.height / 2f)));
+    }
+
+    @Override public final void translate(float dx, float dy)
     {
         setPosition(x + dx, y + dy);
     }
@@ -95,7 +100,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         setPosition(r.x, r.x, r.width, r.height);
     }
 
-    public final void setPosition(float x, float y)
+    @Override public final void setPosition(float x, float y)
     {
        setPosition(x, y, rect.width, rect.height);
     }
