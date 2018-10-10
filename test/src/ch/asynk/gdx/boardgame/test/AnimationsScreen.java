@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Camera;
+import ch.asynk.gdx.boardgame.Orientation;
 import ch.asynk.gdx.boardgame.pieces.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
@@ -49,6 +50,7 @@ public class AnimationsScreen extends AbstractScreen
         Vector2 v = new Vector2();
         this.board.centerOf(7, 4, v);
         this.panzer.setPosition(v.x - (panzer.getWidth() / 2), v.y - (panzer.getHeight() / 2));
+        this.panzer.setRotation(Orientation.NW.r());
 
         cam.zoom(-0.3f);
         cam.centerOnWorld();

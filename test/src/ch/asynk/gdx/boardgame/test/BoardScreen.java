@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Camera;
+import ch.asynk.gdx.boardgame.Orientation;
+import ch.asynk.gdx.boardgame.pieces.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
@@ -18,7 +20,7 @@ public class BoardScreen extends AbstractScreen
     private class MyBoard
     {
         private final Assets assets;
-        private final Texture sherman;
+        private final Piece panzer;
         private final Vector2 v;
         public Texture map;
         public Board board;
@@ -31,19 +33,21 @@ public class BoardScreen extends AbstractScreen
         public MyBoard(final Assets assets)
         {
             this.assets = assets;
-            this.sherman = assets.getTexture(assets.PANZER);
             this.v = new Vector2();
+            this.panzer = new Piece(assets.getTexture(assets.PANZER));
         }
 
         public void draw(SpriteBatch batch)
         {
             batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
-            batch.draw(sherman, v.x - (sherman.getWidth() / 2), v.y - (sherman.getHeight() / 2));
+            panzer.draw(batch);
         }
 
         public void reset()
         {
             board.centerOf(0, 0, v);
+            panzer.centerOn(v.x, v.y);
+            panzer.setRotation(Orientation.DEFAULT.r());
         }
 
         public boolean touch(float x, float y)
@@ -51,6 +55,8 @@ public class BoardScreen extends AbstractScreen
             board.toBoard(x, y, v);
             GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d]", (int)x, (int)y, (int)v.x, (int)v.y));
             board.centerOf((int)v.x, (int)v.y, v);
+            panzer.centerOn(v.x, v.y);
+            panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
             GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
             return true;
         }
