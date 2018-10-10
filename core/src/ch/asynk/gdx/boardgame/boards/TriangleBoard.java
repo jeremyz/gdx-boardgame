@@ -16,6 +16,9 @@ public class TriangleBoard implements Board
     private final float h23;    // 2/3 height of the triangle
     private final float h43;    // 4/3 height of the triangle
 
+    private static final int [] vAngles = {330, -1, 30, 90, 150,  -1, 210, 270, 330};
+    private static final int [] hAngles = {  0,  0, 60, -1, 120, 180, 240,  -1, 300};
+
     public TriangleBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
         this.side = side;
@@ -29,6 +32,15 @@ public class TriangleBoard implements Board
         this.h13 = this.h * 0.33333f;
         this.h23 = this.h * 0.66666f;
         this.h43 = this.h * 1.33333f;
+    }
+
+    @Override public int[] getAngles()
+    {
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            return vAngles;
+        } else {
+            return hAngles;
+        }
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)

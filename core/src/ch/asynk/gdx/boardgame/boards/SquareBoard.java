@@ -8,11 +8,18 @@ public class SquareBoard implements Board
     private final float x0;     // bottom left x offset
     private final float y0;     // bottom left y offset
 
+    private static final int [] angles = { 0, 0, -1, 90, -1, 180, -1, 270, -1};
+
     public SquareBoard(float side, float x0, float y0)
     {
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
+    }
+
+    @Override public int[] getAngles()
+    {
+        return angles;
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)

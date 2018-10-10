@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.boards;
 
+import ch.asynk.gdx.boardgame.Orientation;
+
 public class BoardFactory
 {
     public enum BoardType
@@ -25,16 +27,24 @@ public class BoardFactory
 
     public static Board getBoard(BoardType boardType, float side, float x0, float y0, BoardOrientation boardOrientation)
     {
+        Board board = null;
         switch(boardType)
         {
             case HEX:
-                return new HexBoard(side, x0, y0, boardOrientation);
+                board = new HexBoard(side, x0, y0, boardOrientation);
+                break;
             case SQUARE:
-                return new SquareBoard(side, x0, y0);
+                board = new SquareBoard(side, x0, y0);
+                break;
             case TRIANGLE:
-                return new TriangleBoard(side, x0, y0, boardOrientation);
-            default:
-                throw new RuntimeException( String.format("%s board type is not implemented yet.", boardType) );
+                board = new TriangleBoard(side, x0, y0, boardOrientation);
+                break;
         }
+        if (board == null) {
+            throw new RuntimeException( String.format("%s board type is not implemented yet.", boardType) );
+        }
+        Orientation.setValues(board.getAngles());
+
+        return board;
     }
 }

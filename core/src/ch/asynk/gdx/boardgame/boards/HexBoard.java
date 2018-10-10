@@ -33,6 +33,9 @@ public class HexBoard implements Board
     //   rows are vertical°
     //   bottom left is the left vertice of the most bottom-left horizontal hex side of the map
 
+    private static final int [] vAngles = {330, -1, 30, 90, 150,  -1, 210, 270, 330};
+    private static final int [] hAngles = {  0,  0, 60, -1, 120, 180, 240,  -1, 300};
+
     public HexBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
         this.side = side;
@@ -45,6 +48,15 @@ public class HexBoard implements Board
         this.dh = side / 2.0f;
         this.h  = side + dh;
         this.slope = dh / dw;
+    }
+
+    @Override public int[] getAngles()
+    {
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            return vAngles;
+        } else {
+            return hAngles;
+        }
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)
