@@ -4,46 +4,44 @@ import com.badlogic.gdx.utils.Pool;
 
 public abstract class TimedAnimation implements Animation, Pool.Poolable
 {
-    private float time;
-    private boolean started;
-    private boolean completed;
-    protected float duration;
+    private float dp;
+    private float percent;
 
     abstract protected void begin();
     abstract protected void end();
     abstract protected void update(float percent);
 
+    public void setDuration(float duration)
+    {
+        dp = 1f / duration;
+    }
+
     @Override public void reset()
     {
-        time = 0f;
-        started = false;
-        completed = false;
+        percent = 0f;
     }
 
     @Override public boolean completed()
     {
-        return completed;
+        return (percent >= 1f);
     }
 
     @Override public boolean animate(float delta)
     {
-        if (completed) return true;
-
-        if (!started) {
+        if (percent == 0) {
             begin();
-            started = true;
         }
 
-        time += delta;
+        percent += (dp * delta);
 
-        if (time >= duration) {
-            completed = true;
-            update(1);
+        if (percent >= 1f) {
+            // percent = 1f;
+            // update(percent);
             end();
+            return true;
         } else {
-            update(time / duration);
+            update(percent);
+            return false;
         }
-
-        return completed;
     }
 }

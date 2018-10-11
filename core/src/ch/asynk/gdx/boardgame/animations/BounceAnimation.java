@@ -23,8 +23,8 @@ public class BounceAnimation extends TimedAnimation
         BounceAnimation a = bounceAnimationPool.obtain();
 
         a.piece = piece;
-        a.duration = duration;
         a.bounceFactor = bounceFactor;
+        a.setDuration(duration);
 
         return a;
     }
@@ -39,8 +39,8 @@ public class BounceAnimation extends TimedAnimation
     public BounceAnimation(Piece piece, float duration, float bounceFactor)
     {
         this.piece = piece;
-        this.duration = duration;
         this.bounceFactor = bounceFactor;
+        this.setDuration(duration);
     }
 
     @Override public void dispose()
