@@ -15,6 +15,11 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
         super(texture);
     }
 
+    @Override public float getScale()
+    {
+        return getScaleX();
+    }
+
     @Override public void centerOn(float cx, float cy)
     {
         setPosition((cx - (getWidth() / 2f)), (cy - (getHeight() / 2f)));
