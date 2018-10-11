@@ -76,6 +76,11 @@ public class Overlays implements Drawable, Positionable, Rotable, Scalable
         }
     }
 
+    @Override public float getRotation()
+    {
+        return sprites.get(0).getRotation();
+    }
+
     @Override public void setRotation(float rotation)
     {
         for (Sprite sprite : sprites) {
