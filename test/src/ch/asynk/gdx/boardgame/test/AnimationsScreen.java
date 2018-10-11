@@ -61,7 +61,7 @@ public class AnimationsScreen extends AbstractScreen
     {
         switch (state) {
             case BOUNCE:
-                animation = BounceAnimation.get(panzer, 2f, 3f);
+                animation = BounceAnimation.get(panzer, 2f, 3f, -1);
             case DONE:
                 app.switchToMenu();
         }
