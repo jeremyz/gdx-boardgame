@@ -12,31 +12,17 @@ import ch.asynk.gdx.boardgame.pieces.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
-import ch.asynk.gdx.boardgame.animations.Animation;
+import ch.asynk.gdx.boardgame.animations.AnimationSequence;
 import ch.asynk.gdx.boardgame.animations.BounceAnimation;
+import ch.asynk.gdx.boardgame.animations.DelayAnimation;
 
 public class AnimationsScreen extends AbstractScreen
 {
-    public enum State
-    {
-        BOUNCE, DONE;
-        public State next()
-        {
-            switch(this) {
-                case BOUNCE:
-                    return DONE;
-                default:
-                    return BOUNCE;
-            }
-        }
-    }
-    private State state;
-
     private final Texture map;
     private final Piece panzer;
     private final Camera cam;
     private final Board board;
-    private Animation animation;
+    private final AnimationSequence animations;
 
     public AnimationsScreen(final GdxBoardTest app)
     {
@@ -54,18 +40,16 @@ public class AnimationsScreen extends AbstractScreen
 
         cam.zoom(-0.3f);
         cam.centerOnWorld();
-        setState(State.BOUNCE);
+
+        animations = AnimationSequence.get(10);
+        animations.add(BounceAnimation.get(panzer, 2f, 3f, -1));
+        animations.add(new DelayAnimation(panzer, 1f));
     }
 
-    private void setState(State state)
+    @Override public void dispose()
     {
-        switch (state) {
-            case BOUNCE:
-                animation = BounceAnimation.get(panzer, 2f, 3f, -1);
-            case DONE:
-                app.switchToMenu();
-        }
-        this.state = state;
+        animations.dispose();
+        super.dispose();
     }
 
     @Override public void draw(SpriteBatch batch) { }
@@ -79,6 +63,11 @@ public class AnimationsScreen extends AbstractScreen
                 inputBlocked = false;
         }
 
+        if (animations.animate(delta)) {
+            app.switchToMenu();
+            return;
+        }
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -86,13 +75,8 @@ public class AnimationsScreen extends AbstractScreen
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         batch.draw(map, 0, 0);
-        animation.animate(delta);
-        animation.draw(batch);
+        animations.draw(batch);
         batch.end();
-
-        if (animation.completed()) {
-            setState(state.next());
-        }
     }
 
     @Override public void resize(int width, int height)
