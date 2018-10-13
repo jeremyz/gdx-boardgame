@@ -47,32 +47,34 @@ public class AnimationSequence implements Animation, Pool.Poolable
         animationSequencePool.free(this);
     }
 
-    public void addAnimation(Animation animation)
+    public void add(Animation animation)
     {
         animations.add(animation);
     }
 
     @Override public boolean completed()
     {
-        return (animations.size() == 0);
+        return animations.isEmpty();
     }
 
     @Override public boolean animate(float delta)
     {
-        if (animations.isEmpty()) return true;
-
-        Animation animation = animations.get(0);
-        if (animation.animate(delta)) {
-            animations.remove(0);
-            animation.dispose();
+        if (!completed()) {
+            Animation animation = animations.get(0);
+            if (animation.animate(delta)) {
+                animations.remove(0);
+                animation.dispose();
+            }
         }
 
-        return (animations.isEmpty());
+        return completed();
     }
 
     @Override public void draw(Batch batch)
     {
-        animations.get(0).draw(batch);
+        if (!completed()) {
+            animations.get(0).draw(batch);
+        }
     }
 
     @Override public void drawDebug(ShapeRenderer debugShapes)
