@@ -2,7 +2,7 @@ package ch.asynk.gdx.boardgame.animations;
 
 import com.badlogic.gdx.utils.Pool;
 
-public abstract class TimedAnimation implements Animation, Pool.Poolable
+public abstract class TimedAnimation implements Animation
 {
     private float dp;
     private float percent;
@@ -16,7 +16,7 @@ public abstract class TimedAnimation implements Animation, Pool.Poolable
         dp = 1f / duration;
     }
 
-    @Override public void reset()
+    public void reset()
     {
         percent = 0f;
     }

@@ -43,7 +43,7 @@ public class AnimationsScreen extends AbstractScreen
 
         animations = AnimationSequence.get(10);
         animations.add(BounceAnimation.get(panzer, 2f, 3f, -1));
-        animations.add(new DelayAnimation(panzer, 1f));
+        animations.add(DelayAnimation.get(panzer, 1f));
     }
 
     @Override public void dispose()

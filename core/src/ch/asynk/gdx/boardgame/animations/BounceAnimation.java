@@ -4,11 +4,10 @@ import java.lang.Math;
 
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import ch.asynk.gdx.boardgame.pieces.Piece;
 
-public class BounceAnimation extends TimedAnimation
+public class BounceAnimation extends TimedAnimation implements Pool.Poolable
 {
     private static final Pool<BounceAnimation> bounceAnimationPool = new Pool<BounceAnimation>()
     {
@@ -40,14 +39,6 @@ public class BounceAnimation extends TimedAnimation
     {
     }
 
-    public BounceAnimation(Piece piece, float duration, float bounceFactor, int rotations)
-    {
-        this.piece = piece;
-        this.bounceFactor = bounceFactor;
-        this.setDuration(duration);
-        this.computeRotationDegrees(rotations);
-    }
-
     private void computeRotationDegrees(int rotations)
     {
         if (rotations == 0) {
@@ -55,6 +46,11 @@ public class BounceAnimation extends TimedAnimation
         } else {
             rotationDegrees = (360 * rotations);
         }
+    }
+
+    @Override public void reset()
+    {
+        super.reset();
     }
 
     @Override public void dispose()
@@ -87,9 +83,5 @@ public class BounceAnimation extends TimedAnimation
     @Override public void draw(Batch batch)
     {
         piece.draw(batch);
-    }
-
-    @Override public void drawDebug(ShapeRenderer debugShapes)
-    {
     }
 }
