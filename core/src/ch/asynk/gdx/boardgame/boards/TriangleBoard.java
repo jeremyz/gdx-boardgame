@@ -16,8 +16,9 @@ public class TriangleBoard implements Board
     private final float h23;    // 2/3 height of the triangle
     private final float h43;    // 4/3 height of the triangle
 
-    private static final int [] vAngles = {330, -1, 30, 90, 150,  -1, 210, 270, 330};
-    private static final int [] hAngles = {  0,  0, 60, -1, 120, 180, 240,  -1, 300};
+    // [0] is 0° facing East
+    private static final int [] vAngles = {60,  0, 60, -1, 120, 180, 240,  -1, 300};
+    private static final int [] hAngles = {30, -1, 30, 90, 150,  -1, 210, 270, 330};
 
     public TriangleBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {

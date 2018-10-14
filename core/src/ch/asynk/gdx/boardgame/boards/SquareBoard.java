@@ -8,7 +8,8 @@ public class SquareBoard implements Board
     private final float x0;     // bottom left x offset
     private final float y0;     // bottom left y offset
 
-    private static final int [] angles = { 0, 0, -1, 90, -1, 180, -1, 270, -1};
+    // [0] is 0° facing East
+    private static final int [] angles = {90, 0, -1, 90, -1, 180, -1, 270, -1, 0};
 
     public SquareBoard(float side, float x0, float y0)
     {

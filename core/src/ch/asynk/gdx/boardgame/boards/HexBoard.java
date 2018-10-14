@@ -33,8 +33,9 @@ public class HexBoard implements Board
     //   rows are vertical°
     //   bottom left is the left vertice of the most bottom-left horizontal hex side of the map
 
-    private static final int [] vAngles = {330, -1, 30, 90, 150,  -1, 210, 270, 330};
-    private static final int [] hAngles = {  0,  0, 60, -1, 120, 180, 240,  -1, 300};
+    // [0] is 0° facing East
+    private static final int [] vAngles = {60,  0, 60, -1, 120, 180, 240,  -1, 300};
+    private static final int [] hAngles = {90, -1, 30, 90, 150,  -1, 210, 270, 330};
 
     public HexBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
