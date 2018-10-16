@@ -25,4 +25,6 @@ public interface Collection<E> extends Iterator, Iterable<E>
     public E remove(int idx);
 
     public boolean remove(E e);
+
+    public E current();
 }

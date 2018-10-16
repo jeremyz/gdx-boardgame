@@ -128,6 +128,11 @@ public class IterableArray<E> implements Collection<E>
         return (idx < s);
     }
 
+    @Override public E current()
+    {
+        return get(idx);
+    }
+
     @Override public E next()
     {
         E e = get(idx);
