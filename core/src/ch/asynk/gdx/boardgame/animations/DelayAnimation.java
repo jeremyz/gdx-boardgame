@@ -15,7 +15,7 @@ public class DelayAnimation extends TimedAnimation implements Pool.Poolable
         }
     };
 
-    public static DelayAnimation get(Drawable drawable, float duration)
+    public static DelayAnimation obtain(Drawable drawable, float duration)
     {
         DelayAnimation a = delayAnimationPool.obtain();
 

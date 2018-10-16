@@ -15,7 +15,7 @@ public class AnimationSequence implements Animation, Pool.Poolable
         }
     };
 
-    public static AnimationSequence get(int capacity)
+    public static AnimationSequence obtain(int capacity)
     {
         AnimationSequence seq = animationSequencePool.obtain();
         if (seq.animations == null) {

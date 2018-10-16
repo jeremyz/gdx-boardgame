@@ -17,7 +17,7 @@ public class BounceAnimation extends TimedAnimation implements Pool.Poolable
         }
     };
 
-    public static BounceAnimation get(Piece piece, float duration, float bounceFactor, int rotations)
+    public static BounceAnimation obtain(Piece piece, float duration, float bounceFactor, int rotations)
     {
         BounceAnimation a = bounceAnimationPool.obtain();
 
