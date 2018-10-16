@@ -41,9 +41,9 @@ public class AnimationsScreen extends AbstractScreen
         cam.zoom(-0.3f);
         cam.centerOnWorld();
 
-        animations = AnimationSequence.get(10);
-        animations.add(BounceAnimation.get(panzer, 2f, 3f, -1));
-        animations.add(DelayAnimation.get(panzer, 1f));
+        animations = AnimationSequence.obtain(10);
+        animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
+        animations.add(DelayAnimation.obtain(panzer, 1f));
     }
 
     @Override public void dispose()
