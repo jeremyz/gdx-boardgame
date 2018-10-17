@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Camera;
 import ch.asynk.gdx.boardgame.Orientation;
+import ch.asynk.gdx.boardgame.Path;
+import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.pieces.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
@@ -15,6 +17,7 @@ import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.animations.AnimationSequence;
 import ch.asynk.gdx.boardgame.animations.BounceAnimation;
 import ch.asynk.gdx.boardgame.animations.DelayAnimation;
+import ch.asynk.gdx.boardgame.animations.MoveAnimation;
 
 public class AnimationsScreen extends AbstractScreen
 {
@@ -44,6 +47,37 @@ public class AnimationsScreen extends AbstractScreen
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
         animations.add(DelayAnimation.obtain(panzer, 1f));
+        animations.add(MoveAnimation.obtain(panzer, buildPath(), 2f));
+        animations.add(DelayAnimation.obtain(panzer, 1f));
+    }
+
+    private Path buildPath()
+    {
+        Vector2 v = new Vector2();
+        Path path = Path.obtain();
+        path.ensureCapacity(10);
+        board.centerOf(7, 4, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(6, 4, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(5, 3, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(5, 2, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(6, 2, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(7, 2, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(8, 3, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(9, 4, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(8, 4, v);
+        path.add(new Tile(v.x, v.y));
+        board.centerOf(7, 4, v);
+        path.add(new Tile(v.x, v.y));
+        path.setFinalOrientation(Orientation.NE);
+        return path;
     }
 
     @Override public void dispose()
