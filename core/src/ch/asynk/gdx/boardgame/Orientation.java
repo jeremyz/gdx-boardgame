@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame;
 
+import com.badlogic.gdx.math.MathUtils;
+
 public enum Orientation
 {
     ALL(255,    0),
@@ -86,5 +88,10 @@ public enum Orientation
         else if ((r > (SE.r - delta)) && (r < (SE.r + delta))) return SE;
         else return KEEP;
 
+    }
+
+    public static Orientation fromTiles(Tile from, Tile to)
+    {
+        return fromR(MathUtils.atan2((to.y - from.y), (to.x - from.x)) * MathUtils.radiansToDegrees);
     }
 }
