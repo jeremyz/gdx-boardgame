@@ -94,6 +94,7 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
             }
             return false;
         }
+        to = null;
         return true;
     }
 }
