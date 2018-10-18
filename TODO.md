@@ -1,0 +1,11 @@
+## TODO
+ - UI widgets
+    - list
+    - scrollbale vert/horiz
+ - Algos
+    - Distance
+    - Adjacents
+    - Line Of Sight
+    - Reachable Tiles ::: BFS
+    - Shortest Path ::: A*
+ - CircleMap

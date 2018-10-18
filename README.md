@@ -1,25 +1,12 @@
-# this file is currently used as task reminder
+# gdx-boardgame
 
-## TODO
- - UI widgets
-    - list
-    - scrollbale vert/horiz 
- - Pawn Animations
- - Algos
-    - Distance
-    - Adjacents
-    - Line Of Sight
-    - Reachable Tiles ::: BFS
-    - Shortest Path ::: A*
- - CircleMap
+is a [libgdx](https://libgdx.badlogicgames.com/) based framework to build 2D boardgames.
 
-## DONE
- - SquareMap
- - HexMap
- - TriangleMap
- - UI widgets
- - GameScreen
- - BoardCamera
- - Assets
- - LoadingScreen
- - Fonts
+
+## features
+
+    - moveable, zoomable board with tile identification on touch
+    - moveable, orientable pieces
+    - various animations
+    - path, movement, line of sight computation
+
