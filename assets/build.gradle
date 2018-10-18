@@ -14,6 +14,12 @@ task packLoading(type: JavaExec) {
     args = ['loading', 'data', 'loading']
 }
 
+task packHexOverlays(type: JavaExec) {
+    main = 'com.badlogic.gdx.tools.texturepacker.TexturePacker'
+    classpath = configurations.texturePacker
+    args = ['hex-overlays', 'data', 'hex-overlays']
+}
+
 task build() {
     description "Builds the skin at various DPIs"
 }

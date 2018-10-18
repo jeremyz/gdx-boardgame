@@ -23,6 +23,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String FONT_25 = "size25.ttf";
     public static final String PATCH = "ui-patch.png";
     public static final String PANZER = "panzer.png";
+    public static final String HEX_OVERLAYS = "hex-overlays.atlas";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
@@ -68,6 +69,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(PANZER, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
         load(FONT_25, BitmapFont.class, params25);
+        load(HEX_OVERLAYS, TextureAtlas.class);
     }
 
     public void unloadApp()
@@ -80,5 +82,6 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(PANZER);
         unload(FONT_20);
         unload(FONT_25);
+        unload(HEX_OVERLAYS);
     }
 }
