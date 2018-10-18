@@ -59,6 +59,7 @@ public class MoveAnimation implements Animation, Pool.Poolable
         setNextMove();
         percent = 0f;
         dp = 1f * speed;
+        notify = true;
     }
 
     private boolean setNextMove()
@@ -77,7 +78,7 @@ public class MoveAnimation implements Animation, Pool.Poolable
                 (dst.y - piece.getY()) * speed,
                 (dr) * speed
               );
-        notify = (dr == 0 ? true : false);
+        notify = (dr == 0 ? (cb != null) : false);
         return done;
     }
 
@@ -100,18 +101,25 @@ public class MoveAnimation implements Animation, Pool.Poolable
 
     @Override public boolean animate(float delta)
     {
+        if (notify && percent == 0f) {
+            cb.onTileChange(piece, path);
+            notify = false;
+        }
         piece.translate(dt.x * delta, dt.y * delta);
         piece.rotate(dt.z * delta);
 
         percent += (dp * delta);
-        if (notify && cb != null && percent >= 0.5f) {
+        if (notify && percent >= 0.5f) {
             cb.onTileChange(piece, path);
             notify = false;
         }
         if (percent >= 1f) {
             piece.setPosition(dst.x, dst.y, dst.z);
             if (!setNextMove()) {
-                percent = 0f;
+                percent = 0.0001f;
+            } else if (notify) {
+                cb.onTileChange(piece, path);
+                notify = false;
             }
         }
 
