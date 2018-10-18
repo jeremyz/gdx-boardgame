@@ -27,6 +27,8 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
     }
 
     private Orientation finalOrientation;
+    private Tile from;
+    private Tile to;
 
     private Path()
     {
@@ -41,6 +43,8 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
     @Override public void reset()
     {
         clear();
+        this.from = null;
+        this.to = null;
         this.finalOrientation = null;
     }
 
@@ -58,25 +62,36 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
         return s;
     }
 
-    public boolean nextVector(Piece piece, Vector3 v)
+    public Tile from()
+    {
+        return from;
+    }
+
+    public Tile to()
+    {
+        return to;
+    }
+
+    public boolean nextPosition(Piece piece, Vector3 v)
     {
         if (hasNext()) {
-            Tile cur = current();
-            if (piece.isOn(cur)) {
+            to = current();
+            if (piece.isOn(to)) {
                 // rotation ...
+                from = to;
                 next();
-                Orientation o = (hasNext() ? Orientation.fromTiles(cur, current()) : finalOrientation);
-                // if already facing, transform into a move
+                Orientation o = (hasNext() ? Orientation.fromTiles(from, current()) : finalOrientation);
+                // if already facing, transform into a straight move
                 if (piece.isFacing(o)) {
-                    cur = current();
-                    if (cur == null) {
+                    to = current();
+                    if (to == null) {
                         return true;
                     }
                 }
-                piece.getPosOn(cur, o, v);
+                piece.getPosOn(to, o, v);
             } else {
-                // regular move, no rotation
-                piece.getPosOn(cur, Orientation.fromR(v.z), v);
+                // rotation finished, regular move
+                piece.getPosOn(to, Orientation.fromR(v.z), v);
             }
             return false;
         }
