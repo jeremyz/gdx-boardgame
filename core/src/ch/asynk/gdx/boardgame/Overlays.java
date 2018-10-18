@@ -13,6 +13,7 @@ import ch.asynk.gdx.boardgame.Scalable;
 
 public class Overlays implements Drawable, Positionable, Rotable, Scalable
 {
+    private boolean isEnabled;
     private boolean enabled[];
     private Array<Sprite> sprites;
 
@@ -20,17 +21,26 @@ public class Overlays implements Drawable, Positionable, Rotable, Scalable
     {
         this.sprites = atlas.createSprites();
         this.enabled = new boolean[sprites.size];
+        this.isEnabled = false;
     }
 
     public void disableAll()
     {
         for (int i = 0; i < sprites.size; i++)
             enabled[i] = false;
+        isEnabled = false;
     }
 
     public void enable(int i, boolean enable)
     {
         enabled[i] = enable;
+        for (int j = 0; j < sprites.size; j++) {
+            if (enabled[j]) {
+                isEnabled = true;
+                return;
+            }
+        }
+        isEnabled = false;
     }
 
     public boolean isEnabled(int i)
@@ -40,12 +50,7 @@ public class Overlays implements Drawable, Positionable, Rotable, Scalable
 
     public boolean isEnabled()
     {
-        for (int i = 0; i < sprites.size; i++) {
-            if (enabled[i]) {
-                return true;
-            }
-        }
-        return false;
+        return isEnabled;
     }
 
     @Override public float getX() { return sprites.get(0).getX(); }
@@ -109,6 +114,7 @@ public class Overlays implements Drawable, Positionable, Rotable, Scalable
 
     @Override public void draw(Batch batch)
     {
+        if (!isEnabled) return;
         for (int i = 0, n = sprites.size; i < n; i++) {
             if (enabled[i]) {
                 sprites.get(i).draw(batch);
