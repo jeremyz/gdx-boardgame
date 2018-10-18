@@ -10,7 +10,7 @@ import ch.asynk.gdx.boardgame.Camera;
 import ch.asynk.gdx.boardgame.Orientation;
 import ch.asynk.gdx.boardgame.Path;
 import ch.asynk.gdx.boardgame.Tile;
-import ch.asynk.gdx.boardgame.pieces.Piece;
+import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
 
-import ch.asynk.gdx.boardgame.pieces.Piece;
+import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.Path;
 
 public class MoveAnimation implements Animation, Pool.Poolable

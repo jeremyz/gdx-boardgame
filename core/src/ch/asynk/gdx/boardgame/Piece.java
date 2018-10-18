@@ -1,4 +1,4 @@
-package ch.asynk.gdx.boardgame.pieces;
+package ch.asynk.gdx.boardgame;
 
 import java.lang.Math;
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Disposable;
 
-import ch.asynk.gdx.boardgame.pieces.Piece;
 import ch.asynk.gdx.boardgame.utils.IterableArray;
 
 public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolable

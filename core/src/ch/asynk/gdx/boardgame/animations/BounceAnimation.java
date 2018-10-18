@@ -5,7 +5,7 @@ import java.lang.Math;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-import ch.asynk.gdx.boardgame.pieces.Piece;
+import ch.asynk.gdx.boardgame.Piece;
 
 public class BounceAnimation extends TimedAnimation implements Pool.Poolable
 {

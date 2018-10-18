@@ -1,4 +1,4 @@
-package ch.asynk.gdx.boardgame.pieces;
+package ch.asynk.gdx.boardgame;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.Batch;
