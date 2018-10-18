@@ -104,10 +104,8 @@ public class MoveAnimation implements Animation, Pool.Poolable
         piece.rotate(dt.z * delta);
 
         percent += (dp * delta);
-        if (notify && percent >= 0.5) {
-            if (cb != null) {
-                cb.onTileChange(piece, path);
-            }
+        if (notify && cb != null && percent >= 0.5f) {
+            cb.onTileChange(piece, path);
             notify = false;
         }
         if (percent >= 1f) {
