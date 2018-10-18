@@ -25,6 +25,7 @@ public class AnimationsScreen extends AbstractScreen
     private final Piece panzer;
     private final Camera cam;
     private final Board board;
+    private final Path path;
     private final AnimationSequence animations;
 
     public AnimationsScreen(final GdxBoardTest app)
@@ -44,15 +45,24 @@ public class AnimationsScreen extends AbstractScreen
         cam.zoom(-0.3f);
         cam.centerOnWorld();
 
+        path = buildPath(app);
+
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
         animations.add(DelayAnimation.obtain(panzer, 1f));
-        animations.add(MoveAnimation.obtain(panzer, buildPath(), 2f, (p,path) -> System.err.println(String.format("%s -> %s", path.from(), path.to()))));
+        animations.add(MoveAnimation.obtain(panzer, path, 2f, (p,path) -> {
+            Tile from = path.from();
+            Tile to = path.to();
+            System.err.println(String.format("%s -> %s", from, to));
+            from.enableOverlay(2, false);
+            if (to != null) to.enableOverlay(2, true);
+        }));
         animations.add(DelayAnimation.obtain(panzer, 1f));
     }
 
-    private Path buildPath()
+    private Path buildPath(final GdxBoardTest app)
     {
+        Tile.defaultOverlay = app.assets.getAtlas(app.assets.HEX_OVERLAYS);
         Vector2 v = new Vector2();
         Path path = Path.obtain();
         path.ensureCapacity(10);
@@ -109,6 +119,9 @@ public class AnimationsScreen extends AbstractScreen
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
         batch.draw(map, 0, 0);
+        for (int i = 0; i < path.size(); i++) {
+            path.get(i).draw(batch);
+        }
         animations.draw(batch);
         batch.end();
     }
