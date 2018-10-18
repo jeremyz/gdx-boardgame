@@ -47,7 +47,7 @@ public class AnimationsScreen extends AbstractScreen
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
         animations.add(DelayAnimation.obtain(panzer, 1f));
-        animations.add(MoveAnimation.obtain(panzer, buildPath(), 2f));
+        animations.add(MoveAnimation.obtain(panzer, buildPath(), 2f, (p,path) -> System.err.println(String.format("%s -> %s", path.from(), path.to()))));
         animations.add(DelayAnimation.obtain(panzer, 1f));
     }
 
