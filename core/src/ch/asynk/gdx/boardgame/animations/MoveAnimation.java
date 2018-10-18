@@ -11,6 +11,12 @@ import ch.asynk.gdx.boardgame.Path;
 
 public class MoveAnimation implements Animation, Pool.Poolable
 {
+    @FunctionalInterface
+    public interface MoveAnimationCb
+    {
+        void onTileChange(Piece piece, Path path);
+    }
+
     private static final Pool<MoveAnimation> moveAnimationPool = new Pool<MoveAnimation>()
     {
         @Override protected MoveAnimation newObject()
@@ -19,13 +25,14 @@ public class MoveAnimation implements Animation, Pool.Poolable
         }
     };
 
-    public static MoveAnimation obtain(Piece piece, Path path, float speed)
+    public static MoveAnimation obtain(Piece piece, Path path, float speed, MoveAnimationCb cb)
     {
         MoveAnimation a = moveAnimationPool.obtain();
 
         a.piece = piece;
         a.path = path;
         a.speed = speed;
+        a.cb = cb;
 
         a.init();
 
@@ -34,9 +41,11 @@ public class MoveAnimation implements Animation, Pool.Poolable
 
     private Piece piece;
     private Path path;
+    private MoveAnimationCb cb;
     private float speed;
     private float dp;
     private float percent;
+    private boolean notify;
     private Vector3 dst = new Vector3();
     private Vector3 dt = new Vector3();
 
@@ -54,7 +63,7 @@ public class MoveAnimation implements Animation, Pool.Poolable
 
     private boolean setNextMove()
     {
-        boolean done = path.nextVector(piece, dst);
+        boolean done = path.nextPosition(piece, dst);
 
         float dr = (dst.z - piece.getRotation());
         if (dr > 180) {
@@ -68,6 +77,7 @@ public class MoveAnimation implements Animation, Pool.Poolable
                 (dst.y - piece.getY()) * speed,
                 (dr) * speed
               );
+        notify = (dr == 0 ? true : false);
         return done;
     }
 
@@ -94,6 +104,12 @@ public class MoveAnimation implements Animation, Pool.Poolable
         piece.rotate(dt.z * delta);
 
         percent += (dp * delta);
+        if (notify && percent >= 0.5) {
+            if (cb != null) {
+                cb.onTileChange(piece, path);
+            }
+            notify = false;
+        }
         if (percent >= 1f) {
             piece.setPosition(dst.x, dst.y, dst.z);
             if (!setNextMove()) {
