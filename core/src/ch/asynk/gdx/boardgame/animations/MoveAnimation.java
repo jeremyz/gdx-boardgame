@@ -1,7 +1,5 @@
 package ch.asynk.gdx.boardgame.animations;
 
-import java.lang.Math;
-
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;

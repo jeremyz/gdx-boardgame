@@ -1,7 +1,5 @@
 package ch.asynk.gdx.boardgame.animations;
 
-import com.badlogic.gdx.utils.Pool;
-
 public abstract class TimedAnimation implements Animation
 {
     private float dp;

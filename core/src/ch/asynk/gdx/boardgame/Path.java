@@ -1,7 +1,5 @@
 package ch.asynk.gdx.boardgame;
 
-import java.util.Iterator;
-
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Disposable;
