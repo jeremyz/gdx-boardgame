@@ -59,7 +59,6 @@ public class AnimationBatch implements Animation, Pool.Poolable
     @Override public boolean animate(float delta)
     {
         if (!completed()) {
-            System.err.println("paralel");
             for (Animation animation : animations) {
                 if (animation.animate(delta)) {
                     animations.remove(animation);
