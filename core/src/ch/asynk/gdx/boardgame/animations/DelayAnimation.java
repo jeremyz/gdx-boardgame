@@ -43,7 +43,7 @@ public class DelayAnimation extends TimedAnimation implements Pool.Poolable
 
     @Override protected void begin() { }
     @Override protected void end() { }
-    @Override protected void update(float percent) { }
+    @Override protected void update(float elapsed, float percent) { }
 
     @Override public void draw(Batch batch)
     {

@@ -6,10 +6,11 @@ public abstract class TimedAnimation implements Animation
 {
     private float dp;
     private float percent;
+    private float elapsed;
 
     abstract protected void begin();
     abstract protected void end();
-    abstract protected void update(float percent);
+    abstract protected void update(float elapsed, float percent);
 
     public void setDuration(float duration)
     {
@@ -19,6 +20,7 @@ public abstract class TimedAnimation implements Animation
     public void reset()
     {
         percent = 0f;
+        elapsed = 0f;
     }
 
     @Override public boolean completed()
@@ -32,7 +34,8 @@ public abstract class TimedAnimation implements Animation
             begin();
         }
 
-        percent += (dp * delta);
+        elapsed += delta;
+        percent = (dp * elapsed);
 
         if (percent >= 1f) {
             // percent = 1f;
@@ -40,7 +43,7 @@ public abstract class TimedAnimation implements Animation
             end();
             return true;
         } else {
-            update(percent);
+            update(elapsed, percent);
             return false;
         }
     }
