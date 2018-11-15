@@ -3,12 +3,12 @@ package ch.asynk.gdx.boardgame.animations;
 public abstract class TimedAnimation implements Animation
 {
     private float dp;
-    private float percent;
-    private float elapsed;
+    protected float percent;
+    protected float elapsed;
 
     abstract protected void begin();
     abstract protected void end();
-    abstract protected void update(float elapsed, float percent);
+    abstract protected void update(float delta);
 
     public void setDuration(float duration)
     {
@@ -37,11 +37,11 @@ public abstract class TimedAnimation implements Animation
 
         if (percent >= 1f) {
             // percent = 1f;
-            // update(percent);
+            // update(delta);
             end();
             return true;
         } else {
-            update(elapsed, percent);
+            update(delta);
             return false;
         }
     }

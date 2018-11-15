@@ -72,7 +72,7 @@ public class BounceAnimation extends TimedAnimation implements Pool.Poolable
         }
     }
 
-    @Override protected void update(float elapsed, float percent)
+    @Override protected void update(float delta)
     {
         piece.setScale(this.startScale + this.bounceFactor * (float) Math.sin(percent * Math.PI));
         if (rotationDegrees != 0f) {
