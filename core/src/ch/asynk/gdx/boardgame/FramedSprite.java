@@ -1,10 +1,9 @@
 package ch.asynk.gdx.boardgame;
 
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class FramedSprite implements Disposable
+public class FramedSprite
 {
     public Texture texture;
     public TextureRegion[] frames;
@@ -28,10 +27,5 @@ public class FramedSprite implements Disposable
                 frames[idx++] = tmp[i][j];
             }
         }
-    }
-
-    @Override public void dispose()
-    {
-        texture.dispose();
     }
 }
