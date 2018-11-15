@@ -1,7 +1,6 @@
 package ch.asynk.gdx.boardgame.animations;
 
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
 
 import ch.asynk.gdx.boardgame.Piece;
@@ -122,10 +121,5 @@ public class MoveAnimation implements Animation, Pool.Poolable
         }
 
         return (percent >= 1f);
-    }
-
-    @Override public void draw(Batch batch)
-    {
-        piece.draw(batch);
     }
 }

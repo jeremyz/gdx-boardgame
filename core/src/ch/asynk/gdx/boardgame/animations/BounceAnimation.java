@@ -3,7 +3,6 @@ package ch.asynk.gdx.boardgame.animations;
 import java.lang.Math;
 
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.graphics.g2d.Batch;
 
 import ch.asynk.gdx.boardgame.Piece;
 
@@ -78,10 +77,5 @@ public class BounceAnimation extends TimedAnimation implements Pool.Poolable
         if (rotationDegrees != 0f) {
             piece.setRotation(this.startRotation + (percent * this.rotationDegrees));
         }
-    }
-
-    @Override public void draw(Batch batch)
-    {
-        piece.draw(batch);
     }
 }

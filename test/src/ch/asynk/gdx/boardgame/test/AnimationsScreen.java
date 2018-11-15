@@ -49,7 +49,7 @@ public class AnimationsScreen extends AbstractScreen
 
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
-        animations.add(DelayAnimation.obtain(panzer, 1f));
+        animations.add(DelayAnimation.obtain(1f));
         animations.add(MoveAnimation.obtain(panzer, path, 2f, (p,path) -> {
             Tile from = path.from();
             Tile to = path.to();
@@ -57,7 +57,7 @@ public class AnimationsScreen extends AbstractScreen
             from.enableOverlay(2, false);
             if (to != null) to.enableOverlay(2, true);
         }));
-        animations.add(DelayAnimation.obtain(panzer, 1f));
+        animations.add(DelayAnimation.obtain(1f));
     }
 
     private Path buildPath(final GdxBoardTest app)
@@ -122,6 +122,7 @@ public class AnimationsScreen extends AbstractScreen
         for (int i = 0; i < path.size(); i++) {
             path.get(i).draw(batch);
         }
+        panzer.draw(batch);
         animations.draw(batch);
         batch.end();
     }

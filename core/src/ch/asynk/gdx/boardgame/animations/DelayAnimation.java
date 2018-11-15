@@ -1,9 +1,6 @@
 package ch.asynk.gdx.boardgame.animations;
 
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.graphics.g2d.Batch;
-
-import ch.asynk.gdx.boardgame.Drawable;
 
 public class DelayAnimation extends TimedAnimation implements Pool.Poolable
 {
@@ -15,17 +12,14 @@ public class DelayAnimation extends TimedAnimation implements Pool.Poolable
         }
     };
 
-    public static DelayAnimation obtain(Drawable drawable, float duration)
+    public static DelayAnimation obtain(float duration)
     {
         DelayAnimation a = delayAnimationPool.obtain();
 
-        a.drawable = drawable;
         a.setDuration(duration);
 
         return a;
     }
-
-    private Drawable drawable;
 
     private DelayAnimation()
     {
@@ -44,9 +38,4 @@ public class DelayAnimation extends TimedAnimation implements Pool.Poolable
     @Override protected void begin() { }
     @Override protected void end() { }
     @Override protected void update(float delta) { }
-
-    @Override public void draw(Batch batch)
-    {
-        drawable.draw(batch);
-    }
 }
