@@ -14,15 +14,19 @@ import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
+import ch.asynk.gdx.boardgame.animations.AnimationBatch;
 import ch.asynk.gdx.boardgame.animations.AnimationSequence;
 import ch.asynk.gdx.boardgame.animations.BounceAnimation;
 import ch.asynk.gdx.boardgame.animations.DelayAnimation;
+import ch.asynk.gdx.boardgame.animations.FadeAnimation;
 import ch.asynk.gdx.boardgame.animations.MoveAnimation;
 
 public class AnimationsScreen extends AbstractScreen
 {
     private final Texture map;
     private final Piece panzer;
+    private final Piece other0;
+    private final Piece other1;
     private final Camera cam;
     private final Board board;
     private final Path path;
@@ -36,16 +40,18 @@ public class AnimationsScreen extends AbstractScreen
         this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
 
-        this.panzer = new Piece(app.assets.getTexture(app.assets.PANZER));
-        Vector2 v = new Vector2();
-        this.board.centerOf(7, 4, v);
-        this.panzer.setPosition(v.x - (panzer.getWidth() / 2), v.y - (panzer.getHeight() / 2));
-        this.panzer.setRotation(Orientation.NW.r());
+        this.panzer = getPiece(app, 7, 4, Orientation.NW);
+        this.other0 = getPiece(app, 9, 5, Orientation.SW);
+        this.other1 = getPiece(app, 3, 1, Orientation.NE);
+        this.other0.setAlpha(0f);
+        this.other1.setAlpha(0f);
 
         cam.zoom(-0.3f);
         cam.centerOnWorld();
 
         path = buildPath(app);
+
+        AnimationBatch batch;
 
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
@@ -57,7 +63,25 @@ public class AnimationsScreen extends AbstractScreen
             from.enableOverlay(2, false);
             if (to != null) to.enableOverlay(2, true);
         }));
+        batch = AnimationBatch.obtain(2);
+        batch.add(FadeAnimation.obtain(other0, 0f, 1f, 1f));
+        batch.add(FadeAnimation.obtain(other1, 0f, 1f, 1f));
+        animations.add(batch);
         animations.add(DelayAnimation.obtain(1f));
+        batch = AnimationBatch.obtain(2);
+        batch.add(FadeAnimation.obtain(other0, 1f, 0f, 1f));
+        batch.add(FadeAnimation.obtain(other1, 1f, 0f, 1f));
+        animations.add(batch);
+    }
+
+    private Piece getPiece(final GdxBoardTest app, int col, int row, Orientation o)
+    {
+        Piece p = new Piece(app.assets.getTexture(app.assets.PANZER));
+        Vector2 v = new Vector2();
+        this.board.centerOf(col, row, v);
+        p.centerOn(v.x, v.y);
+        p.setRotation(o.r());
+        return p;
     }
 
     private Path buildPath(final GdxBoardTest app)
@@ -123,6 +147,8 @@ public class AnimationsScreen extends AbstractScreen
             path.get(i).draw(batch);
         }
         panzer.draw(batch);
+        other0.draw(batch);
+        other1.draw(batch);
         animations.draw(batch);
         batch.end();
     }
