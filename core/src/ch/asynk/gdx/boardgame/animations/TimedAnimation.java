@@ -6,6 +6,9 @@ public abstract class TimedAnimation implements Animation
     protected float percent;
     protected float elapsed;
 
+    // begin() may be called after the first call to draw()
+    // only use it to capture variables when the animation starts
+    // not to setup the Animation, do that it the Animation initialisation
     abstract protected void begin();
     abstract protected void end();
     abstract protected void update(float delta);
@@ -28,7 +31,7 @@ public abstract class TimedAnimation implements Animation
 
     @Override public boolean animate(float delta)
     {
-        if (percent == 0) {
+        if (elapsed == 0f) {
             begin();
         }
 
