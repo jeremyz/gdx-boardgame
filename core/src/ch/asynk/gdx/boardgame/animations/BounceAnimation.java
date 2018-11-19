@@ -1,8 +1,7 @@
 package ch.asynk.gdx.boardgame.animations;
 
-import java.lang.Math;
-
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.math.MathUtils;
 
 import ch.asynk.gdx.boardgame.Piece;
 
@@ -73,7 +72,7 @@ public class BounceAnimation extends TimedAnimation implements Pool.Poolable
 
     @Override protected void update(float delta)
     {
-        piece.setScale(this.startScale + this.bounceFactor * (float) Math.sin(percent * Math.PI));
+        piece.setScale(this.startScale + this.bounceFactor * (float) MathUtils.sin(percent * MathUtils.PI));
         if (rotationDegrees != 0f) {
             piece.setRotation(this.startRotation + (percent * this.rotationDegrees));
         }
