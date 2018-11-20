@@ -20,6 +20,7 @@ import ch.asynk.gdx.boardgame.animations.BounceAnimation;
 import ch.asynk.gdx.boardgame.animations.DelayAnimation;
 import ch.asynk.gdx.boardgame.animations.FadeAnimation;
 import ch.asynk.gdx.boardgame.animations.MoveAnimation;
+import ch.asynk.gdx.boardgame.animations.ShellFireAnimation;
 
 public class AnimationsScreen extends AbstractScreen
 {
@@ -52,6 +53,9 @@ public class AnimationsScreen extends AbstractScreen
         path = buildPath(app);
 
         AnimationBatch batch;
+        ShellFireAnimation.register("tankShell", 1f, 66f, 400f, 1.3f, 1f,
+                app.assets.getTexture(app.assets.SHELL_FIRE), 1, 8,
+                app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8);
 
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
@@ -67,6 +71,7 @@ public class AnimationsScreen extends AbstractScreen
         batch.add(FadeAnimation.obtain(other0, 0f, 1f, 1f));
         batch.add(FadeAnimation.obtain(other1, 0f, 1f, 1f));
         animations.add(batch);
+        animations.add(getFireAnimationBatch());
         animations.add(DelayAnimation.obtain(1f));
         batch = AnimationBatch.obtain(2);
         batch.add(FadeAnimation.obtain(other0, 1f, 0f, 1f));
@@ -114,8 +119,17 @@ public class AnimationsScreen extends AbstractScreen
         return path;
     }
 
+    private AnimationBatch getFireAnimationBatch()
+    {
+        AnimationBatch batch = AnimationBatch.obtain(2);
+        batch.add(ShellFireAnimation.obtain("tankShell", other0, panzer));
+        batch.add(ShellFireAnimation.obtain("tankShell", other1, panzer));
+        return batch;
+    }
+
     @Override public void dispose()
     {
+        ShellFireAnimation.free();
         animations.dispose();
         super.dispose();
     }
