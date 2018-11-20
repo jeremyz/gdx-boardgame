@@ -53,7 +53,10 @@ public class AnimationsScreen extends AbstractScreen
         path = buildPath(app);
 
         AnimationBatch batch;
-        ShellFireAnimation.register("tankShell", 1f, 66f, 400f, 1.3f, 1f,
+        ShellFireAnimation.register("cfg0", 1f, 66f, 400f, 1.3f, 1f,
+                app.assets.getTexture(app.assets.SHELL_FIRE), 1, 8,
+                app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8);
+        ShellFireAnimation.register("cfg1", .5f, 11f, 500f, .8f, 1f,
                 app.assets.getTexture(app.assets.SHELL_FIRE), 1, 8,
                 app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8);
 
@@ -122,8 +125,8 @@ public class AnimationsScreen extends AbstractScreen
     private AnimationBatch getFireAnimationBatch()
     {
         AnimationBatch batch = AnimationBatch.obtain(2);
-        batch.add(ShellFireAnimation.obtain("tankShell", other0, panzer));
-        batch.add(ShellFireAnimation.obtain("tankShell", other1, panzer));
+        batch.add(ShellFireAnimation.obtain("cfg0", other0, panzer));
+        batch.add(ShellFireAnimation.obtain("cfg1", other1, panzer));
         return batch;
     }
 
