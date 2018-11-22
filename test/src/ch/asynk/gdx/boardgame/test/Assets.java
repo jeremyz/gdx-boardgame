@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame.test;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,7 +26,9 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String PANZER = "panzer.png";
     public static final String HEX_OVERLAYS = "hex-overlays.atlas";
     public static final String SHELL_FIRE = "shell_fire.png";
+    public static final String SHELL_FIRE_SND = "shell_fire.ogg";
     public static final String EXPLOSIONS = "explosions.png";
+    public static final String EXPLOSION_SND = "explosion.ogg";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
@@ -73,7 +76,9 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(FONT_25, BitmapFont.class, params25);
         load(HEX_OVERLAYS, TextureAtlas.class);
         load(SHELL_FIRE, Texture.class);
+        load(SHELL_FIRE_SND, Sound.class);
         load(EXPLOSIONS, Texture.class);
+        load(EXPLOSION_SND, Sound.class);
     }
 
     public void unloadApp()
@@ -88,6 +93,8 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(FONT_25);
         unload(HEX_OVERLAYS);
         unload(SHELL_FIRE);
+        unload(SHELL_FIRE_SND);
         unload(EXPLOSIONS);
+        unload(EXPLOSION_SND);
     }
 }

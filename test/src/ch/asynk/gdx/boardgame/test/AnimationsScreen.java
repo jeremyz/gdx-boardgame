@@ -55,10 +55,14 @@ public class AnimationsScreen extends AbstractScreen
         AnimationBatch batch;
         ShellFireAnimation.register("cfg0", 1f, 66f, 400f, 1.3f, 1f,
                 app.assets.getTexture(app.assets.SHELL_FIRE), 1, 8,
-                app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8);
+                app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8,
+                app.assets.getSound(app.assets.SHELL_FIRE_SND),
+                app.assets.getSound(app.assets.EXPLOSION_SND));
         ShellFireAnimation.register("cfg1", .5f, 11f, 500f, .8f, 1f,
                 app.assets.getTexture(app.assets.SHELL_FIRE), 1, 8,
-                app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8);
+                app.assets.getTexture(app.assets.EXPLOSIONS), 16, 8,
+                app.assets.getSound(app.assets.SHELL_FIRE_SND),
+                app.assets.getSound(app.assets.EXPLOSION_SND));
 
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
