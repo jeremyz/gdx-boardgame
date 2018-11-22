@@ -4,12 +4,13 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Pool;
 
 import ch.asynk.gdx.boardgame.FramedSprite;
 import ch.asynk.gdx.boardgame.Piece;
@@ -25,8 +26,12 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         public float explosionDuration;
         public FramedSprite shellSprites;
         public FramedSprite explosionSprites;
+        public Sound shellFireSnd;
+        public Sound explosionSnd;
         public Config(float maxFireDelay, float maxShootScattering, float shellSpeed,
-                float smokeDuration, float explosionDuration, FramedSprite shellSprites, FramedSprite explosionSprites)
+                float smokeDuration, float explosionDuration,
+                FramedSprite shellSprites, FramedSprite explosionSprites,
+                Sound shellFireSnd, Sound explosionSnd)
         {
             this.maxFireDelay = maxFireDelay;
             this.maxShootScattering = maxShootScattering;
@@ -35,6 +40,8 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
             this.explosionDuration = explosionDuration;
             this.shellSprites = shellSprites;
             this.explosionSprites = explosionSprites;
+            this.shellFireSnd = shellFireSnd;
+            this.explosionSnd = explosionSnd;
         }
     }
 
@@ -47,12 +54,15 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
             float smokeDuration,
             float explosionDuration,
             final Texture shellTexture, int shellC, int shellR,
-            final Texture explosionTexture, int explosionC, int explosionR
+            final Texture explosionTexture, int explosionC, int explosionR,
+            final Sound shellFireSnd,
+            final Sound explosionSnd
             )
     {
         Config cfg = new Config(maxFireDelay, maxShootScattering, shellSpeed, smokeDuration, explosionDuration,
                 new FramedSprite(shellTexture, shellC, shellR),
-                new FramedSprite(explosionTexture, explosionC, explosionR)
+                new FramedSprite(explosionTexture, explosionC, explosionR),
+                shellFireSnd, explosionSnd
                 );
         configs.put(name, cfg);
     }
@@ -198,6 +208,9 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         if (!fired) {
             fired = true;
             drawFire = true;
+            if(cfg.shellFireSnd != null) {
+                cfg.shellFireSnd.play();
+            }
         }
 
         if (!hit && (elapsed < hitTime)) {
@@ -211,6 +224,9 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         if (!hit) {
             hit = true;
             drawExplosion = true;
+            if(cfg.explosionSnd != null) {
+                cfg.explosionSnd.play();
+            }
         }
 
         float dt = (elapsed - hitTime);
