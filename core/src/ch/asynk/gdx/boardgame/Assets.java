@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,5 +27,10 @@ public class Assets extends AssetManager
     public BitmapFont getFont(String assetName)
     {
         return get(assetName, BitmapFont.class);
+    }
+
+    public Sound getSound(String assetName)
+    {
+        return get(assetName, Sound.class);
     }
 }
