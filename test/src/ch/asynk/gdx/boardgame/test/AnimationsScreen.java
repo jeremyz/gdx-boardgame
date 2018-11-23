@@ -28,6 +28,7 @@ public class AnimationsScreen extends AbstractScreen
     private final Piece panzer;
     private final Piece other0;
     private final Piece other1;
+    private final Dice dice;
     private final Camera cam;
     private final Board board;
     private final Path path;
@@ -46,6 +47,9 @@ public class AnimationsScreen extends AbstractScreen
         this.other1 = getPiece(app, 3, 1, Orientation.NE);
         this.other0.setAlpha(0f);
         this.other1.setAlpha(0f);
+
+        this.dice = getDice(app, 6, 1, 1);
+        this.dice.rollTo(6);
 
         cam.zoom(-0.3f);
         cam.centerOnWorld();
@@ -79,11 +83,20 @@ public class AnimationsScreen extends AbstractScreen
         batch.add(FadeAnimation.obtain(other1, 0f, 1f, 1f));
         animations.add(batch);
         animations.add(getFireAnimationBatch());
-        animations.add(DelayAnimation.obtain(1f));
         batch = AnimationBatch.obtain(2);
         batch.add(FadeAnimation.obtain(other0, 1f, 0f, 1f));
         batch.add(FadeAnimation.obtain(other1, 1f, 0f, 1f));
         animations.add(batch);
+    }
+
+    private Dice getDice(final GdxBoardTest app, int col, int row, int side)
+    {
+        Dice d = new Dice(app.assets.getTexture(app.assets.DICE), 9, 16, 0.1f);
+        Vector2 v = new Vector2();
+        this.board.centerOf(col, row, v);
+        d.centerOn(v.x, v.y);
+        d.setSide(side);
+        return d;
     }
 
     private Piece getPiece(final GdxBoardTest app, int col, int row, Orientation o)
@@ -152,6 +165,7 @@ public class AnimationsScreen extends AbstractScreen
                 inputBlocked = false;
         }
 
+        dice.animate(delta);
         if (animations.animate(delta)) {
             app.switchToMenu();
             return;
@@ -170,6 +184,7 @@ public class AnimationsScreen extends AbstractScreen
         panzer.draw(batch);
         other0.draw(batch);
         other1.draw(batch);
+        dice.draw(batch);
         animations.draw(batch);
         batch.end();
     }

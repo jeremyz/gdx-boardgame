@@ -29,6 +29,8 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String SHELL_FIRE_SND = "shell_fire.ogg";
     public static final String EXPLOSIONS = "explosions.png";
     public static final String EXPLOSION_SND = "explosion.ogg";
+    public static final String DICE = "dice.png";
+    public static final String DICE_SND = "dice.ogg";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
@@ -79,6 +81,8 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(SHELL_FIRE_SND, Sound.class);
         load(EXPLOSIONS, Texture.class);
         load(EXPLOSION_SND, Sound.class);
+        load(DICE, Texture.class);
+        load(DICE_SND, Sound.class);
     }
 
     public void unloadApp()
@@ -96,5 +100,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(SHELL_FIRE_SND);
         unload(EXPLOSIONS);
         unload(EXPLOSION_SND);
+        unload(DICE);
+        unload(DICE_SND);
     }
 }
