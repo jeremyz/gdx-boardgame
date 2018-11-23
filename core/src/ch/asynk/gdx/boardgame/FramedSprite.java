@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class FramedSprite implements Drawable
+public class FramedSprite implements Drawable, Positionable
 {
     private TextureRegion[][] frames;
     private TextureRegion frame;
@@ -44,6 +44,37 @@ public class FramedSprite implements Drawable
     public TextureRegion getFrame()
     {
         return frame;
+    }
+
+    @Override public float getX()
+    {
+        return x;
+    }
+
+    @Override public float getY()
+    {
+        return y;
+    }
+
+    @Override public float getWidth()
+    {
+        return frame.getRegionWidth();
+    }
+
+    @Override public float getHeight()
+    {
+        return frame.getRegionHeight();
+    }
+
+    @Override public void translate(float dx, float dy)
+    {
+        setPosition(getX() + dx, getY() + dy);
+    }
+
+    @Override public void setPosition(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     @Override public void draw(Batch batch)
