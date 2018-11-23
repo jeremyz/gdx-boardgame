@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class FramedSprite implements Drawable, Positionable
 {
+    public static int trim = 2;
+    public static int offset = 0;
+
     private TextureRegion[][] frames;
     private TextureRegion frame;
     public final int rows;
@@ -23,6 +26,22 @@ public class FramedSprite implements Drawable, Positionable
         this.x = 0;
         this.y = 0;
         this.a = 0;
+
+        if (trim > 0 || offset > 0) {
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < cols; c++) {
+                    TextureRegion f = frames[r][c];
+                    if (offset > 0 ){
+                        f.setRegionX(f.getRegionX() + offset);
+                        f.setRegionY(f.getRegionY() + offset);
+                    }
+                    if (trim > 0) {
+                        f.setRegionWidth(f.getRegionWidth() - trim);
+                        f.setRegionHeight(f.getRegionHeight() - trim);
+                    }
+                }
+            }
+        }
     }
 
     public FramedSprite(FramedSprite other)
