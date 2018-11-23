@@ -7,7 +7,6 @@ import java.util.Random;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Pool;
@@ -53,15 +52,15 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
             float shellSpeed,
             float smokeDuration,
             float explosionDuration,
-            final Texture shellTexture, int shellC, int shellR,
-            final Texture explosionTexture, int explosionC, int explosionR,
+            final Texture shellTexture, int shellR, int shellC,
+            final Texture explosionTexture, int explosionR, int explosionC,
             final Sound shellFireSnd,
             final Sound explosionSnd
             )
     {
         Config cfg = new Config(maxFireDelay, maxShootScattering, shellSpeed, smokeDuration, explosionDuration,
-                new FramedSprite(shellTexture, shellC, shellR),
-                new FramedSprite(explosionTexture, explosionC, explosionR),
+                new FramedSprite(shellTexture, shellR, shellC),
+                new FramedSprite(explosionTexture, explosionR, explosionC),
                 shellFireSnd, explosionSnd
                 );
         configs.put(name, cfg);
@@ -119,22 +118,18 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
     private float smokeEndTime;
     private float explosionEndTime;
 
-    private TextureRegion fireRegion;
-    private float fireX;
-    private float fireY;
-    private float fireA;
-    private float fireW;
-    private float fireDx;
-    private float fireDy;
-    private float fireDw;
+    private FramedSprite shellSprites;
+    private float shellW;
+    private float shellDx;
+    private float shellDy;
+    private float shellDw;
 
     private int smokeFrame;
     private float smokeDf;
 
-    private int explosionStart;
+    private FramedSprite explosionSprites;
     private int explosionFrame;
-    private float explosionX;
-    private float explosionY;
+    private int explosionRow;
     private float explosionDf;
 
     private ShellFireAnimation()
@@ -168,26 +163,28 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         this.explosionEndTime = this.hitTime + explosionDuration;
         float endTime = (this.smokeEndTime > this.explosionEndTime ? this.smokeEndTime : this.explosionEndTime);
 
-        // fire vars
-        this.fireX = x0;
-        this.fireY = y0;
-        this.fireA = a;
-        this.fireW = 0f;
-        this.fireDw = (w  / fireDuration);
-        this.fireDx = (dx / fireDuration);
-        this.fireDy = (dy / fireDuration);
-        this.fireRegion = new TextureRegion(cfg.shellSprites.frames[0]);
+        // shell vars
+        this.shellSprites = new FramedSprite(cfg.shellSprites);
+        this.shellSprites.x = x0;
+        this.shellSprites.y = y0;
+        this.shellSprites.a = a;
+        this.shellW = 0f;
+        this.shellDw = (w  / fireDuration);
+        this.shellDx = (dx / fireDuration);
+        this.shellDy = (dy / fireDuration);
 
         // smoke vars
         this.smokeFrame = 0;
-        this.smokeDf = (cfg.shellSprites.rows / smokeDuration);
+        this.smokeDf = ((shellSprites.rows - 1) / smokeDuration);
 
         // explosion vars
-        this.explosionX = (x1 - (cfg.explosionSprites.width / 2.0f));
-        this.explosionY = (y1 - (cfg.explosionSprites.height / 2.0f));
-        this.explosionDf = (cfg.explosionSprites.cols / explosionDuration);
-        this.explosionStart = (random.nextInt(cfg.explosionSprites.rows) * cfg.explosionSprites.cols);
-        this.explosionFrame = this.explosionStart;
+        this.explosionFrame = 0;
+        this.explosionSprites = new FramedSprite(cfg.explosionSprites);
+        this.explosionSprites.x = (x1 - (explosionSprites.getFrame().getRegionWidth() / 2.0f));
+        this.explosionSprites.y = (y1 - (explosionSprites.getFrame().getRegionHeight() / 2.0f));
+        this.explosionDf = (explosionSprites.cols / explosionDuration);
+        this.explosionRow = random.nextInt(explosionSprites.rows);
+        this.explosionSprites.setFrame(explosionRow, 0);
 
         this.fired = false;
         this.hit = false;
@@ -214,10 +211,10 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         }
 
         if (!hit && (elapsed < hitTime)) {
-            fireW += (fireDw * delta);
-            fireX += (fireDx * delta);
-            fireY += (fireDy * delta);
-            fireRegion.setRegionWidth((int) fireW);
+            this.shellW += (shellDw * delta);
+            this.shellSprites.x += (shellDx * delta);
+            this.shellSprites.y += (shellDy * delta);
+            this.shellSprites.getFrame().setRegionWidth((int) shellW);
             return;
         }
 
@@ -232,18 +229,22 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         float dt = (elapsed - hitTime);
 
         if (elapsed < smokeEndTime) {
-            int frame = (int) (dt * smokeDf);
+            int frame = (int) (dt * smokeDf) + 1;
             if (frame != smokeFrame) {
                 smokeFrame = frame;
-                fireRegion.setRegion(cfg.shellSprites.frames[smokeFrame]);
-                fireRegion.setRegionWidth((int) fireW);
+                this.shellSprites.setFrame(smokeFrame, 0);
+                this.shellSprites.getFrame().setRegionWidth((int) shellW);
             }
         } else {
             drawFire = false;
         }
 
         if (elapsed < explosionEndTime) {
-            explosionFrame = (explosionStart + (int) (dt * explosionDf));
+            int frame = (int) (dt * explosionDf);
+            if (frame != explosionFrame) {
+                explosionFrame = frame;
+                explosionSprites.setFrame(explosionRow, explosionFrame);
+            }
         } else {
             drawExplosion = false;
         }
@@ -252,11 +253,11 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
     @Override public void draw(Batch batch)
     {
         if (drawFire) {
-            batch.draw(fireRegion, fireX, fireY, 0, 0, fireRegion.getRegionWidth(), fireRegion.getRegionHeight(), 1f, 1f, fireA);
+            this.shellSprites.draw(batch);
         }
 
         if (drawExplosion) {
-            batch.draw(cfg.explosionSprites.frames[explosionFrame], explosionX, explosionY);
+            this.explosionSprites.draw(batch);
         }
     }
 }
