@@ -6,7 +6,11 @@ public interface Positionable
     public float getY();
     public float getWidth();
     public float getHeight();
-    public void centerOn(float cx, float cy);
     public void translate(float dx, float dy);
     public void setPosition(float x, float y);
+
+    default public void centerOn(float cx, float cy)
+    {
+        setPosition((cx - (getWidth() / 2f)), (cy - (getHeight() / 2f)));
+    }
 }

@@ -27,11 +27,6 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
         return getScaleX();
     }
 
-    @Override public void centerOn(float cx, float cy)
-    {
-        setPosition((cx - (getWidth() / 2f)), (cy - (getHeight() / 2f)));
-    }
-
     public void getPosOn(Tile tile, Orientation orientation, Vector3 v)
     {
         v.set((tile.x - (getWidth() / 2f)), (tile.y- (getHeight() / 2f)), orientation.r());
