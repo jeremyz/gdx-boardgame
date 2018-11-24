@@ -91,7 +91,8 @@ public class AnimationsScreen extends AbstractScreen
 
     private Dice getDice(final GdxBoardTest app, int col, int row, int side)
     {
-        Dice d = new Dice(app.assets.getTexture(app.assets.DICE), 9, 16, 0.1f);
+        Dice d = new Dice(app.assets.getTexture(app.assets.DICE), 9, 16, 0.02f,
+                app.assets.getSound(app.assets.DICE_SND));
         Vector2 v = new Vector2();
         this.board.centerOf(col, row, v);
         d.centerOn(v.x, v.y);

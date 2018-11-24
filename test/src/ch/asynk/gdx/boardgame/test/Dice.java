@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame.test;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 import ch.asynk.gdx.boardgame.FramedSprite;
@@ -22,12 +23,14 @@ public class Dice extends FramedSprite implements Drawable, Animation
     private int last;
     private float dt;
     private float elapsed;
+    private Sound snd;
 
-    public Dice(Texture texture, int rows, int cols, float dt)
+    public Dice(Texture texture, int rows, int cols, float dt, Sound snd)
     {
         super(texture, rows, cols);
         this.roll = null;
         this.dt = dt;
+        this.snd = snd;
     }
 
     public void setSide(int i)
@@ -48,6 +51,9 @@ public class Dice extends FramedSprite implements Drawable, Animation
         last = roll.length - 1;
         elapsed = 0f;
         setFrame(roll[x]);
+        if (snd != null) {
+            snd.play();
+        }
     }
 
     @Override public void dispose() { }

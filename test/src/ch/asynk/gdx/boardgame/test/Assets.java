@@ -15,22 +15,22 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
 {
     public static final String LOADING = "loading.atlas";
 
-    public static final String CORNER = "corner.png";
-    public static final String MAP_00 = "map_00.png";
-    public static final String CHESS = "chess.jpg";
-    public static final String TRI = "triangle.png";
-    public static final String FONT = "veteran-typewriter.ttf";
-    public static final String FONT_20 = "size20.ttf";
-    public static final String FONT_25 = "size25.ttf";
-    public static final String PATCH = "ui-patch.png";
-    public static final String PANZER = "panzer.png";
-    public static final String HEX_OVERLAYS = "hex-overlays.atlas";
-    public static final String SHELL_FIRE = "shell_fire.png";
-    public static final String SHELL_FIRE_SND = "shell_fire.ogg";
-    public static final String EXPLOSIONS = "explosions.png";
-    public static final String EXPLOSION_SND = "explosion.ogg";
-    public static final String DICE = "dice.png";
-    public static final String DICE_SND = "dice.ogg";
+    public static final String CORNER               = "corner.png";
+    public static final String MAP_00               = "map_00.png";
+    public static final String CHESS                = "chess.jpg";
+    public static final String TRI                  = "triangle.png";
+    public static final String FONT                 = "veteran-typewriter.ttf";
+    public static final String FONT_20              = "size20.ttf";
+    public static final String FONT_25              = "size25.ttf";
+    public static final String PATCH                = "ui-patch.png";
+    public static final String PANZER               = "panzer.png";
+    public static final String HEX_OVERLAYS         = "hex-overlays.atlas";
+    public static final String SHELL_FIRE           = "shell_fire.png";
+    public static final String SHELL_FIRE_SND       = "shell_fire.ogg";
+    public static final String EXPLOSIONS           = "explosions.png";
+    public static final String EXPLOSION_SND        = "explosion.ogg";
+    public static final String DICE                 = "dice.png";
+    public static final String DICE_SND             = "dice.ogg";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
