@@ -56,7 +56,6 @@ public class MoveAnimation implements Animation, Pool.Poolable
         setNextMove();
         percent = 0f;
         dp = 1f * speed;
-        notify = true;
     }
 
     private boolean setNextMove()
