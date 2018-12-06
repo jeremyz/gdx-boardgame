@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame.animations;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.math.Vector3;
 
@@ -22,13 +23,14 @@ public class MoveAnimation implements Animation, Pool.Poolable
         }
     };
 
-    public static MoveAnimation obtain(Piece piece, Path path, float speed, MoveAnimationCb cb)
+    public static MoveAnimation obtain(Piece piece, Path path, float speed, Sound snd, MoveAnimationCb cb)
     {
         MoveAnimation a = moveAnimationPool.obtain();
 
         a.piece = piece;
         a.path = path;
         a.speed = speed;
+        a.snd = snd;
         a.cb = cb;
 
         a.init();
@@ -45,6 +47,7 @@ public class MoveAnimation implements Animation, Pool.Poolable
     private boolean notify;
     private Vector3 dst = new Vector3();
     private Vector3 dt = new Vector3();
+    private Sound snd;
 
     private MoveAnimation()
     {
@@ -97,9 +100,14 @@ public class MoveAnimation implements Animation, Pool.Poolable
 
     @Override public boolean animate(float delta)
     {
-        if (notify && percent == 0f) {
-            cb.onTileChange(piece, path);
-            notify = false;
+        if (percent == 0f) {
+            if (snd != null) {
+                snd.loop();
+            }
+            if (notify) {
+                cb.onTileChange(piece, path);
+                notify = false;
+            }
         }
         piece.translate(dt.x * delta, dt.y * delta);
         piece.rotate(dt.z * delta);
@@ -119,6 +127,12 @@ public class MoveAnimation implements Animation, Pool.Poolable
             }
         }
 
-        return (percent >= 1f);
+        if (percent >= 1f) {
+            if (snd != null) {
+                snd.stop();
+            }
+            return true;
+        }
+        return false;
     }
 }
