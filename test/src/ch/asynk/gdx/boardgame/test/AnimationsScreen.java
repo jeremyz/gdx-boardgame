@@ -71,7 +71,7 @@ public class AnimationsScreen extends AbstractScreen
         animations = AnimationSequence.obtain(10);
         animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
         animations.add(DelayAnimation.obtain(1f));
-        animations.add(MoveAnimation.obtain(panzer, path, 2f, (p,path) -> {
+        animations.add(MoveAnimation.obtain(panzer, path, 2f, app.assets.getSound(app.assets.TANK_MOVE_SND), (p,path) -> {
             Tile from = path.from();
             Tile to = path.to();
             System.err.println(String.format("%s -> %s", from, to));

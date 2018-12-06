@@ -25,6 +25,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String PATCH                = "ui-patch.png";
     public static final String PANZER               = "panzer.png";
     public static final String HEX_OVERLAYS         = "hex-overlays.atlas";
+    public static final String TANK_MOVE_SND        = "tank_move.ogg";
     public static final String SHELL_FIRE           = "shell_fire.png";
     public static final String SHELL_FIRE_SND       = "shell_fire.ogg";
     public static final String EXPLOSIONS           = "explosions.png";
@@ -83,6 +84,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(EXPLOSION_SND, Sound.class);
         load(DICE, Texture.class);
         load(DICE_SND, Sound.class);
+        load(TANK_MOVE_SND, Sound.class);
     }
 
     public void unloadApp()
@@ -102,5 +104,6 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(EXPLOSION_SND);
         unload(DICE);
         unload(DICE_SND);
+        unload(TANK_MOVE_SND);
     }
 }
