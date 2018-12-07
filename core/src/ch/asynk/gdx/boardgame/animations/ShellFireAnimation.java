@@ -19,7 +19,7 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
     private static class Config
     {
         public float maxFireDelay;
-        public float maxShootScattering;
+        public float maxFireScattering;
         public float shellSpeed;
         public float smokeDuration;
         public float explosionDuration;
@@ -27,13 +27,13 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
         public FramedSprite explosionSprites;
         public Sound shellFireSnd;
         public Sound explosionSnd;
-        public Config(float maxFireDelay, float maxShootScattering, float shellSpeed,
+        public Config(float maxFireDelay, float maxFireScattering, float shellSpeed,
                 float smokeDuration, float explosionDuration,
                 FramedSprite shellSprites, FramedSprite explosionSprites,
                 Sound shellFireSnd, Sound explosionSnd)
         {
             this.maxFireDelay = maxFireDelay;
-            this.maxShootScattering = maxShootScattering;
+            this.maxFireScattering = maxFireScattering;
             this.shellSpeed = shellSpeed;
             this.smokeDuration = smokeDuration;
             this.explosionDuration = explosionDuration;
@@ -48,7 +48,7 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
 
     public static void register(final String name,
             float maxFireDelay,
-            float maxShootScattering,
+            float maxFireScattering,
             float shellSpeed,
             float smokeDuration,
             float explosionDuration,
@@ -58,7 +58,7 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
             final Sound explosionSnd
             )
     {
-        Config cfg = new Config(maxFireDelay, maxShootScattering, shellSpeed, smokeDuration, explosionDuration,
+        Config cfg = new Config(maxFireDelay, maxFireScattering, shellSpeed, smokeDuration, explosionDuration,
                 new FramedSprite(shellTexture, shellR, shellC),
                 new FramedSprite(explosionTexture, explosionR, explosionC),
                 shellFireSnd, explosionSnd
@@ -88,7 +88,7 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
     public static Vector2 tv = new Vector2();
     public static ShellFireAnimation obtain(final String configName, Piece shooter, Piece target)
     {
-        shooter.getShootingPoint(sv, target);
+        shooter.getFireingPoint(sv, target);
         target.getImpactPoint(tv);
         return obtain(configName, sv.x, sv.y, tv.x, tv.y);
     }
@@ -144,8 +144,8 @@ public class ShellFireAnimation extends TimedAnimation implements Pool.Poolable
     private void compute(float x0, float y0, float x1, float y1)
     {
         // scattering
-        x1 = (x1 + (random.nextFloat() * cfg.maxShootScattering) - (cfg.maxShootScattering / 2f));
-        y1 = (y1 + (random.nextFloat() * cfg.maxShootScattering) -  (cfg.maxShootScattering / 2f));
+        x1 = (x1 + (random.nextFloat() * cfg.maxFireScattering) - (cfg.maxFireScattering / 2f));
+        y1 = (y1 + (random.nextFloat() * cfg.maxFireScattering) -  (cfg.maxFireScattering / 2f));
 
         // geometry
         float dx = (x1 - x0);

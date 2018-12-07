@@ -51,7 +51,7 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
         return (Orientation.fromR(getRotation()) == orientation);
     }
 
-    public void getShootingPoint(Vector2 v, Piece target)
+    public void getFireingPoint(Vector2 v, Piece target)
     {
         float x0 = getX();
         float y0 = getY();
