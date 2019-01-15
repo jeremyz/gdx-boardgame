@@ -19,19 +19,23 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String MAP_00               = "map_00.png";
     public static final String CHESS                = "chess.jpg";
     public static final String TRI                  = "triangle.png";
-    public static final String FONT                 = "veteran-typewriter.ttf";
+    public static final String FONT                 = "american-typewriter.ttf";
     public static final String FONT_20              = "size20.ttf";
     public static final String FONT_25              = "size25.ttf";
     public static final String PATCH                = "ui-patch.png";
     public static final String PANZER               = "panzer.png";
+    public static final String ENGINEER             = "engineer.png";
     public static final String HEX_OVERLAYS         = "hex-overlays.atlas";
-    public static final String TANK_MOVE_SND        = "tank_move.ogg";
+    public static final String GUN_FIRE             = "gun_fire.png";
+    public static final String GUN_FIRE_SND         = "gun_fire.ogg";
     public static final String SHELL_FIRE           = "shell_fire.png";
     public static final String SHELL_FIRE_SND       = "shell_fire.ogg";
     public static final String EXPLOSIONS           = "explosions.png";
     public static final String EXPLOSION_SND        = "explosion.ogg";
     public static final String DICE                 = "dice.png";
     public static final String DICE_SND             = "dice.ogg";
+    public static final String INFANTRY_MOVE_SND    = "infantry_move.ogg";
+    public static final String TANK_MOVE_SND        = "tank_move.ogg";
 
     private final FreeTypeFontLoaderParameter params20;
     private final FreeTypeFontLoaderParameter params25;
@@ -75,15 +79,19 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(CORNER, Texture.class);
         load(PATCH, Texture.class);
         load(PANZER, Texture.class);
+        load(ENGINEER, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
         load(FONT_25, BitmapFont.class, params25);
         load(HEX_OVERLAYS, TextureAtlas.class);
+        load(GUN_FIRE, Texture.class);
+        load(GUN_FIRE_SND, Sound.class);
         load(SHELL_FIRE, Texture.class);
         load(SHELL_FIRE_SND, Sound.class);
         load(EXPLOSIONS, Texture.class);
         load(EXPLOSION_SND, Sound.class);
         load(DICE, Texture.class);
         load(DICE_SND, Sound.class);
+        load(INFANTRY_MOVE_SND, Sound.class);
         load(TANK_MOVE_SND, Sound.class);
     }
 
@@ -95,15 +103,19 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(CORNER);
         unload(PATCH);
         unload(PANZER);
+        unload(ENGINEER);
         unload(FONT_20);
         unload(FONT_25);
         unload(HEX_OVERLAYS);
+        unload(GUN_FIRE);
+        unload(GUN_FIRE_SND);
         unload(SHELL_FIRE);
         unload(SHELL_FIRE_SND);
         unload(EXPLOSIONS);
         unload(EXPLOSION_SND);
         unload(DICE);
         unload(DICE_SND);
+        unload(INFANTRY_MOVE_SND);
         unload(TANK_MOVE_SND);
     }
 }
