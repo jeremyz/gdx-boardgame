@@ -20,7 +20,7 @@ import ch.asynk.gdx.boardgame.animations.BounceAnimation;
 import ch.asynk.gdx.boardgame.animations.DelayAnimation;
 import ch.asynk.gdx.boardgame.animations.FadeAnimation;
 import ch.asynk.gdx.boardgame.animations.MoveAnimation;
-import ch.asynk.gdx.boardgame.animations.ShellFireAnimation;
+import ch.asynk.gdx.boardgame.animations.FireAnimation;
 
 public class AnimationsScreen extends AbstractScreen
 {
@@ -28,6 +28,7 @@ public class AnimationsScreen extends AbstractScreen
     private final Piece panzer;
     private final Piece other0;
     private final Piece other1;
+    private final Piece other2;
     private final Dice dice;
     private final Camera cam;
     private final Board board;
@@ -42,11 +43,10 @@ public class AnimationsScreen extends AbstractScreen
         this.board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
 
-        this.panzer = getPiece(app, 7, 4, Orientation.NW);
-        this.other0 = getPiece(app, 9, 5, Orientation.SW);
-        this.other1 = getPiece(app, 3, 1, Orientation.NE);
-        this.other0.setAlpha(0f);
-        this.other1.setAlpha(0f);
+        this.panzer = getPiece(app, 7, 4, Orientation.NW, app.assets.PANZER, 1f);
+        this.other0 = getPiece(app, 9, 5, Orientation.SW, app.assets.PANZER, 0f);
+        this.other1 = getPiece(app, 3, 1, Orientation.NE, app.assets.PANZER, 0f);
+        this.other2 = getPiece(app, 7, 5, Orientation.SE, app.assets.ENGINEER, 0f);
 
         this.dice = getDice(app, 6, 1, 1);
         this.dice.rollTo(6);
@@ -57,35 +57,42 @@ public class AnimationsScreen extends AbstractScreen
         path = buildPath(app);
 
         AnimationBatch batch;
-        ShellFireAnimation.register("cfg0", 1f, 66f, 400f, 1.3f, 1f,
+        FireAnimation.register("mgun0", 11, 0.1f, 0.7f, 30f, 150f, 1.3f, 0f,
+                app.assets.getTexture(app.assets.GUN_FIRE), 8, 1,
+                null, 0, 0,
+                app.assets.getSound(app.assets.GUN_FIRE_SND),
+                null);
+        FireAnimation.register("shell0", 1, 0, 1f, 66f, 400f, 1.3f, 1f,
                 app.assets.getTexture(app.assets.SHELL_FIRE), 8, 1,
                 app.assets.getTexture(app.assets.EXPLOSIONS), 8, 16,
                 app.assets.getSound(app.assets.SHELL_FIRE_SND),
                 app.assets.getSound(app.assets.EXPLOSION_SND));
-        ShellFireAnimation.register("cfg1", .5f, 11f, 500f, .8f, 1f,
+        FireAnimation.register("shell1", 1, 0, .5f, 11f, 500f, .8f, 1f,
                 app.assets.getTexture(app.assets.SHELL_FIRE), 8, 1,
                 app.assets.getTexture(app.assets.EXPLOSIONS), 8, 16,
                 app.assets.getSound(app.assets.SHELL_FIRE_SND),
                 app.assets.getSound(app.assets.EXPLOSION_SND));
 
         animations = AnimationSequence.obtain(10);
-        animations.add(BounceAnimation.obtain(panzer, 2f, 3f, -1));
-        animations.add(DelayAnimation.obtain(1f));
-        animations.add(MoveAnimation.obtain(panzer, path, 2f, app.assets.getSound(app.assets.TANK_MOVE_SND), (p,path) -> {
+        animations.add(BounceAnimation.obtain(panzer, 1f, 3f, -1));
+        animations.add(DelayAnimation.obtain(.5f));
+        animations.add(MoveAnimation.obtain(panzer, path, 2.5f, app.assets.getSound(app.assets.TANK_MOVE_SND), (p,path) -> {
             Tile from = path.from();
             Tile to = path.to();
             System.err.println(String.format("%s -> %s", from, to));
             from.enableOverlay(2, false);
             if (to != null) to.enableOverlay(2, true);
         }));
-        batch = AnimationBatch.obtain(2);
-        batch.add(FadeAnimation.obtain(other0, 0f, 1f, 1f));
-        batch.add(FadeAnimation.obtain(other1, 0f, 1f, 1f));
+        batch = AnimationBatch.obtain(3);
+        batch.add(FadeAnimation.obtain(other0, 0f, 1f, .5f));
+        batch.add(FadeAnimation.obtain(other1, 0f, 1f, .5f));
+        batch.add(FadeAnimation.obtain(other2, 0f, 1f, .5f));
         animations.add(batch);
         animations.add(getFireAnimationBatch());
-        batch = AnimationBatch.obtain(2);
-        batch.add(FadeAnimation.obtain(other0, 1f, 0f, 1f));
-        batch.add(FadeAnimation.obtain(other1, 1f, 0f, 1f));
+        batch = AnimationBatch.obtain(3);
+        batch.add(FadeAnimation.obtain(other0, 1f, 0f, .5f));
+        batch.add(FadeAnimation.obtain(other1, 1f, 0f, .5f));
+        batch.add(FadeAnimation.obtain(other2, 1f, 0f, .5f));
         animations.add(batch);
     }
 
@@ -100,13 +107,14 @@ public class AnimationsScreen extends AbstractScreen
         return d;
     }
 
-    private Piece getPiece(final GdxBoardTest app, int col, int row, Orientation o)
+    private Piece getPiece(final GdxBoardTest app, int col, int row, Orientation o, String rsc, float a)
     {
-        Piece p = new Piece(app.assets.getTexture(app.assets.PANZER));
+        Piece p = new Piece(app.assets.getTexture(rsc));
         Vector2 v = new Vector2();
         this.board.centerOf(col, row, v);
         p.centerOn(v.x, v.y);
         p.setRotation(o.r());
+        p.setAlpha(a);
         return p;
     }
 
@@ -142,15 +150,16 @@ public class AnimationsScreen extends AbstractScreen
 
     private AnimationBatch getFireAnimationBatch()
     {
-        AnimationBatch batch = AnimationBatch.obtain(2);
-        batch.add(ShellFireAnimation.obtain("cfg0", other0, panzer));
-        batch.add(ShellFireAnimation.obtain("cfg1", other1, panzer));
+        AnimationBatch batch = AnimationBatch.obtain(3);
+        batch.add(FireAnimation.obtain("shell0", other0, panzer));
+        batch.add(FireAnimation.obtain("shell1", other1, panzer));
+        batch.add(FireAnimation.obtain("mgun0", other2, panzer));
         return batch;
     }
 
     @Override public void dispose()
     {
-        ShellFireAnimation.free();
+        FireAnimation.free();
         animations.dispose();
         super.dispose();
     }
@@ -185,6 +194,7 @@ public class AnimationsScreen extends AbstractScreen
         panzer.draw(batch);
         other0.draw(batch);
         other1.draw(batch);
+        other2.draw(batch);
         dice.draw(batch);
         animations.draw(batch);
         batch.end();
