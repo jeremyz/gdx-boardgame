@@ -46,10 +46,11 @@ public class FramedSprite implements Drawable, Positionable
 
     public FramedSprite(FramedSprite other)
     {
-        this.frames = other.frames;
-        this.frame = other.frame;
+        Texture t = other.frame.getTexture();
         this.rows = other.rows;
         this.cols = other.cols;
+        this.frames = TextureRegion.split(t, (t.getWidth() / cols), (t.getHeight() / rows));
+        this.frame = frames[0][0];
         this.x = other.x;
         this.y = other.y;
         this.a = other.a;
