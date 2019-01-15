@@ -15,7 +15,7 @@ public class FramedSprite implements Drawable, Positionable
     public final int cols;
     public float x;
     public float y;
-    public float a;
+    public float r;
 
     public FramedSprite(Texture texture, int rows, int cols)
     {
@@ -25,7 +25,7 @@ public class FramedSprite implements Drawable, Positionable
         this.cols = cols;
         this.x = 0;
         this.y = 0;
-        this.a = 0;
+        this.r = 0;
 
         if (trim > 0 || offset > 0) {
             for (int r = 0; r < rows; r++) {
@@ -53,7 +53,7 @@ public class FramedSprite implements Drawable, Positionable
         this.frame = frames[0][0];
         this.x = other.x;
         this.y = other.y;
-        this.a = other.a;
+        this.r = other.r;
     }
 
     public void setFrame(int row, int col)
@@ -99,6 +99,6 @@ public class FramedSprite implements Drawable, Positionable
 
     @Override public void draw(Batch batch)
     {
-        batch.draw(frame, x, y, 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), 1f, 1f, a);
+        batch.draw(frame, x, y, 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), 1f, 1f, r);
     }
 }
