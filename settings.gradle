@@ -1,1 +1,2 @@
 include 'test', 'core', 'assets'
+rootProject.name = 'gdx-boardgame'
