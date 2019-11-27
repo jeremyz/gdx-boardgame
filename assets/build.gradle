@@ -6,7 +6,7 @@ dependencies {
     texturePacker "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
 }
 
-defaultTasks 'build'
+defaultTasks 'generateAssets'
 
 task packLoading(type: JavaExec) {
     main = 'com.badlogic.gdx.tools.texturepacker.TexturePacker'
@@ -20,10 +20,10 @@ task packHexOverlays(type: JavaExec) {
     args = ['hex-overlays', 'data', 'hex-overlays']
 }
 
-task build() {
+task generateAssets() {
     description "Builds the skin at various DPIs"
 }
 
-build.dependsOn {
+generateAssets.dependsOn {
     tasks.findAll { task -> task.name.startsWith('pack') }
 }

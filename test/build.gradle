@@ -40,3 +40,4 @@ task dist(type: Jar) {
 }
 
 dist.dependsOn classes
+build.dependsOn(':assets:generateAssets')
