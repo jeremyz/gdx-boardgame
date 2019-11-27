@@ -3,6 +3,7 @@
 
 is a [libgdx](https://libgdx.badlogicgames.com/) based framework to build 2D boardgames.
 
+code is mainly extracted from https://github.com/jeremyz/rustanddust
 
 ## features
 
