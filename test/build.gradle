@@ -4,6 +4,7 @@ apply plugin: "java"
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.resources.srcDirs += [ "../assets/data/" ]
 
 project.ext.mainClassName = "ch.asynk.gdx.boardgame.test.DesktopLauncher"
 project.ext.assetsDir = new File("../assets/data");
