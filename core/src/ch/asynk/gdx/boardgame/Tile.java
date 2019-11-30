@@ -39,6 +39,6 @@ public class Tile implements Drawable
 
     @Override public String toString()
     {
-        return String.format("[%4d, %4d]", (int)x, (int)y);
+        return "[" + x + ", " + y + "]";
     }
 }

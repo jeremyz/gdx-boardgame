@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.StringBuilder;
 
 import ch.asynk.gdx.boardgame.utils.IterableArray;
 
@@ -53,10 +54,10 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
 
     @Override public String toString()
     {
-        String s = String.format(" o:%s\n", finalOrientation);
+        StringBuilder s = new StringBuilder(" o:").append(finalOrientation).append("\n");
         for (Tile t : this)
-            s += String.format("  %s\n", t.toString());
-        return s;
+            s.append("  ").append(t).append("\n");
+        return s.toString();
     }
 
     public Tile from()

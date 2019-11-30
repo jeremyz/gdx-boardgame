@@ -41,7 +41,7 @@ public class BoardFactory
                 break;
         }
         if (board == null) {
-            throw new RuntimeException( String.format("%s board type is not implemented yet.", boardType) );
+            throw new RuntimeException(boardType + " board type is not implemented yet.");
         }
         Orientation.setValues(board.getAngles());
 
