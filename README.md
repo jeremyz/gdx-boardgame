@@ -30,9 +30,9 @@ Add the dependency to all subprojects: (You can replace `master-SNAPSHOT` with a
 ```
 If you use the html module, you have to add also this module to its dependencies:
 ```groovy
-    dependencies {
-             implementation 'com.github.jeremyz:gdx-boardgame:master-SNAPSHOT:sources'
-    }
+	dependencies {
+			implementation 'com.github.jeremyz:gdx-boardgame:master-SNAPSHOT:sources'
+	}
 ```
 
 For the html build, you have to add this line to your *.gwt.xml files in the html project:
