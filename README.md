@@ -39,3 +39,7 @@ For the html build, you have to add this line to your *.gwt.xml files in the htm
 ```xml
 <inherits name='ch.asynk.gdx.boardgame'/>
 ```
+
+## javadoc
+
+[Latest](https://javadoc.jitpack.io/com/github/jeremyz/gdx-boardgame/master-SNAPSHOT/javadoc/)
