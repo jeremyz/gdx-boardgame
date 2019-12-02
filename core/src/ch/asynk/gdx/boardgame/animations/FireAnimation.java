@@ -104,7 +104,7 @@ public class FireAnimation implements Animation, Pool.Poolable
 
         Config cfg = configs.get(configName);
         if (cfg == null) {
-            throw new RuntimeException(String.format("FireAnimation : no configuration named : '%s'", configName));
+            throw new RuntimeException("FireAnimation : no configuration named : '" + configName + "'");
         }
         a.compute(cfg, x0, y0, x1, y1);
 
