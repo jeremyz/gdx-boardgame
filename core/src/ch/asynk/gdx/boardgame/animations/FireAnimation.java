@@ -1,12 +1,10 @@
 package ch.asynk.gdx.boardgame.animations;
 
-import java.util.Hashtable;
-import java.util.Map;
-
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
 
 import ch.asynk.gdx.boardgame.FramedSprite;
@@ -47,7 +45,7 @@ public class FireAnimation implements Animation, Pool.Poolable
         }
     }
 
-    private static Map<String, Config> configs = new Hashtable<String, Config>();
+    private static ObjectMap<String, Config> configs = new ObjectMap<String, Config>();
 
     public static void register(final String name,
             int burstCount,
