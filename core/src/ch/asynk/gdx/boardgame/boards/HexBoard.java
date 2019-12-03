@@ -144,4 +144,38 @@ public class HexBoard implements Board
 
         v.set(col, row);
     }
+
+    @Override public float distance(int x0, int y0, int x1, int y1, Geometry geometry)
+    {
+        if (geometry == Board.Geometry.EUCLIDEAN) {
+            int dx = (x1 - x0);
+            int dy = (y1 - y0);
+
+            if (dx == 0) {
+                return  Math.abs(dy);
+            }
+            else if (dy == 0 || dx == dy) {
+                return  Math.abs(dx);
+            }
+            float fdx = dx - dy / 2f;
+            float fdy = dy * 0.86602f;
+            return (float)Math.sqrt((fdx * fdx) + (fdy * fdy));
+        } else {
+            int dx = Math.abs(x1 - x0);
+            int dy = Math.abs(y1 - y0);
+            int dz = Math.abs((x0 - y0) - (x1 - y1));
+
+            if (dx > dy) {
+                if (dx > dz)
+                    return dx;
+                else
+                    return dz;
+            } else {
+                if (dy > dz)
+                    return dy;
+                else
+                    return dz;
+            }
+        }
+    }
 }

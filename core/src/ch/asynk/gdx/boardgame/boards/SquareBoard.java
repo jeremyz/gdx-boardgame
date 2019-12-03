@@ -42,4 +42,20 @@ public class SquareBoard implements Board
 
         v.set(col, row);
     }
+
+    @Override public float distance(int x0, int y0, int x1, int y1, Geometry geometry)
+    {
+        int dx = Math.abs(x1 - x0);
+        int dy = Math.abs(y1 - y0);
+
+        switch (geometry) {
+            case EUCLIDEAN:
+                return (float)Math.sqrt((dx * dx) + (dy * dy));
+            case TAXICAB:
+                return dx + dy;
+            case TCHEBYCHEV:
+                return (dx > dy ? dx : dy);
+        }
+        return -1;
+    }
 }

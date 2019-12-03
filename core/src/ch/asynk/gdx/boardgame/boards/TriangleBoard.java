@@ -116,4 +116,20 @@ public class TriangleBoard implements Board
 
         v.set(col, row);
     }
+
+    @Override public float distance(int x0, int y0, int x1, int y1, Geometry geometry)
+    {
+        int dx = Math.abs(x1 - x0);
+        int dy = Math.abs(y1 - y0);
+
+        switch (geometry) {
+            case EUCLIDEAN:
+                return 0; // FIXME
+            case TAXICAB:
+                return dx + dy; // move should only be allowed through the 3 sides not through de vertices
+            case TCHEBYCHEV:
+                return dx + dy;
+        }
+        return -1;
+    }
 }

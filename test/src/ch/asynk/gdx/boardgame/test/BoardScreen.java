@@ -21,6 +21,7 @@ public class BoardScreen extends AbstractScreen
     {
         private final Assets assets;
         private final Piece panzer;
+        private final Vector2 pos;
         private final Vector2 v;
         public Texture map;
         public Board board;
@@ -33,6 +34,7 @@ public class BoardScreen extends AbstractScreen
         public MyBoard(final Assets assets)
         {
             this.assets = assets;
+            this.pos = new Vector2();
             this.v = new Vector2();
             this.panzer = new Piece(assets.getTexture(assets.PANZER));
         }
@@ -45,6 +47,7 @@ public class BoardScreen extends AbstractScreen
 
         public void reset()
         {
+            pos.set(0, 0);
             board.centerOf(0, 0, v);
             panzer.centerOn(v.x, v.y);
             panzer.setRotation(Orientation.DEFAULT.r());
@@ -54,6 +57,11 @@ public class BoardScreen extends AbstractScreen
         {
             board.toBoard(x, y, v);
             GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d]", (int)x, (int)y, (int)v.x, (int)v.y));
+            float d0 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TCHEBYCHEV);
+            float d1 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TAXICAB);
+            float d2 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.EUCLIDEAN);
+            GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
+            pos.set(v);
             board.centerOf((int)v.x, (int)v.y, v);
             panzer.centerOn(v.x, v.y);
             panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
