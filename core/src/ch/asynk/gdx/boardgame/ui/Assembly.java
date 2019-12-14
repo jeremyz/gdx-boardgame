@@ -7,7 +7,7 @@ import ch.asynk.gdx.boardgame.utils.IterableSet;
 
 public abstract class Assembly extends Element
 {
-    private IterableSet<Element> children;
+    protected IterableSet<Element> children;
     private Element touched;
 
     public Assembly(int c)

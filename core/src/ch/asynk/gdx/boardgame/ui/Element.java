@@ -97,7 +97,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
 
     public final void setPosition(Rectangle r)
     {
-        setPosition(r.x, r.x, r.width, r.height);
+        setPosition(r.x, r.y, r.width, r.height);
     }
 
     @Override public final void setPosition(float x, float y)
