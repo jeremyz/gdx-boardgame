@@ -1,9 +1,10 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import ch.asynk.gdx.boardgame.utils.IterableSet;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import ch.asynk.gdx.boardgame.utils.IterableSet;
+import java.util.Arrays;
 
 public abstract class Assembly extends Element
 {
@@ -12,7 +13,7 @@ public abstract class Assembly extends Element
 
     public Assembly(int c)
     {
-        this.children = new IterableSet<Element>(c);
+        this.children = new IterableSet<>(c);
     }
 
     public void add(Element e)
@@ -59,5 +60,18 @@ public abstract class Assembly extends Element
     @Override public void drawDebug(ShapeRenderer debugShapes)
     {
         children.forEach( c -> c.drawDebug(debugShapes) );
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Assembly assembly = (Assembly) o;
+        return children.equals(assembly.children);
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), children});
     }
 }

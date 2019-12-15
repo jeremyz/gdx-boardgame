@@ -1,11 +1,12 @@
 package ch.asynk.gdx.boardgame;
 
+import ch.asynk.gdx.boardgame.utils.IterableArray;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.StringBuilder;
 
-import ch.asynk.gdx.boardgame.utils.IterableArray;
+import java.util.Arrays;
 
 public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolable
 {
@@ -95,5 +96,21 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
         }
         to = null;
         return true;
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Path tiles = (Path) o;
+        return finalOrientation == tiles.finalOrientation &&
+                (from == tiles.from) || (from != null && from.equals(tiles.from)) &&
+                (to == tiles.to) || (to != null && to.equals(tiles.to));
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), finalOrientation, from, to});
     }
 }

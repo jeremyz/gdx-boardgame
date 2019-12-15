@@ -116,11 +116,10 @@ public class IterableArray<E> implements Collection<E>
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     @Override public Iterator<E> iterator()
     {
         this.idx = 0;
-        return (Iterator<E>) this;
+        return this;
     }
 
     @Override public boolean hasNext()
@@ -144,5 +143,23 @@ public class IterableArray<E> implements Collection<E>
     {
         idx -= 1;
         remove(idx);
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IterableArray<?> that = (IterableArray<?>) o;
+        return idx == that.idx &&
+                s == that.s &&
+                c == that.c &&
+                Arrays.equals(data, that.data);
+    }
+
+    @Override public int hashCode()
+    {
+        int result = Arrays.hashCode(new Object[]{idx, s, c});
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
     }
 }

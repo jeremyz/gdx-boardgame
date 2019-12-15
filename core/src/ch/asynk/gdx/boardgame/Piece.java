@@ -1,19 +1,10 @@
 package ch.asynk.gdx.boardgame;
 
-import java.lang.Math;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
-
-import ch.asynk.gdx.boardgame.Drawable;
-import ch.asynk.gdx.boardgame.Orientation;
-import ch.asynk.gdx.boardgame.Positionable;
-import ch.asynk.gdx.boardgame.Rotable;
-import ch.asynk.gdx.boardgame.Scalable;
-import ch.asynk.gdx.boardgame.Tile;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class Piece extends Sprite implements Drawable, Positionable, Rotable, Scalable
 {
@@ -58,7 +49,7 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
         float x1 = target.getX();
         float y1 = target.getY();
 
-        float r = (float) (MathUtils.atan2(y1 - y0, x1 - x0));
+        float r = MathUtils.atan2(y1 - y0, x1 - x0);
         x0 += (Math.cos(r) + 1f) * (getWidth() / 2f);
         y0 += (Math.sin(r) + 1f) * (getHeight() / 2f);
 

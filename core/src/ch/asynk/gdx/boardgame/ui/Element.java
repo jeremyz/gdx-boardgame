@@ -1,12 +1,13 @@
 package ch.asynk.gdx.boardgame.ui;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-
 import ch.asynk.gdx.boardgame.Drawable;
 import ch.asynk.gdx.boardgame.Paddable;
 import ch.asynk.gdx.boardgame.Positionable;
 import ch.asynk.gdx.boardgame.Touchable;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+
+import java.util.Arrays;
 
 public abstract class Element implements Drawable, Paddable, Positionable, Touchable
 {
@@ -119,5 +120,10 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         }
         this.tainted = false;
         // System.err.println(String.format("%s : %s", this, rect));
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{blocked, visible, padding, parent, alignment, rect, x, y, tainted});
     }
 }

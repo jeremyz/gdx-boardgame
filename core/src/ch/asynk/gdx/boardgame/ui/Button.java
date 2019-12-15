@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.Arrays;
+
 public class Button extends Patch
 {
     private Label label;
@@ -63,5 +65,10 @@ public class Button extends Patch
     {
         super.drawDebug(debugShapes);
         label.drawDebug(debugShapes);
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), label, spacing});
     }
 }

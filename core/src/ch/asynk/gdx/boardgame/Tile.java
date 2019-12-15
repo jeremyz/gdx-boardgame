@@ -3,7 +3,7 @@ package ch.asynk.gdx.boardgame;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import ch.asynk.gdx.boardgame.Overlays;
+import java.util.Arrays;
 
 public class Tile implements Drawable
 {
@@ -40,5 +40,20 @@ public class Tile implements Drawable
     @Override public String toString()
     {
         return "[" + x + ", " + y + "]";
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return Float.compare(tile.x, x) == 0 &&
+                Float.compare(tile.y, y) == 0 &&
+                (overlays == tile.overlays) || (overlays != null && overlays.equals(tile.overlays));
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{x, y, overlays});
     }
 }
