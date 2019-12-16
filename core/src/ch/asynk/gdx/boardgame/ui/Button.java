@@ -33,7 +33,7 @@ public class Button extends Patch
     public void write(String text)
     {
         label.write(text);
-        this.tainted = true;    // might impact Button's geometry
+        taint();    // might impact Button's geometry
     }
 
     public void setLabelAlignment(Alignment alignment)

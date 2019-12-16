@@ -40,7 +40,7 @@ public class Label extends Element
     {
         this.text = text;
         this.layout.setText(font, (text == null) ? "" : text);
-        this.tainted = true;
+        taint();
     }
 
     @Override protected void computeGeometry()

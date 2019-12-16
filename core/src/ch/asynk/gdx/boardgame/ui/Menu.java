@@ -26,7 +26,7 @@ public class Menu extends Patch
     {
         this.title = new Label(font);
         this.title.write(title);
-        this.tainted = true;
+        taint();
     }
 
     public void setEntries(BitmapFont font, String[] entries)
@@ -37,13 +37,13 @@ public class Menu extends Patch
             l.write(entries[i]);
             this.entries[i] = l;
         }
-        this.tainted = true;
+        taint();
     }
 
     public void setLabelsOffset(int entriesOffset)
     {
         this.entriesOffset = entriesOffset;
-        this.tainted = true;
+        taint();
     }
 
     public void setPaddings(int titlePadding, int labelPadding)
@@ -52,14 +52,14 @@ public class Menu extends Patch
         for (Label label : entries) {
             label.setPadding(labelPadding);
         }
-        this.tainted = true;
+        taint();
     }
 
     public void setSpacings(int titleSpacing, int entriesSpacing)
     {
         this.titleSpacing = titleSpacing;
         this.entriesSpacing = entriesSpacing;
-        this.tainted = true;
+        taint();
     }
 
     @Override public void computeGeometry()
