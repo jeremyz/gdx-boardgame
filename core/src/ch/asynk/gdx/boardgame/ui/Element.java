@@ -18,9 +18,14 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     protected Rectangle rect;           // outer drawing coordinates
     protected float x, y;               // given position
     protected boolean tainted;          // geometry must be computed
-    protected boolean taintParent;      // propagate tainted state up the tree
+    public boolean taintParent;         // propagate tainted state up the tree
 
     protected Element()
+    {
+        this(false);
+    }
+
+    protected Element(boolean taintParent)
     {
         this.blocked = false;
         this.visible = true;
@@ -30,7 +35,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.rect = new Rectangle(0, 0, 0, 0);
         this.x = this.y = 0;
         this.tainted = true;
-        this.taintParent= false;
+        this.taintParent = taintParent;
     }
 
     @Override public final float getX()        { return rect.x; }
