@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -63,5 +65,10 @@ public class Button extends Patch
     {
         super.drawDebug(debugShapes);
         label.drawDebug(debugShapes);
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), label, spacing});
     }
 }

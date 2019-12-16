@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -59,5 +61,10 @@ public abstract class Assembly extends Element
     @Override public void drawDebug(ShapeRenderer debugShapes)
     {
         children.forEach( c -> c.drawDebug(debugShapes) );
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), children});
     }
 }

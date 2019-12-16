@@ -145,4 +145,11 @@ public class IterableArray<E> implements Collection<E>
         idx -= 1;
         remove(idx);
     }
+
+    @Override public int hashCode()
+    {
+        int result = Arrays.hashCode(new Object[]{s, c});
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
+    }
 }

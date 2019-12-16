@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -119,5 +121,10 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         }
         this.tainted = false;
         // System.err.println(String.format("%s : %s", this, rect));
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{blocked, visible, padding, parent, alignment, rect, x, y});
     }
 }

@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Disposable;
@@ -95,5 +97,10 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
         }
         to = null;
         return true;
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), finalOrientation, from, to});
     }
 }

@@ -1,9 +1,9 @@
 package ch.asynk.gdx.boardgame;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-
-import ch.asynk.gdx.boardgame.Overlays;
 
 public class Tile implements Drawable
 {
@@ -40,5 +40,10 @@ public class Tile implements Drawable
     @Override public String toString()
     {
         return "[" + x + ", " + y + "]";
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{x, y, overlays});
     }
 }

@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import java.util.Arrays;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -57,5 +59,10 @@ public class Label extends Element
         if (!visible) return;
         if (tainted) computeGeometry();
         font.draw(batch, layout, fx, fy);
+    }
+
+    @Override public int hashCode()
+    {
+        return Arrays.hashCode(new Object[]{super.hashCode(), font, layout, fx, fy, text});
     }
 }
