@@ -108,7 +108,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
        setPosition(x, y, rect.width, rect.height);
     }
 
-    protected void computeGeometry()
+    public void computeGeometry()
     {
         if (alignment == Alignment.ABSOLUTE || parent == null) {
             rect.x = x;

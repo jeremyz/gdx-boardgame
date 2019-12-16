@@ -43,7 +43,7 @@ public class Label extends Element
         taint();
     }
 
-    @Override protected void computeGeometry()
+    @Override public void computeGeometry()
     {
         this.rect.width = (layout.width + (2 * padding));
         this.rect.height = (layout.height + (2 * padding));
