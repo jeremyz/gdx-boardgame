@@ -116,11 +116,10 @@ public class IterableArray<E> implements Collection<E>
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     @Override public Iterator<E> iterator()
     {
         this.idx = 0;
-        return (Iterator<E>) this;
+        return this;
     }
 
     @Override public boolean hasNext()

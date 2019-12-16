@@ -2,7 +2,7 @@ package ch.asynk.gdx.boardgame.utils;
 
 import java.util.Iterator;
 
-public interface Collection<E> extends Iterator, Iterable<E>
+public interface Collection<E> extends Iterator<E>, Iterable<E>
 {
     public int size();
 
