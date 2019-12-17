@@ -51,8 +51,8 @@ public class MenuScreen extends AbstractScreen
 
     private void drawCorners(SpriteBatch batch)
     {
-        float right = root.getInnerX() + root.getInnerWidth() - corner.getWidth();
-        float top = root.getInnerY() + root.getInnerHeight() - corner.getHeight();
+        float right = root.getInnerRight() - corner.getWidth();
+        float top = root.getInnerTop() - corner.getHeight();
         corner.setRotation(0);
         corner.setPosition(root.getInnerX(), top);
         corner.draw(batch);
