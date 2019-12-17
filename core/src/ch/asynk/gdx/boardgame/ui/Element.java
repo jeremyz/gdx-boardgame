@@ -38,15 +38,17 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.taintParent = taintParent;
     }
 
-    @Override public final float getX()        { return rect.x; }
-    @Override public final float getY()        { return rect.y; }
-    @Override public final float getWidth()    { return rect.width; }
-    @Override public final float getHeight()   { return rect.height; }
+    @Override public final float getX()         { return rect.x; }
+    @Override public final float getY()         { return rect.y; }
+    @Override public final float getWidth()     { return rect.width; }
+    @Override public final float getHeight()    { return rect.height; }
 
-    @Override public final float getInnerX()              { return rect.x + padding; }
-    @Override public final float getInnerY()              { return rect.y + padding; }
-    @Override public final float getInnerWidth()          { return rect.width - 2 * padding; }
-    @Override public final float getInnerHeight()         { return rect.height - 2 * padding; }
+    @Override public final float getInnerX()            { return rect.x + padding; }
+    @Override public final float getInnerY()            { return rect.y + padding; }
+    @Override public final float getInnerWidth()        { return rect.width - 2 * padding; }
+    @Override public final float getInnerHeight()       { return rect.height - 2 * padding; }
+    @Override public final float getInnerTop()          { return rect.y + rect.height - padding; }
+    @Override public final float getInnerRight()        { return rect.x + rect.width - padding; }
 
     @Override public String toString()
     {
