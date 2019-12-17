@@ -9,7 +9,6 @@ import ch.asynk.gdx.boardgame.ui.Menu;
 
 public class MenuScreen extends AbstractScreen
 {
-    private final float WORLD_RATIO = 0.5f;
     private final Sprite corner;
     private final Menu menu;
 
@@ -31,9 +30,8 @@ public class MenuScreen extends AbstractScreen
         this.menu.setLabelsOffset(10);
         this.root.add(this.menu);
 
-        this.camera = new OrthographicCamera(bg.getWidth() * WORLD_RATIO, bg.getHeight() * WORLD_RATIO);
+        this.camera = new OrthographicCamera();
         this.camera.position.set(bg.getWidth() / 2f, bg.getHeight() / 2f, 0);
-        this.camera.update();
     }
 
     @Override protected void draw(SpriteBatch batch)
@@ -59,11 +57,6 @@ public class MenuScreen extends AbstractScreen
         corner.setPosition(right, top);
         corner.setRotation(270);
         corner.draw(batch);
-    }
-
-    @Override public void resize(int width, int height)
-    {
-        resize(width, height, WORLD_RATIO);
     }
 
     @Override protected void onZoom(float dz) { }

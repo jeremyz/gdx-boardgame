@@ -24,7 +24,6 @@ class MyButton extends Button
 
 public class UiScreen extends AbstractScreen
 {
-    private final float WORLD_RATIO = 0.5f;
     private final Button next;
     private final Button[] buttons = new Button[8];
 
@@ -66,9 +65,8 @@ public class UiScreen extends AbstractScreen
         this.next.setLabelAlignment(Alignment.TOP_LEFT);
         this.root.add(this.next);
 
-        this.camera = new OrthographicCamera(bg.getWidth() * WORLD_RATIO, bg.getHeight() * WORLD_RATIO);
+        this.camera = new OrthographicCamera();
         this.camera.position.set(bg.getWidth() / 2f, bg.getHeight() / 2f, 0);
-        this.camera.update();
         setState(State.POSITIONS);
     }
 
@@ -111,11 +109,6 @@ public class UiScreen extends AbstractScreen
             for (Button button : buttons)
                 root.remove(button);
         }
-    }
-
-    @Override public void resize(int width, int height)
-    {
-        resize(width, height, WORLD_RATIO);
     }
 
     @Override protected void onZoom(float dz) { }

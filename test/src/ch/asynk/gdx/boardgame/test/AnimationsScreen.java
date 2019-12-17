@@ -202,8 +202,9 @@ public class AnimationsScreen extends AbstractScreen
 
     @Override public void resize(int width, int height)
     {
-        GdxBoardTest.debug("BoardScrean", String.format("resize (%d,%d)",width, height));
+        GdxBoardTest.debug("AnimationScrean", String.format("resize (%d,%d)",width, height));
         cam.updateViewport(width, height);
+        root.resize(cam.getHud());
     }
 
     @Override protected void onZoom(float dz) { }

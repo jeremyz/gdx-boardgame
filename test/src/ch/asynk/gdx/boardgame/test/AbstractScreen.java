@@ -68,18 +68,11 @@ public abstract class AbstractScreen implements Screen
         batch.end();
     }
 
-    public void resize(int width, int height, float ratio)
+    @Override public void resize(int width, int height)
     {
         GdxBoardTest.debug(dom, String.format("resize (%d,%d)", width, height));
-        if (width >= height) {
-            camera.viewportWidth = bg.getWidth();
-            camera.viewportHeight = bg.getHeight() / (float)width * (float)height;
-        } else {
-            camera.viewportHeight = bg.getHeight();
-            camera.viewportWidth = bg.getWidth() / (float)height * (float)width;
-        }
-        camera.viewportWidth *= ratio;
-        camera.viewportHeight *= ratio;
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
         camera.update();
         root.resize(
                 camera.position.x - (camera.viewportWidth / 2f),
