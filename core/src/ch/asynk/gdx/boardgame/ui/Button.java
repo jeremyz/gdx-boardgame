@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Button extends Patch
 {
-    private Label label;
-    private float spacing;      // for label alignment;
+    protected Label label;
+    protected float spacing;    // for label alignment;
 
     public Button(BitmapFont font, NinePatch patch)
     {
