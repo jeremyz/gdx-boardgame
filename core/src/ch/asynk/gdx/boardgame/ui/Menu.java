@@ -84,7 +84,7 @@ public class Menu extends Patch
         // compute position
         super.computeGeometry();
 
-        float y = - title.getHeight() - padding;
+        float y = getInnerHeight() - title.getHeight();
         title.setPosition(0, y);
         y -= titleSpacing;
         for (Label l : entries) {
