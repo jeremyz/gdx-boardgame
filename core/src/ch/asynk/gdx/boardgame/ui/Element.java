@@ -48,9 +48,9 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     @Override public final float getInnerWidth()          { return rect.width - 2 * padding; }
     @Override public final float getInnerHeight()         { return rect.height - 2 * padding; }
 
-    @Override public void drawDebug(ShapeRenderer debugShapes)
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
     {
-        debugShapes.rect(getX(), getY(), getWidth(), getHeight());
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
     }
 
     @Override public boolean touch(float x, float y)

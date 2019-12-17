@@ -56,8 +56,8 @@ public abstract class Assembly extends Element
         children.forEach( c -> c.draw(batch) );
     }
 
-    @Override public void drawDebug(ShapeRenderer debugShapes)
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
     {
-        children.forEach( c -> c.drawDebug(debugShapes) );
+        children.forEach( c -> c.drawDebug(shapeRenderer) );
     }
 }

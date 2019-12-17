@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.ui;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Menu extends Patch
 {
@@ -119,6 +120,15 @@ public class Menu extends Patch
         title.draw(batch);
         for (Label label : entries) {
             label.draw(batch);
+        }
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        super.drawDebug(shapeRenderer);
+        title.drawDebug(shapeRenderer);
+        for (Label label : entries) {
+            label.drawDebug(shapeRenderer);
         }
     }
 }

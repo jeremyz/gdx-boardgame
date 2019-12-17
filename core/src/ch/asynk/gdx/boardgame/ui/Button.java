@@ -58,9 +58,9 @@ public class Button extends Patch
         label.draw(batch);
     }
 
-    @Override public void drawDebug(ShapeRenderer debugShapes)
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
     {
-        super.drawDebug(debugShapes);
-        label.drawDebug(debugShapes);
+        super.drawDebug(shapeRenderer);
+        label.drawDebug(shapeRenderer);
     }
 }
