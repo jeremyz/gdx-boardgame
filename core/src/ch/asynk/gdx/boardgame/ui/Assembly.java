@@ -47,6 +47,7 @@ public abstract class Assembly extends Element
 
     @Override public void taint()
     {
+        tainted = true;
         children.forEach( c -> c.taint() );
     }
 
