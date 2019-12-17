@@ -24,5 +24,6 @@ public class Root extends Assembly
     {
         setPosition(x, y, width, height);
         taint();
+        taintChildren();
     }
 }

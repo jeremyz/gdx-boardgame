@@ -29,6 +29,11 @@ public abstract class Assembly extends Element
         }
     }
 
+    public void taintChildren()
+    {
+        children.forEach( c -> c.taint() );
+    }
+
     public Element touched()
     {
         return touched;
@@ -43,12 +48,6 @@ public abstract class Assembly extends Element
             }
         touched = null;
         return false;
-    }
-
-    @Override public void taint()
-    {
-        tainted = true;
-        children.forEach( c -> c.taint() );
     }
 
     @Override public void draw(Batch batch)
