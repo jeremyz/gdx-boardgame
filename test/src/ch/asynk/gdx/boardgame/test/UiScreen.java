@@ -94,6 +94,8 @@ public class UiScreen extends AbstractScreen
         this.state = state;
     }
 
+    @Override protected boolean animate(float delta) { return true; }
+
     @Override protected void draw(SpriteBatch batch)
     {
         batch.draw(bg, 0, 0);

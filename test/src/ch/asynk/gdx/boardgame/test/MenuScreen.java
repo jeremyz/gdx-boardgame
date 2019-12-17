@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.test;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Menu;
@@ -34,11 +35,18 @@ public class MenuScreen extends AbstractScreen
         this.camera.position.set(bg.getWidth() / 2f, bg.getHeight() / 2f, 0);
     }
 
+    @Override protected boolean animate(float delta) { return true; }
+
     @Override protected void draw(SpriteBatch batch)
     {
         batch.draw(bg, 0, 0);
         drawCorners(batch);
         root.draw(batch);
+    }
+
+    @Override protected void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        root.drawDebug(shapeRenderer);
     }
 
     private void drawCorners(SpriteBatch batch)

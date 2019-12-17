@@ -30,7 +30,7 @@ public abstract class AbstractScreen implements Screen
     protected final Vector3 boardTouch = new Vector3();
     protected final Vector3 hudTouch = new Vector3();
 
-    private ShapeRenderer debugShapes = null;
+    private ShapeRenderer shapeRenderer = null;
 
     protected final String dom;
     protected final GdxBoardTest app;
@@ -55,18 +55,21 @@ public abstract class AbstractScreen implements Screen
         this.inputDelay = 0f;
         this.paused = false;
 
-        if (DEBUG) this.debugShapes = new ShapeRenderer();
+        if (DEBUG) this.shapeRenderer = new ShapeRenderer();
 
         HdpiUtils.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    protected void drawDebug(ShapeRenderer shapeRenderer) { }
+    protected abstract boolean animate(float delta);
     protected abstract void draw(SpriteBatch batch);
+    protected abstract void drawDebug(ShapeRenderer shapeRenderer);
     @Override public void render(float delta)
     {
         if (paused) return;
 
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        if (!animate(delta)) return;
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -77,11 +80,11 @@ public abstract class AbstractScreen implements Screen
 
         if (DEBUG) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
-            debugShapes.setAutoShapeType(true);
-            debugShapes.setProjectionMatrix(camera.combined);
-            debugShapes.begin();
-            drawDebug(debugShapes);
-            debugShapes.end();
+            shapeRenderer.setAutoShapeType(true);
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin();
+            drawDebug(shapeRenderer);
+            shapeRenderer.end();
         }
     }
 

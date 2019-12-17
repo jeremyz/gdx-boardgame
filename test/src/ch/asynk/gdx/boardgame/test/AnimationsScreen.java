@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.test;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -164,11 +165,8 @@ public class AnimationsScreen extends AbstractScreen
         super.dispose();
     }
 
-    @Override public void draw(SpriteBatch batch) { }
-    @Override public void render(float delta)
+    @Override protected boolean animate(float delta)
     {
-        if (paused) return;
-
         if (inputBlocked) {
             inputDelay -= delta;
             if (inputDelay <= 0f)
@@ -178,15 +176,13 @@ public class AnimationsScreen extends AbstractScreen
         dice.animate(delta);
         if (animations.animate(delta)) {
             app.switchToMenu();
-            return;
+            return false;
         }
+        return true;
+    }
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        cam.applyBoardViewport();
-        batch.setProjectionMatrix(cam.combined);
-        batch.begin();
+    @Override public void draw(SpriteBatch batch)
+    {
         batch.draw(map, 0, 0);
         for (int i = 0; i < path.size(); i++) {
             path.get(i).draw(batch);
@@ -197,7 +193,19 @@ public class AnimationsScreen extends AbstractScreen
         other2.draw(batch);
         dice.draw(batch);
         animations.draw(batch);
-        batch.end();
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        for (int i = 0; i < path.size(); i++) {
+            path.get(i).drawDebug(shapeRenderer);
+        }
+        panzer.drawDebug(shapeRenderer);
+        other0.drawDebug(shapeRenderer);
+        other1.drawDebug(shapeRenderer);
+        other2.drawDebug(shapeRenderer);
+        dice.drawDebug(shapeRenderer);
+        animations.drawDebug(shapeRenderer);
     }
 
     @Override public void resize(int width, int height)

@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.test;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -170,19 +171,19 @@ public class BoardScreen extends AbstractScreen
         setState(State.HEX_V);
     }
 
-    @Override public void draw(SpriteBatch batch) { }
-    @Override public void render(float delta)
+    @Override protected boolean animate(float delta)
     {
-        if (paused) return;
-
         if (inputBlocked) {
             inputDelay -= delta;
             if (inputDelay <= 0f)
                 inputBlocked = false;
         }
+        return true;
+    }
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override public void draw(SpriteBatch batch)
+    {
+        batch.end(); // for AbstractScreen
 
         cam.applyBoardViewport();
         batch.setProjectionMatrix(cam.combined);
@@ -195,7 +196,11 @@ public class BoardScreen extends AbstractScreen
         batch.begin();
         root.draw(batch);
         batch.end();
+
+        batch.begin(); // for AbstractScreen
     }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer) { }
 
     @Override public void resize(int width, int height)
     {
