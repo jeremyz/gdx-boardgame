@@ -8,10 +8,25 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
 
+class MyButton extends Button
+{
+    public MyButton(BitmapFont font, NinePatch patch, float padding, float spacing)
+    {
+        super(font, patch, padding, spacing);
+    }
+
+    @Override public void computeGeometry()
+    {
+        super.computeGeometry();
+        label.write(String.format("%04d;%04d", (int)getX(), (int)getY()));
+    }
+}
+
 public class UiScreen extends AbstractScreen
 {
     private final float WORLD_RATIO = 0.5f;
-    private final Button hello;
+    private final Button next;
+    private final Button[] buttons = new Button[8];
 
     public enum State
     {
@@ -36,9 +51,20 @@ public class UiScreen extends AbstractScreen
         final NinePatch patch = app.assets.getNinePatch(app.assets.PATCH, 23, 23, 23 ,23);
         final BitmapFont font = app.assets.getFont(app.assets.FONT_25);
 
-        this.hello = new Button(font, patch, 10, 15);
-        this.hello.write("Hello");
-        this.root.add(this.hello);
+        this.buttons[0] = buildButton(font, patch, 10, 15, Alignment.TOP_LEFT, Alignment.BOTTOM_RIGHT);
+        this.buttons[1] = buildButton(font, patch, 10, 15, Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER);
+        this.buttons[2] = buildButton(font, patch, 10, 15, Alignment.TOP_RIGHT, Alignment.BOTTOM_LEFT);
+        this.buttons[3] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_LEFT, Alignment.MIDDLE_RIGHT);
+        this.buttons[4] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER);
+        this.buttons[5] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_RIGHT, Alignment.MIDDLE_LEFT);
+        this.buttons[6] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.TOP_RIGHT);
+        this.buttons[7] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_CENTER, Alignment.TOP_CENTER);
+
+        this.next = new Button(font, patch, 10, 15);
+        this.next.write("Next");
+        this.next.setAlignment(Alignment.BOTTOM_RIGHT);
+        this.next.setLabelAlignment(Alignment.TOP_LEFT);
+        this.root.add(this.next);
 
         this.camera = new OrthographicCamera(bg.getWidth() * WORLD_RATIO, bg.getHeight() * WORLD_RATIO);
         this.camera.position.set(bg.getWidth() / 2f, bg.getHeight() / 2f, 0);
@@ -46,11 +72,25 @@ public class UiScreen extends AbstractScreen
         setState(State.POSITIONS);
     }
 
+    private Button buildButton(BitmapFont font, NinePatch patch, int padding, int spacing, Alignment a, Alignment la)
+    {
+        final Button button = new MyButton(font, patch, padding, spacing);
+        button.setAlignment(a);
+        button.setLabelAlignment(la);
+        button.write(String.format("%04d;%04d", 0, 0));
+        return button;
+    }
+
     private void setState(State state)
     {
         switch (state) {
+            case POSITIONS:
+                setButtons(true);
+                break;
             case DONE:
+                setButtons(false);
                 app.switchToMenu();
+                break;
         }
         this.state = state;
     }
@@ -58,35 +98,19 @@ public class UiScreen extends AbstractScreen
     @Override protected void draw(SpriteBatch batch)
     {
         batch.draw(bg, 0, 0);
-        switch (state) {
-            case POSITIONS:
-                drawButtons(batch);
-                break;
-        }
-    }
-
-    private void drawButtons(SpriteBatch batch)
-    {
-        hello.write("hello");
-        hello.setAlignment(Alignment.TOP_LEFT);
-        hello.setLabelAlignment(Alignment.BOTTOM_RIGHT);
         root.draw(batch);
-        drawHello(batch, Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER);
-        drawHello(batch, Alignment.TOP_RIGHT, Alignment.BOTTOM_LEFT);
-        drawHello(batch, Alignment.MIDDLE_LEFT, Alignment.MIDDLE_RIGHT);
-        drawHello(batch, Alignment.MIDDLE_RIGHT, Alignment.MIDDLE_LEFT);
-        drawHello(batch, Alignment.BOTTOM_LEFT, Alignment.TOP_RIGHT);
-        drawHello(batch, Alignment.BOTTOM_CENTER, Alignment.TOP_CENTER);
-        drawHello(batch, Alignment.BOTTOM_RIGHT, Alignment.TOP_LEFT);
-        hello.write("next");
-        drawHello(batch, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER);
     }
 
-    private void drawHello(SpriteBatch batch, Alignment alignment1, Alignment alignment2)
+    private void setButtons(boolean add)
     {
-        hello.setAlignment(alignment1);
-        hello.setLabelAlignment(alignment2);
-        hello.draw(batch);
+        if (add) {
+            for (Button button : buttons) {
+                root.add(button);
+            }
+        } else {
+            for (Button button : buttons)
+                root.remove(button);
+        }
     }
 
     @Override public void resize(int width, int height)
@@ -101,7 +125,8 @@ public class UiScreen extends AbstractScreen
         hudTouch.set(x, y, 0);
         camera.unproject(hudTouch);
         if (root.touch(hudTouch.x, hudTouch.y)) {
-            setState(state.next());
+            if (root.touched() == next)
+                setState(state.next());
         }
     }
 }
