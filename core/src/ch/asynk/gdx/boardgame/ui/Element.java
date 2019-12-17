@@ -126,7 +126,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
             rect.y = y;
         } else if (alignment == Alignment.RELATIVE) {
             rect.x = x + parent.getInnerX();
-            rect.y = y + parent.getInnerX();
+            rect.y = y + parent.getInnerY();
         } else {
             rect.x = x + alignment.getX(parent, rect.width);
             rect.y = y + alignment.getY(parent, rect.height);
