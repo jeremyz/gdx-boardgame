@@ -26,6 +26,7 @@ public class Menu extends Patch
     {
         this.title = new Label(font);
         this.title.write(title);
+        this.title.setParent(this);
         taint();
     }
 
@@ -35,6 +36,7 @@ public class Menu extends Patch
         for (int i = 0; i < entries.length; i++) {
             Label l = new Label(font);
             l.write(entries[i]);
+            l.setParent(this);
             this.entries[i] = l;
         }
         taint();
@@ -64,6 +66,7 @@ public class Menu extends Patch
 
     @Override public void computeGeometry()
     {
+        // compute width and height
         title.computeGeometry();
         float h = title.getHeight();
         float w = title.getWidth();
@@ -74,24 +77,19 @@ public class Menu extends Patch
             if (t > w)
                 w = t;
         }
-        h += (titleSpacing + (entriesSpacing * (entries.length - 1)) + (2 * padding));
-        w += (2 * padding);
+        rect.width = w + (2 * padding);
+        rect.height = h + (titleSpacing + (entriesSpacing * (entries.length - 1)) + (2 * padding));
 
-        rect.width = w;
-        rect.height = h;
+        // compute position
         super.computeGeometry();
 
-        float x = getInnerX();
-        float y = getInnerY();
-
-        // setPosition() will trigger computeGeometry() from within draw()
-        for (int i = entries.length - 1; i >= 0; i--) {
-            entries[i].setPosition(x + entriesOffset, y);
-            y += entries[i].getHeight() + entriesSpacing;
+        float y = - title.getHeight() - padding;
+        title.setPosition(0, y);
+        y -= titleSpacing;
+        for (Label l : entries) {
+            l.setPosition(x + entriesOffset, y - l.getHeight());
+            y -= (l.getHeight() + entriesSpacing);
         }
-        y -= entriesSpacing;
-        y += titleSpacing;
-        title.setPosition(x, y);
     }
 
     public Integer touched()
