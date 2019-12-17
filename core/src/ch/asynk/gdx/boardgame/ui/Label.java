@@ -31,6 +31,11 @@ public class Label extends Element
         this.layout = new GlyphLayout();
     }
 
+    public String getText()
+    {
+        return text;
+    }
+
     public void write(String text)
     {
         write(text, getX(), getY());
