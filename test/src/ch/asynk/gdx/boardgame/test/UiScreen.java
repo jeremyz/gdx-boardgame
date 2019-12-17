@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.test;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import ch.asynk.gdx.boardgame.ui.Alignment;
@@ -97,6 +98,11 @@ public class UiScreen extends AbstractScreen
     {
         batch.draw(bg, 0, 0);
         root.draw(batch);
+    }
+
+    @Override protected void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        root.drawDebug(shapeRenderer);
     }
 
     private void setButtons(boolean add)

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
@@ -19,6 +20,8 @@ import ch.asynk.gdx.boardgame.ui.Root;
 
 public abstract class AbstractScreen implements Screen
 {
+    private static final boolean DEBUG = false;
+
     private static final float INPUT_DELAY = 0.1f;              // filter out touches after gesture
     private static final float ZOOM_SCROLL_FACTOR = .1f;
     private static final float ZOOM_GESTURE_FACTOR = .01f;
@@ -26,6 +29,8 @@ public abstract class AbstractScreen implements Screen
     protected final Vector2 dragPos = new Vector2();
     protected final Vector3 boardTouch = new Vector3();
     protected final Vector3 hudTouch = new Vector3();
+
+    private ShapeRenderer debugShapes = null;
 
     protected final String dom;
     protected final GdxBoardTest app;
@@ -50,9 +55,12 @@ public abstract class AbstractScreen implements Screen
         this.inputDelay = 0f;
         this.paused = false;
 
+        if (DEBUG) this.debugShapes = new ShapeRenderer();
+
         HdpiUtils.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
+    protected void drawDebug(ShapeRenderer shapeRenderer) { }
     protected abstract void draw(SpriteBatch batch);
     @Override public void render(float delta)
     {
@@ -66,6 +74,15 @@ public abstract class AbstractScreen implements Screen
         batch.begin();
         draw(batch);
         batch.end();
+
+        if (DEBUG) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            debugShapes.setAutoShapeType(true);
+            debugShapes.setProjectionMatrix(camera.combined);
+            debugShapes.begin();
+            drawDebug(debugShapes);
+            debugShapes.end();
+        }
     }
 
     @Override public void resize(int width, int height)
