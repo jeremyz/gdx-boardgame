@@ -77,7 +77,13 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
 
     public void setParent(Element parent)
     {
+        setParent(parent, null);
+    }
+
+    public void setParent(Element parent, Alignment alignment)
+    {
         this.parent = parent;
+        if (alignment != null) this.alignment = alignment;
         taint();
     }
 

@@ -26,8 +26,7 @@ public class Button extends Patch
         this.padding = padding;
         this.spacing = spacing;
         label = new Label(font);
-        label.setParent(this);
-        label.setAlignment(Alignment.MIDDLE_CENTER);
+        label.setParent(this, Alignment.MIDDLE_CENTER);
     }
 
     public void write(String text)
