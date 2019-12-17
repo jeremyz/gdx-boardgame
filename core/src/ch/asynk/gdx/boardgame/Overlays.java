@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import ch.asynk.gdx.boardgame.Drawable;
@@ -117,6 +118,20 @@ public class Overlays implements Drawable, Positionable, Rotable, Scalable
         for (int i = 0, n = sprites.size; i < n; i++) {
             if (enabled[i]) {
                 sprites.get(i).draw(batch);
+            }
+        }
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        if (!isEnabled) return;
+        for (int i = 0, n = sprites.size; i < n; i++) {
+            if (enabled[i]) {
+                final Sprite sprite = sprites.get(i);
+                float w = sprite.getWidth();
+                float h = sprite.getHeight();
+                shapeRenderer.rect(sprite.getX(), sprite.getY(), (w / 2f), (h / 2f), w, h, sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
+                return;
             }
         }
     }

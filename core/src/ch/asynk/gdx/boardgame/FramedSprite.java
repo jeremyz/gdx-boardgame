@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class FramedSprite implements Drawable, Positionable
 {
@@ -100,5 +101,19 @@ public class FramedSprite implements Drawable, Positionable
     @Override public void draw(Batch batch)
     {
         batch.draw(frame, x, y, 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), 1f, 1f, r);
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.identity();
+        shapeRenderer.translate(x, y, 0);
+        shapeRenderer.rotate(0, 0, 1, r);
+        shapeRenderer.translate(-x, -y, 0);
+        shapeRenderer.rect(x, y, frame.getRegionWidth(), frame.getRegionHeight());
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.identity();
     }
 }

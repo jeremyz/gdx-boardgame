@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.animations;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Pool;
@@ -184,6 +185,17 @@ public class FireAnimation implements Animation, Pool.Poolable
         } else {
             for (ShotAnimation shot : this.shots) {
                 shot.draw(batch);
+            }
+        }
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        if (single) {
+            this.shot.drawDebug(shapeRenderer);
+        } else {
+            for (ShotAnimation shot : this.shots) {
+                shot.drawDebug(shapeRenderer);
             }
         }
     }

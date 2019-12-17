@@ -2,6 +2,7 @@ package ch.asynk.gdx.boardgame.animations;
 
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import ch.asynk.gdx.boardgame.utils.IterableArray;
 
@@ -75,6 +76,15 @@ public class AnimationBatch implements Animation, Pool.Poolable
         if (!completed()) {
             for (Animation animation : animations) {
                 animation.draw(batch);
+            }
+        }
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        if (!completed()) {
+            for (Animation animation : animations) {
+                animation.drawDebug(shapeRenderer);
             }
         }
     }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Pool;
 
@@ -181,6 +182,17 @@ public class ShotAnimation extends TimedAnimation implements Drawable, Pool.Pool
 
         if (drawExplosion) {
             this.explosionSprites.draw(batch);
+        }
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        if (drawFire) {
+            this.shellSprites.drawDebug(shapeRenderer);
+        }
+
+        if (drawExplosion) {
+            this.explosionSprites.drawDebug(shapeRenderer);
         }
     }
 }

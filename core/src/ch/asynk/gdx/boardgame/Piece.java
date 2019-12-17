@@ -4,6 +4,7 @@ import java.lang.Math;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
@@ -68,5 +69,12 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
     public void getImpactPoint(Vector2 v)
     {
         v.set(getX()+ (getWidth() / 2f), getY() + (getHeight() / 2f));
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        float w = getWidth();
+        float h = getHeight();
+        shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, getScaleX(), getScaleY(), getRotation());
     }
 }
