@@ -34,6 +34,7 @@ public class Label extends Element
     public void setFont(BitmapFont font)
     {
         this.font = font;
+        this.layout.setText(font, (text == null) ? "" : text);
         taint();
     }
 
