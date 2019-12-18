@@ -23,6 +23,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String FONT_20              = "size20.ttf";
     public static final String FONT_25              = "size25.ttf";
     public static final String PATCH                = "ui-patch.png";
+    public static final String SELECTED             = "ui-selected.png";
     public static final String PANZER               = "panzer.png";
     public static final String ENGINEER             = "engineer.png";
     public static final String HEX_OVERLAYS         = "hex-overlays.atlas";
@@ -78,6 +79,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(TRI, Texture.class);
         load(CORNER, Texture.class);
         load(PATCH, Texture.class);
+        load(SELECTED, Texture.class);
         load(PANZER, Texture.class);
         load(ENGINEER, Texture.class);
         load(FONT_20, BitmapFont.class, params20);
@@ -102,6 +104,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(TRI);
         unload(CORNER);
         unload(PATCH);
+        unload(SELECTED);
         unload(PANZER);
         unload(ENGINEER);
         unload(FONT_20);
