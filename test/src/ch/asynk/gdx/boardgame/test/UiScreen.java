@@ -13,6 +13,7 @@ import ch.asynk.gdx.boardgame.ui.Button;
 import ch.asynk.gdx.boardgame.ui.Label;
 import ch.asynk.gdx.boardgame.ui.List;
 import ch.asynk.gdx.boardgame.ui.Patch;
+import ch.asynk.gdx.boardgame.ui.Scissors;
 import ch.asynk.gdx.boardgame.utils.Collection;
 import ch.asynk.gdx.boardgame.utils.IterableArray;
 
@@ -68,6 +69,7 @@ public class UiScreen extends AbstractScreen
         this.camera = new OrthographicCamera();
         this.camera.position.set(bg.getWidth() / 2f, bg.getHeight() / 2f, 0);
         setState(State.POSITIONS);
+        Scissors.register(this.camera, this.batch);
     }
 
     private Button buildButton(BitmapFont font, NinePatch patch, int padding, int spacing, Alignment a, Alignment la)

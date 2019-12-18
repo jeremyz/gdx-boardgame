@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import ch.asynk.gdx.boardgame.ui.Root;
+import ch.asynk.gdx.boardgame.ui.Scissors;
 
 public abstract class AbstractScreen implements Screen
 {
@@ -106,6 +107,7 @@ public abstract class AbstractScreen implements Screen
     {
         GdxBoardTest.debug(dom, "dispose()");
         batch.dispose();
+        Scissors.clear();
     }
 
     @Override public void show()
