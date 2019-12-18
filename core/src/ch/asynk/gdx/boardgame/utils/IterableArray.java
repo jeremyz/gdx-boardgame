@@ -91,6 +91,15 @@ public class IterableArray<E> implements Collection<E>
         return true;
     }
 
+    @Override public boolean replace(E e, int idx)
+    {
+        if (idx < s) {
+            data[idx] = e;
+            return true;
+        }
+        return false;
+    }
+
     @Override public E remove(int i)
     {
         E e = data[i];
