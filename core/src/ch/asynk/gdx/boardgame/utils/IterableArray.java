@@ -18,6 +18,16 @@ public class IterableArray<E> implements Collection<E>
         this.data = (E[]) new Object[c];
     }
 
+    @SuppressWarnings("unchecked")
+    public IterableArray(IterableArray<E> array)
+    {
+        this.idx = array.idx;
+        this.s = array.s;
+        this.c = array.c;
+        this.data = (E[]) new Object[c];
+        System.arraycopy(array.data, 0, this.data, 0 , array.data.length);
+    }
+
     @Override public int size()
     {
         return s;

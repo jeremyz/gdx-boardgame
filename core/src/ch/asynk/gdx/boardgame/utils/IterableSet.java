@@ -7,6 +7,11 @@ public class IterableSet<E> extends IterableArray<E>
         super(n);
     }
 
+    public IterableSet(IterableSet<E> set)
+    {
+        super(set);
+    }
+
     @Override public boolean add(E e)
     {
         if (contains(e)) return false;

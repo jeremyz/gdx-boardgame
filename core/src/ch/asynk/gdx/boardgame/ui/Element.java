@@ -38,6 +38,20 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.taintParent = taintParent;
     }
 
+    protected Element(Element element)
+    {
+        this.blocked = element.blocked;
+        this.visible = element.visible;
+        this.padding = element.padding;
+        this.parent = element.parent;
+        this.alignment = element.alignment;
+        this.rect = new Rectangle(element.rect);
+        this.x = element.x;
+        this.y = element.y;
+        this.tainted = element.tainted;
+        this.taintParent = element.taintParent;
+    }
+
     @Override public final float getX()         { return rect.x; }
     @Override public final float getY()         { return rect.y; }
     @Override public final float getWidth()     { return rect.width; }

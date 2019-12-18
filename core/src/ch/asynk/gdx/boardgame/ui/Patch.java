@@ -14,6 +14,12 @@ public class Patch extends Element
         setPosition(0, 0, patch.getTotalWidth(), patch.getTotalHeight());
     }
 
+    public Patch(Patch patch)
+    {
+        super(patch);
+        this.patch = new NinePatch(patch.patch);
+    }
+
     @Override public void draw(Batch batch)
     {
         if (!visible) return;

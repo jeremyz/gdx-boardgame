@@ -7,6 +7,11 @@ public class IterableQueue<E> extends IterableArray<E>
         super(n);
     }
 
+    public IterableQueue(IterableQueue<E> queue)
+    {
+        super(queue);
+    }
+
     public void enqueue(E e)
     {
         add(e);

@@ -29,6 +29,11 @@ public class Button extends Patch
         label.setParent(this, Alignment.MIDDLE_CENTER);
     }
 
+    public Button(Button button)
+    {
+        super(button);
+    }
+
     public void write(String text)
     {
         label.write(text);

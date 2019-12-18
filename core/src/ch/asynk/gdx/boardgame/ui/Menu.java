@@ -23,6 +23,19 @@ public class Menu extends Patch
         setEntries(font, entries);
     }
 
+    public Menu(Menu menu)
+    {
+        super(menu);
+        this.title = new Label(menu.title);
+        this.entries = new Label[menu.entries.length];
+        for (int i = 0; i < menu.entries.length; i++)
+            this.entries[i] = new Label(menu.entries[i]);
+        this.touchedItem = menu.touchedItem;
+        this.entriesOffset = menu.entriesOffset;
+        this.titleSpacing = menu.titleSpacing;
+        this.entriesSpacing = menu.entriesSpacing;
+    }
+
     public void setTitle(BitmapFont font, String title)
     {
         this.title = new Label(font);

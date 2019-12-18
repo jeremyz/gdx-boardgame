@@ -31,6 +31,16 @@ public class Label extends Element
         this.layout = new GlyphLayout();
     }
 
+    public Label(Label label)
+    {
+        super(label);
+        this.font = label.font;
+        this.layout = label.layout;
+        this.fx = label.fx;
+        this.fy = label.fy;
+        this.text = label.text;
+    }
+
     public String getText()
     {
         return text;

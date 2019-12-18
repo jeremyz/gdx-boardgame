@@ -7,6 +7,11 @@ public class IterableStack<E> extends IterableArray<E>
         super(n);
     }
 
+    public IterableStack(IterableStack<E> stack)
+    {
+        super(stack);
+    }
+
     public void push(E e)
     {
         add(e);

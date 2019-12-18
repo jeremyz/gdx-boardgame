@@ -12,7 +12,13 @@ public abstract class Assembly extends Element
 
     public Assembly(int c)
     {
-        this.children = new IterableSet<Element>(c);
+        this.children = new IterableSet<>(c);
+    }
+
+    public Assembly(Assembly assembly)
+    {
+        this.children = new IterableSet<>(assembly.children);
+        this.touched = assembly.touched;
     }
 
     public void add(Element e)
