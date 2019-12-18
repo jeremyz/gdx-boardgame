@@ -123,7 +123,6 @@ public class UiScreen extends AbstractScreen
     }
 
     @Override protected void onZoom(float dz) { }
-    @Override protected void onDragged(int dx, int dy) { }
     @Override protected void onTouch(int x, int y)
     {
         hudTouch.set(x, y, 0);
@@ -132,6 +131,12 @@ public class UiScreen extends AbstractScreen
             if (root.touched() == next)
                 setState(state.next());
         }
+    }
+    @Override protected void onDragged(int dx, int dy)
+    {
+        hudTouch.set(dragPos.x, dragPos.y, 0);
+        camera.unproject(hudTouch);
+        root.drag(hudTouch.x, hudTouch.y, -dx, dy);
     }
 }
 

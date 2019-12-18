@@ -26,9 +26,9 @@ public abstract class AbstractScreen implements Screen
     private static final float ZOOM_SCROLL_FACTOR = .1f;
     private static final float ZOOM_GESTURE_FACTOR = .01f;
 
-    protected final Vector2 dragPos = new Vector2();
-    protected final Vector3 boardTouch = new Vector3();
-    protected final Vector3 hudTouch = new Vector3();
+    protected final Vector2 dragPos = new Vector2(0, 0);
+    protected final Vector3 boardTouch = new Vector3(0, 0, 0);
+    protected final Vector3 hudTouch = new Vector3(0, 0, 0);
 
     private ShapeRenderer shapeRenderer = null;
 
