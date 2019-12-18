@@ -44,7 +44,10 @@ public class Scrollable extends Element
 
     @Override public boolean touch(float x, float y)
     {
-        return clip.contains(x, y);
+        if (clip.contains(x, y)) {
+            return child.touch(x, y);
+        }
+        return false;
     }
 
     @Override public boolean drag(float x, float y, int dx, int dy)
