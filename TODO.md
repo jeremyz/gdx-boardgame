@@ -1,7 +1,6 @@
 ## TODO
  - UI widgets
-    - list
-    - scrollbale vert/horiz
+    - layouts
 
  - Algos
     - Adjacents
