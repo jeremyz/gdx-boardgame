@@ -31,26 +31,25 @@ public class Label extends Element
         this.layout = new GlyphLayout();
     }
 
-    public void setFont(BitmapFont font)
-    {
-        this.font = font;
-        this.layout.setText(font, (text == null) ? "" : text);
-        taint();
-    }
-
     public String getText()
     {
         return text;
     }
 
-    public void write(String text)
+    public void setFont(BitmapFont font)
     {
-        write(text, getX(), getY());
+        this.font = font;
+        write();
     }
 
-    public void write(String text, float x, float y)
+    public void write(String text)
     {
         this.text = text;
+        write();
+    }
+
+    public void write()
+    {
         this.layout.setText(font, (text == null) ? "" : text);
         taint();
     }
