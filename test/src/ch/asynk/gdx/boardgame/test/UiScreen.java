@@ -14,6 +14,7 @@ import ch.asynk.gdx.boardgame.ui.Label;
 import ch.asynk.gdx.boardgame.ui.List;
 import ch.asynk.gdx.boardgame.ui.Patch;
 import ch.asynk.gdx.boardgame.ui.Scissors;
+import ch.asynk.gdx.boardgame.ui.Scrollable;
 import ch.asynk.gdx.boardgame.utils.Collection;
 import ch.asynk.gdx.boardgame.utils.IterableArray;
 
@@ -159,6 +160,7 @@ class MyButton extends Button
 class MyList extends Patch
 {
     private Label title;
+    private Scrollable scrollable;
     private List list;
 
     class Item implements List.Item
@@ -186,34 +188,34 @@ class MyList extends Patch
         }
         this.list = new List(font, textureRegion, 10, 15);
         this.list.setItems(items);
-        this.list.setParent(this);
+
+        this.scrollable = new Scrollable(this.list);
+        this.scrollable.setParent(this);
+        this.scrollable.hScroll = true;
     }
 
     @Override public void computeGeometry()
     {
-        float pp = (2 * padding);
-
         // update dimensions
         title.computeGeometry();
-        list.computeGeometry();
-        rect.width = title.getWidth() + pp;
-        rect.height = title.getHeight() + pp + list.getHeight() + 15;
-        if ((list.getWidth() + pp) > rect.width) rect.width = list.getWidth() + pp;
+        scrollable.computeGeometry();
+        rect.height = 300;
+        rect.width = scrollable.getBestWidth() + (2 * padding) - 100;
 
         // update position
         super.computeGeometry();
         title.computeGeometry();
-        list.computeGeometry();
+        scrollable.setPosition(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 15);
     }
 
     @Override public boolean touch(float x, float y)
     {
-        if (super.touch(x, y)) {
-            if (list.touch(x, y)) {
-                return true;
-            }
-        }
-        return false;
+        return scrollable.touch(x, y);
+    }
+
+    @Override public boolean drag(float x, float y, int dx, int dy)
+    {
+        return scrollable.drag(x, y, dx, dy);
     }
 
     @Override public void draw(Batch batch)
@@ -222,7 +224,7 @@ class MyList extends Patch
         if (tainted) computeGeometry();
         super.draw(batch);
         title.draw(batch);
-        list.draw(batch);
+        scrollable.draw(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)
@@ -230,6 +232,6 @@ class MyList extends Patch
         if (!visible) return;
         super.drawDebug(shapeRenderer);
         title.drawDebug(shapeRenderer);
-        list.drawDebug(shapeRenderer);
+        scrollable.drawDebug(shapeRenderer);
     }
 }
