@@ -31,6 +31,12 @@ public class Label extends Element
         this.layout = new GlyphLayout();
     }
 
+    public void setFont(BitmapFont font)
+    {
+        this.font = font;
+        taint();
+    }
+
     public String getText()
     {
         return text;
