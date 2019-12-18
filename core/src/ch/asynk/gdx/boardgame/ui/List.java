@@ -56,6 +56,11 @@ public class List extends Element
     {
         unselect();
         this.items = items;
+        taint();
+    }
+
+    @Override public void computeGeometry()
+    {
         float w = 0f;
         for (Item e: items) {
             layout.setText(font, e.s());
@@ -65,12 +70,14 @@ public class List extends Element
 
         rect.width = w + (2 * padding);
         rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
+        super.computeGeometry();
     }
 
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
 
+        if (tainted) computeGeometry();
         float x = getInnerX();
         float y = getInnerTop();
         for (Item e : items) {

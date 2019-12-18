@@ -188,6 +188,7 @@ class MyList extends Patch
 
         // update dimensions
         title.computeGeometry();
+        list.computeGeometry();
         rect.width = title.getWidth() + pp;
         rect.height = title.getHeight() + pp + list.getHeight() + 15;
         if ((list.getWidth() + pp) > rect.width) rect.width = list.getWidth() + pp;
