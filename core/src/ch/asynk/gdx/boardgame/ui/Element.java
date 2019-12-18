@@ -83,6 +83,12 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         return rect.contains(x, y);
     }
 
+    @Override public boolean drag(float x, float y, int dx, int dy)
+    {
+        if (blocked || !visible) return false;
+        return rect.contains(x, y);
+    }
+
     public void taint()
     {
         this.tainted = true;

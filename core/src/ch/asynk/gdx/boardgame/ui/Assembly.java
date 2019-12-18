@@ -41,12 +41,24 @@ public abstract class Assembly extends Element
 
     @Override public boolean touch(float x, float y)
     {
-        for (Element e : children)
+        for (Element e : children) {
             if (e.touch(x, y)) {
                 touched = e;
                 return true;
             }
+
+        }
         touched = null;
+        return false;
+    }
+
+    @Override public boolean drag(float x, float y, int dx, int dy)
+    {
+        if (touched != null) {
+            if (touched.drag(x, y, dx, dy))
+                return true;
+            touched = null;
+        }
         return false;
     }
 
