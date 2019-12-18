@@ -10,6 +10,11 @@ public class Root extends Assembly
         this.alignment = Alignment.ABSOLUTE;
     }
 
+    public Root(Root root)
+    {
+        super(root);
+    }
+
     public void resize(Rectangle r)
     {
         resize(r.x, r.y, r.width, r.height);

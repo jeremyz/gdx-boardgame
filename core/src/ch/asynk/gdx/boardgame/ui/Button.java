@@ -32,6 +32,8 @@ public class Button extends Patch
     public Button(Button button)
     {
         super(button);
+        this.label = new Label(button.label);
+        this.spacing = button.spacing;
     }
 
     public void write(String text)
