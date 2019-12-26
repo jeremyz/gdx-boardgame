@@ -65,14 +65,13 @@ public class Menu extends Patch
         taint();
     }
 
-    @Override public void computeGeometry()
+    @Override public void computeDimensions()
     {
-        // compute width and height
-        title.computeGeometry();
+        title.computeDimensions();
         float h = title.getHeight();
         float w = title.getWidth();
         for (Label label : entries) {
-            label.computeGeometry();
+            label.computeDimensions();
             h += label.getHeight();
             float t = label.getWidth() + entriesOffset;
             if (t > w)
@@ -80,9 +79,12 @@ public class Menu extends Patch
         }
         rect.width = w + (2 * padding);
         rect.height = h + (titleSpacing + (entriesSpacing * (entries.length - 1)) + (2 * padding));
+        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
+    }
 
-        // compute position
-        super.computeGeometry();
+    @Override public void computePosition()
+    {
+        super.computePosition();
 
         float y = getInnerHeight() - title.getHeight();
         title.setPosition(0, y);

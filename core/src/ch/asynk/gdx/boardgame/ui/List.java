@@ -31,6 +31,7 @@ public class List extends Element
         this.idx = null;
         this.selected = new Bg(selected);
         this.selected.visible = false;
+        this.sizing = Sizing.EXPAND_BOTH;
     }
 
     public void unselect() { idx = null; }
@@ -59,7 +60,7 @@ public class List extends Element
         taint();
     }
 
-    @Override public void computeGeometry()
+    @Override public void computeDimensions()
     {
         float w = 0f;
         for (Item e: items) {
@@ -67,10 +68,16 @@ public class List extends Element
             if (layout.width > w) w = layout.width;
         }
         itemHeight = (layout.height + spacing);
+        if (sizing.fill()) {
+            super.computeDimensions();
+        } else if (sizing.expand()) {
 
-        rect.width = w + (2 * padding);
-        rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
-        super.computeGeometry();
+            if (sizing.expandWidth())
+                rect.width = w + (2 * padding);
+            if (sizing.expandHeight())
+                rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
+            if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
+        }
     }
 
     @Override public void draw(Batch batch)

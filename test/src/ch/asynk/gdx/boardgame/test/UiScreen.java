@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
+import ch.asynk.gdx.boardgame.ui.Element;
 import ch.asynk.gdx.boardgame.ui.Label;
 import ch.asynk.gdx.boardgame.ui.List;
 import ch.asynk.gdx.boardgame.ui.Patch;
@@ -45,6 +46,8 @@ public class UiScreen extends AbstractScreen
     public UiScreen(final GdxBoardTest app)
     {
         super(app, "UiScreen");
+
+        Element.DEBUG_GEOMETRY = true;
 
         final NinePatch patch = app.assets.getNinePatch(app.assets.PATCH, 23, 23, 23 ,23);
         final BitmapFont font = app.assets.getFont(app.assets.FONT_25);
@@ -97,6 +100,7 @@ public class UiScreen extends AbstractScreen
                 app.switchToMenu();
                 break;
         }
+        System.err.println("switched to : " + state);
         this.state = state;
     }
 
@@ -150,9 +154,9 @@ class MyButton extends Button
         super(font, patch, padding, spacing);
     }
 
-    @Override public void computeGeometry()
+    @Override public void computePosition()
     {
-        super.computeGeometry();
+        super.computePosition();
         label.write(String.format("%04d;%04d", (int)getX(), (int)getY()));
     }
 }
@@ -194,17 +198,18 @@ class MyList extends Patch
         this.scrollable.hScroll = true;
     }
 
-    @Override public void computeGeometry()
+    @Override public void computeDimensions()
     {
-        // update dimensions
-        title.computeGeometry();
-        scrollable.computeGeometry();
+        title.computeDimensions();
+        scrollable.computeDimensions();
         rect.height = 300;
         rect.width = scrollable.getBestWidth() + (2 * padding) - 100;
+    }
 
-        // update position
-        super.computeGeometry();
-        title.computeGeometry();
+    @Override public void computePosition()
+    {
+        super.computePosition();
+        title.computePosition();
         scrollable.setPosition(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 15);
     }
 

@@ -8,8 +8,6 @@ public class Label extends Element
 {
     private BitmapFont font;
     private GlyphLayout layout;
-    private float fx;
-    private float fy;
     private String text;
 
     public Label(BitmapFont font)
@@ -29,6 +27,7 @@ public class Label extends Element
         this.padding = padding;
         this.alignment = alignment;
         this.layout = new GlyphLayout();
+        this.sizing = Sizing.EXPAND_BOTH;
     }
 
     public String getText()
@@ -54,19 +53,23 @@ public class Label extends Element
         taint();
     }
 
-    @Override public void computeGeometry()
+    @Override public void computeDimensions()
     {
-        this.rect.width = (layout.width + (2 * padding));
-        this.rect.height = (layout.height + (2 * padding));
-        super.computeGeometry();
-        fx = getInnerX();
-        fy = getInnerY() + layout.height;
+        if(sizing.fill()) {
+            super.computeDimensions();
+        } else {
+            if (sizing.expandWidth())
+                this.rect.width = (layout.width + (2 * padding));
+            if (sizing.expandHeight())
+                this.rect.height = (layout.height + (2 * padding));
+            if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
+        }
     }
 
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
         if (tainted) computeGeometry();
-        font.draw(batch, layout, fx, fy);
+        font.draw(batch, layout, getInnerX(), getInnerY() + layout.height);
     }
 }

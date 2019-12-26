@@ -37,9 +37,14 @@ public class Scrollable extends Element
         return (child.getHeight() + (2 * padding));
     }
 
-    @Override public void computeGeometry()
+    @Override public void computeDimensions()
     {
-        child.computeGeometry();
+        child.computeDimensions();
+    }
+
+    @Override public void computePosition()
+    {
+        child.computePosition();
     }
 
     @Override public boolean touch(float x, float y)

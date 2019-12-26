@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Button extends Patch
 {
     protected Label label;
-    protected float spacing;    // for label alignment;
+    protected float spacing;    // label is aligned within spacing frame;
 
     public Button(BitmapFont font, NinePatch patch)
     {
@@ -25,14 +25,15 @@ public class Button extends Patch
         super(patch);
         this.padding = padding;
         this.spacing = spacing;
-        label = new Label(font);
-        label.setParent(this, Alignment.MIDDLE_CENTER);
+        this.label = new Label(font);
+        this.label.setParent(this, Alignment.MIDDLE_CENTER);
+        this.sizing = Sizing.EXPAND_BOTH;
     }
 
     public void write(String text)
     {
         label.write(text);
-        taint();    // might impact Button's geometry
+        taint();
     }
 
     public void setLabelAlignment(Alignment alignment)
@@ -40,14 +41,25 @@ public class Button extends Patch
         label.setAlignment(alignment);
     }
 
-    @Override public void computeGeometry()
+    @Override public void computeDimensions()
     {
-        float dd = 2 * (padding + spacing);
-        label.computeGeometry();    // update dimensions
-        rect.width = label.getWidth() + dd;
-        rect.height = label.getHeight() + dd;
-        super.computeGeometry();
-        label.computeGeometry();    // update position
+        if(sizing.fill()) {
+            super.computeDimensions();
+        } else {
+            float dd = 2 * (padding + spacing);
+            label.computeDimensions();
+            if (sizing.expandWidth())
+                rect.width = label.getWidth() + dd;
+            if (sizing.expandHeight())
+                rect.height = label.getHeight() + dd;
+            if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
+        }
+    }
+
+    @Override public void computePosition()
+    {
+        super.computePosition();
+        label.computePosition();
     }
 
     @Override public void draw(Batch batch)
