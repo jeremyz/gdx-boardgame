@@ -167,7 +167,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
                 rect.width = parent.getInnerWidth();
             }
             if (sizing.fillHeight()) {
-                rect.width = parent.getInnerHeight();
+                rect.height = parent.getInnerHeight();
             }
         }
         // it is up to the subclass to implement the expand logic
