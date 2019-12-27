@@ -14,11 +14,6 @@ public abstract class Assembly extends Element
         this.children = new IterableSet<Element>(c);
     }
 
-    public void taintChildren()
-    {
-        children.forEach( c -> c.taint() );
-    }
-
     public Element touched()
     {
         return touched;

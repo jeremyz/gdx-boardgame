@@ -100,6 +100,11 @@ public class Element implements Drawable, Paddable, Positionable, Touchable
         }
     }
 
+    public void taintChildren()
+    {
+        if (children != null)
+            children.forEach( c -> c.taint() );
+    }
 
     @Override public void draw(Batch batch)
     {
