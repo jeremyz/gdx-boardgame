@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -9,7 +10,7 @@ import ch.asynk.gdx.boardgame.Positionable;
 import ch.asynk.gdx.boardgame.Touchable;
 import ch.asynk.gdx.boardgame.utils.IterableSet;
 
-public abstract class Element implements Drawable, Paddable, Positionable, Touchable
+public class Element implements Drawable, Paddable, Positionable, Touchable
 {
     public static boolean DEBUG_GEOMETRY = false;
     public static int DEFAULT_CHILD_COUNT = 2;
@@ -99,9 +100,18 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         }
     }
 
+
+    @Override public void draw(Batch batch)
+    {
+        if (tainted) computeGeometry();
+        children.forEach( c -> c.draw(batch) );
+    }
+
     @Override public void drawDebug(ShapeRenderer shapeRenderer)
     {
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+        if (children != null)
+            children.forEach( c -> c.drawDebug(shapeRenderer) );
     }
 
     @Override public boolean touch(float x, float y)

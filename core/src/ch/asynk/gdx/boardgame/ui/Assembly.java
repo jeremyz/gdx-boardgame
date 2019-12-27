@@ -46,15 +46,4 @@ public abstract class Assembly extends Element
         }
         return false;
     }
-
-    @Override public void draw(Batch batch)
-    {
-        if (tainted) computeGeometry();
-        children.forEach( c -> c.draw(batch) );
-    }
-
-    @Override public void drawDebug(ShapeRenderer shapeRenderer)
-    {
-        children.forEach( c -> c.drawDebug(shapeRenderer) );
-    }
 }
