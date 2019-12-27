@@ -7,26 +7,11 @@ import ch.asynk.gdx.boardgame.utils.IterableSet;
 
 public abstract class Assembly extends Element
 {
-    protected IterableSet<Element> children;
     private Element touched;
 
     public Assembly(int c)
     {
         this.children = new IterableSet<Element>(c);
-    }
-
-    public void add(Element e)
-    {
-        if (children.add(e)) {
-            e.setParent(this);
-        }
-    }
-
-    public void remove(Element e)
-    {
-        if (children.remove(e)) {
-            e.setParent(null);
-        }
     }
 
     public void taintChildren()
