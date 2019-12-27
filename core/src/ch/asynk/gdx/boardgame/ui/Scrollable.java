@@ -47,17 +47,20 @@ public class Scrollable extends Element
         child.computePosition();
     }
 
-    @Override public boolean touch(float x, float y)
+    @Override public Element touch(float x, float y)
     {
         if (clip.contains(x, y)) {
-            return child.touch(x, y);
+            final Element touched = child.touch(x, y);
+            if (touched == child)
+                return this;
+            return touched;
         }
-        return false;
+        return null;
     }
 
     @Override public boolean drag(float x, float y, int dx, int dy)
     {
-        if (!touch(x, y)) return false;
+        if (touch(x, y) == null) return false;
         float tx = 0;
         float ty = 0;
         if (vScroll) {

@@ -119,10 +119,19 @@ public class Element implements Drawable, Paddable, Positionable, Touchable
             children.forEach( c -> c.drawDebug(shapeRenderer) );
     }
 
-    @Override public boolean touch(float x, float y)
+    @Override public Element touch(float x, float y)
     {
-        if (blocked || !visible) return false;
-        return rect.contains(x, y);
+        if (!blocked && visible && rect.contains(x, y)) {
+            if (children != null) {
+                for (Element e : children) {
+                    final Element t = e.touch(x, y);
+                    if (t != null)
+                        return t;
+                }
+            }
+            return this;
+        }
+        return null;
     }
 
     @Override public boolean drag(float x, float y, int dx, int dy)

@@ -2,12 +2,37 @@ package ch.asynk.gdx.boardgame.ui;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public class Root extends Assembly
+import ch.asynk.gdx.boardgame.utils.IterableSet;
+
+public class Root extends Element
 {
+    private Element touched;
+
     public Root(int c)
     {
-        super(c);
         this.alignment = Alignment.ABSOLUTE;
+        this.children = new IterableSet<Element>(c);
+    }
+
+    public Element touched()
+    {
+        return touched;
+    }
+
+    @Override public Element touch(float x, float y)
+    {
+        touched = super.touch(x, y);
+        return touched;
+    }
+
+    @Override public boolean drag(float x, float y, int dx, int dy)
+    {
+        if (touched != null && touched != this) {
+            if (touched.drag(x, y, dx, dy))
+                return true;
+            touched = null;
+        }
+        return false;
     }
 
     public void resize(Rectangle r)

@@ -73,8 +73,10 @@ public class MenuScreen extends AbstractScreen
     {
         hudTouch.set(x, y, 0);
         camera.unproject(hudTouch);
-        if (root.touch(hudTouch.x, hudTouch.y)) {
+        if (root.touch(hudTouch.x, hudTouch.y) != root) {
             switch(menu.touched()) {
+                case -1:
+                    break;
                 case 0:
                     app.switchToUi();
                     break;

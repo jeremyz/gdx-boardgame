@@ -38,19 +38,20 @@ public class List extends Element
     public Integer getIdx() { return idx; }
     public Item getSelected() { return ((idx == null) ? null : items.get(idx)); }
 
-    @Override public boolean touch(float x, float y)
+    @Override public Element touch(float x, float y)
     {
-        if (super.touch(x, y)) {
+        final Element touched = super.touch(x, y);
+        if (touched != null) {
             idx = (int) Math.floor((getInnerTop() - y) / itemHeight);
             if ((idx >= 0) && (idx < items.size())) {
                 selected.setPosition(getX(), getInnerTop() - ((idx + 1) * itemHeight) + spacing / 2f, getWidth(), itemHeight);
                 selected.visible = true;
-                return true;
+                return touched;
             }
         }
         idx = null;
         selected.visible = false;
-        return false;
+        return null;
     }
 
     public void setItems(Collection<Item> items)

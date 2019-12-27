@@ -134,10 +134,8 @@ public class UiScreen extends AbstractScreen
     {
         hudTouch.set(x, y, 0);
         camera.unproject(hudTouch);
-        if (root.touch(hudTouch.x, hudTouch.y)) {
-            if (root.touched() == next)
-                setState(state.next());
-        }
+        if (root.touch(hudTouch.x, hudTouch.y) == next)
+            setState(state.next());
     }
     @Override protected void onDragged(int dx, int dy)
     {
@@ -213,7 +211,7 @@ class MyList extends Patch
         scrollable.setPosition(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 15);
     }
 
-    @Override public boolean touch(float x, float y)
+    @Override public Element touch(float x, float y)
     {
         return scrollable.touch(x, y);
     }

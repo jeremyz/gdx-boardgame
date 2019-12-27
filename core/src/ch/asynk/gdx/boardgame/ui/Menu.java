@@ -9,7 +9,7 @@ public class Menu extends Patch
 {
     private Label title;
     private Label[] entries;
-    private Integer touchedItem;
+    private int touchedItem;
 
     private int entriesOffset;      // horizontal offset
     private int titleSpacing;       // between title and entries
@@ -18,7 +18,7 @@ public class Menu extends Patch
     public Menu(BitmapFont font, NinePatch patch, String title, String[] entries)
     {
         super(patch);
-        this.touchedItem = null;
+        this.touchedItem = -1;
         setTitle(font, title);
         setEntries(font, entries);
     }
@@ -95,23 +95,24 @@ public class Menu extends Patch
         }
     }
 
-    public Integer touched()
+    public int touched()
     {
         return touchedItem;
     }
 
-    @Override public boolean touch(float x, float y)
+    @Override public Element touch(float x, float y)
     {
-        touchedItem = null;
-        if (super.touch(x, y)) {
+        touchedItem = -1;
+        if (super.touch(x, y) != null) {
             for (int i = 0; i < entries.length; i++) {
-                if (entries[i].touch(x, y)) {
+                final Element touched = entries[i].touch(x, y);
+                if (touched != null) {
                     touchedItem = i;
-                    return true;
+                    return touched;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     @Override public void draw(Batch batch)
