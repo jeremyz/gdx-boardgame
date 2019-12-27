@@ -30,6 +30,7 @@ public class List extends Element
         this.layout = new GlyphLayout();
         this.idx = null;
         this.selected = new Bg(selected);
+        this.selected.setParent(this);
         this.selected.visible = false;
         this.sizing = Sizing.EXPAND_BOTH;
     }
@@ -42,10 +43,13 @@ public class List extends Element
     {
         final Element touched = super.touch(x, y);
         if (touched != null) {
-            idx = (int) Math.floor((getInnerTop() - y) / itemHeight);
-            if ((idx >= 0) && (idx < items.size())) {
-                selected.setPosition(getX(), getInnerTop() - ((idx + 1) * itemHeight) + spacing / 2f, getWidth(), itemHeight);
-                selected.visible = true;
+            int i = (int) Math.floor((getInnerTop() - y) / itemHeight);
+            if (i >= 0 && i < items.size()) {
+                if (idx == null || idx != i) {
+                    idx = i;
+                    selected.setPosition(0, getInnerHeight() - ((idx + 1) * itemHeight) + spacing / 2f, getWidth(), itemHeight);
+                    selected.visible = true;
+                }
                 return touched;
             }
         }
@@ -79,6 +83,12 @@ public class List extends Element
                 rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
             if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
         }
+    }
+
+    @Override public void computePosition()
+    {
+        super.computePosition();
+        selected.computePosition();
     }
 
     @Override public void draw(Batch batch)
