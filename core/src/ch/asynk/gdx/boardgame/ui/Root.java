@@ -55,6 +55,7 @@ public class Root extends Element
 
     @Override public void draw(Batch batch)
     {
+        if (!visible) return;
         if (tainted) computeGeometry();
         children.forEach( c -> c.draw(batch) );
     }

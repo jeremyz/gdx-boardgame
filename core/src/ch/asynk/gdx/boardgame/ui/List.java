@@ -94,7 +94,6 @@ public class List extends Element
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-
         if (tainted) computeGeometry();
         float x = getInnerX();
         float y = getInnerTop();
