@@ -10,7 +10,7 @@ import ch.asynk.gdx.boardgame.Positionable;
 import ch.asynk.gdx.boardgame.Touchable;
 import ch.asynk.gdx.boardgame.utils.IterableSet;
 
-public class Element implements Drawable, Paddable, Positionable, Touchable
+public abstract class Element implements Drawable, Paddable, Positionable, Touchable
 {
     public static boolean DEBUG_GEOMETRY = false;
     public static int DEFAULT_CHILD_COUNT = 2;
@@ -95,55 +95,23 @@ public class Element implements Drawable, Paddable, Positionable, Touchable
 
     public void remove(Element e)
     {
-        if (children.remove(e)) {
-            e.setParent(null);
-        }
-    }
-
-    public void taintChildren()
-    {
-        if (children != null)
-            children.forEach( c -> c.taint() );
-    }
-
-    @Override public void draw(Batch batch)
-    {
-        if (tainted) computeGeometry();
-        children.forEach( c -> c.draw(batch) );
-    }
-
-    @Override public void drawDebug(ShapeRenderer shapeRenderer)
-    {
-        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
-        if (children != null)
-            children.forEach( c -> c.drawDebug(shapeRenderer) );
-    }
-
-    @Override public Element touch(float x, float y)
-    {
-        if (!blocked && visible && rect.contains(x, y)) {
-            if (children != null) {
-                for (Element e : children) {
-                    final Element t = e.touch(x, y);
-                    if (t != null)
-                        return t;
-                }
+        if (children != null) {
+            if (children.remove(e)) {
+                e.setParent(null);
             }
-            return this;
         }
-        return null;
-    }
-
-    @Override public boolean drag(float x, float y, int dx, int dy)
-    {
-        if (blocked || !visible) return false;
-        return rect.contains(x, y);
     }
 
     public void taint()
     {
         this.tainted = true;
         if (parent != null && taintParent) parent.taint();
+    }
+
+    public void taintChildren()
+    {
+        if (children != null)
+            children.forEach( c -> c.taint() );
     }
 
     @Override public void setPosition(float x, float y, float w, float h)
@@ -241,5 +209,39 @@ public class Element implements Drawable, Paddable, Positionable, Touchable
         computePosition();
         if (DEBUG_GEOMETRY) System.err.println("Geometry]" + print(-1));
         this.tainted = false;
+    }
+
+    public void drawChildren(Batch batch)
+    {
+        if (children != null)
+            children.forEach( c -> c.draw(batch) );
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+        if (children != null)
+            children.forEach( c -> c.drawDebug(shapeRenderer) );
+    }
+
+    @Override public Element touch(float x, float y)
+    {
+        if (!blocked && visible && rect.contains(x, y)) {
+            if (children != null) {
+                for (Element e : children) {
+                    final Element t = e.touch(x, y);
+                    if (t != null)
+                        return t;
+                }
+            }
+            return this;
+        }
+        return null;
+    }
+
+    @Override public boolean drag(float x, float y, int dx, int dy)
+    {
+        if (blocked || !visible) return false;
+        return rect.contains(x, y);
     }
 }

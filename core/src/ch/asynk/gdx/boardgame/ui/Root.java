@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.utils.IterableSet;
@@ -12,6 +13,23 @@ public class Root extends Element
     {
         this.alignment = Alignment.ABSOLUTE;
         this.children = new IterableSet<Element>(c);
+    }
+
+    public void resize(Rectangle r)
+    {
+        resize(r.x, r.y, r.width, r.height);
+    }
+
+    public void resize(float width, float height)
+    {
+        resize(getX(), getY(), width, height);
+    }
+
+    public void resize(float x, float y, float width, float height)
+    {
+        setPosition(x, y, width, height);
+        taint();
+        taintChildren();
     }
 
     public Element touched()
@@ -35,20 +53,9 @@ public class Root extends Element
         return false;
     }
 
-    public void resize(Rectangle r)
+    @Override public void draw(Batch batch)
     {
-        resize(r.x, r.y, r.width, r.height);
-    }
-
-    public void resize(float width, float height)
-    {
-        resize(getX(), getY(), width, height);
-    }
-
-    public void resize(float x, float y, float width, float height)
-    {
-        setPosition(x, y, width, height);
-        taint();
-        taintChildren();
+        if (tainted) computeGeometry();
+        children.forEach( c -> c.draw(batch) );
     }
 }
