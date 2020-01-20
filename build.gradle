@@ -18,7 +18,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "gdx-boardgame"
-        gdxVersion = '1.9.8'
+        gdxVersion = '1.9.10'
     }
 
     repositories {
