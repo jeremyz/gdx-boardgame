@@ -92,7 +92,7 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
                 // rotation ...
                 from = to;
                 next();
-                Orientation o = (hasNext() ? Orientation.fromTiles(from, current()) : finalOrientation);
+                final Orientation o = (hasNext() ? Orientation.fromTiles(from, current()) : finalOrientation);
                 // if already facing, transform into a straight move
                 if (piece.isFacing(o)) {
                     to = current();
