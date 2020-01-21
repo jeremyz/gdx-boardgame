@@ -39,6 +39,10 @@ public class TriangleBoard implements Board
         this.h43 = this.h * 1.33333f;
     }
 
+    // FIXME size() getIdx(int, int)
+    @Override public int size() { return 1; }
+    @Override public int getIdx(int x, int y) { return -1; }
+
     @Override public int[] getAngles()
     {
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {

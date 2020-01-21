@@ -17,6 +17,8 @@ public class HexBoard implements Board
     private final float h;      // square height : s + dh
     private final float slope;  // dh / dw
 
+    private final int tl;       // tiles in 2 consecutive lines
+
     //  BoardOrientation.VERTICAL : 2 vertical sides : 2 vertices pointing up and down
     //  coordinates
     //  \
@@ -53,6 +55,21 @@ public class HexBoard implements Board
         this.dh = side / 2.0f;
         this.h  = side + dh;
         this.slope = dh / dw;
+
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            this.tl = (2 * cols - 1);
+        } else {
+            this.tl = (2 * rows - 1);
+        }
+    }
+
+    @Override public int size()
+    {
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            return (rows / 2) * tl + ((rows % 2) * cols);
+        } else {
+            return (cols / 2) * tl + ((cols % 2) * rows);
+        }
     }
 
     @Override public int[] getAngles()
@@ -61,6 +78,26 @@ public class HexBoard implements Board
             return vAngles;
         } else {
             return hAngles;
+        }
+    }
+
+    @Override public int getIdx(int x, int y)
+    {
+        if (!isOnMap(x, y)) return -1;
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            int n = y / 2;
+            int i =  x - n + n * tl;
+            if ((y % 2) != 0) {
+                i += (cols - 1);
+            }
+            return i;
+        } else {
+            int n = x / 2;
+            int i =  y - n + n * tl;
+            if ((x % 2) != 0) {
+                i += (rows - 1);
+            }
+            return i;
         }
     }
 

@@ -22,9 +22,16 @@ public class SquareBoard implements Board
         this.y0 = y0;
     }
 
+    @Override public int size() { return cols * rows; }
+
     @Override public int[] getAngles()
     {
         return angles;
+    }
+
+    @Override public int getIdx(int x, int y)
+    {
+        return (y * cols + x);
     }
 
     @Override public boolean isOnMap(int x, int y)

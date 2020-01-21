@@ -57,7 +57,7 @@ public class BoardScreen extends AbstractScreen
         public boolean touch(float x, float y)
         {
             board.toBoard(x, y, v);
-            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d]", (int)x, (int)y, (int)v.x, (int)v.y));
+            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d] => %d", (int)x, (int)y, (int)v.x, (int)v.y, board.getIdx((int)v.x, (int)v.y)));
             float d0 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TCHEBYCHEV);
             float d1 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TAXICAB);
             float d2 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.EUCLIDEAN);
