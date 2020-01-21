@@ -56,6 +56,7 @@ public class AnimationsScreen extends AbstractScreen
         cam.centerOnWorld();
 
         path = buildPath(app);
+        path.show(10, 11);
 
         AnimationBatch batch;
         FireAnimation.register("mgun0", 11, 0.1f, 0.7f, 30f, 150f, 1.3f, 0f,
@@ -82,7 +83,11 @@ public class AnimationsScreen extends AbstractScreen
             Tile to = path.to();
             System.err.println(String.format("%s -> %s", from, to));
             from.enableOverlay(2, false);
-            if (to != null) to.enableOverlay(2, true);
+            from.enableOverlay(10, false);
+            if (to != null) {
+                to.enableOverlay(2, true);
+                to.enableOverlay(11, false);
+            }
         }));
         batch = AnimationBatch.obtain(3);
         batch.add(FadeAnimation.obtain(other0, 0f, 1f, .5f));
