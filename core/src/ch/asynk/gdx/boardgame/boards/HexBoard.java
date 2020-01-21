@@ -9,6 +9,8 @@ public class HexBoard implements Board
     private final float y0;     // bottom left y offset
     private final BoardFactory.BoardOrientation orientation;
 
+    private final int cols;     // # colmuns
+    private final int rows;     // # rows
     private final float w;      // side to side orthogonal distance
     private final float dw;     // half hex : w/2
     private final float dh;     // hex top : s/2
@@ -37,8 +39,10 @@ public class HexBoard implements Board
     private static final int [] vAngles = {60,  0, 60, -1, 120, 180, 240,  -1, 300};
     private static final int [] hAngles = {90, -1, 30, 90, 150,  -1, 210, 270, 330};
 
-    public HexBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
+    public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
+        this.cols = cols;
+        this.rows = rows;
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
@@ -58,6 +62,18 @@ public class HexBoard implements Board
         } else {
             return hAngles;
         }
+    }
+
+    @Override public boolean isOnMap(int x, int y)
+    {
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            if ((y < 0) || (y >= rows)) return false;
+            if ((x < ((y + 1) / 2)) || (x >= (cols + (y / 2)))) return false;
+        } else {
+            if ((x < 0) || (x >= cols)) return false;
+            if ((y < ((x + 1) / 2)) || (y >= (rows + (x / 2)))) return false;
+        }
+        return true;
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)

@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class SquareBoard implements Board
 {
+    private final int cols;     // # colmuns
+    private final int rows;     // # rows
     private final float side;   // length of the side of a square
     private final float x0;     // bottom left x offset
     private final float y0;     // bottom left y offset
@@ -11,8 +13,10 @@ public class SquareBoard implements Board
     // [0] is 0° facing East
     private static final int [] angles = {90, 0, -1, 90, -1, 180, -1, 270, -1, 0};
 
-    public SquareBoard(float side, float x0, float y0)
+    public SquareBoard(int cols, int rows, float side, float x0, float y0)
     {
+        this.cols = cols;
+        this.rows = rows;
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
@@ -21,6 +25,12 @@ public class SquareBoard implements Board
     @Override public int[] getAngles()
     {
         return angles;
+    }
+
+    @Override public boolean isOnMap(int x, int y)
+    {
+        if (x < 0 || x >= cols || y < 0 || y >= rows) return false;
+        return true;
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)

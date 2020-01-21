@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class TriangleBoard implements Board
 {
+    private final int cols;     // # colmuns
+    private final int rows;     // # rows
     private final float side;   // length of the side of the equilateral triangle
     private final float x0;     // bottom left x offset
     private final float y0;     // bottom left y offset
@@ -20,8 +22,10 @@ public class TriangleBoard implements Board
     private static final int [] vAngles = {60,  0, 60, -1, 120, 180, 240,  -1, 300};
     private static final int [] hAngles = {30, -1, 30, 90, 150,  -1, 210, 270, 330};
 
-    public TriangleBoard(float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
+    public TriangleBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
+        this.cols = cols;
+        this.rows = rows;
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
@@ -42,6 +46,18 @@ public class TriangleBoard implements Board
         } else {
             return hAngles;
         }
+    }
+
+    @Override public boolean isOnMap(int x, int y)
+    {
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            if ((y < 0) || (y >= rows)) return false;
+            if ((x < 0) || (x >= cols)) return false;
+        } else {
+            if ((y < 0) || (y >= rows)) return false;
+            if ((x < -1) || (x >= (cols - 1))) return false;
+        }
+        return true;
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)

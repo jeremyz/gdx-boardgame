@@ -61,12 +61,14 @@ public class BoardScreen extends AbstractScreen
             float d0 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TCHEBYCHEV);
             float d1 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TAXICAB);
             float d2 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.EUCLIDEAN);
-            GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
-            pos.set(v);
-            board.centerOf((int)v.x, (int)v.y, v);
-            panzer.centerOn(v.x, v.y);
-            panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
-            GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+            if (board.isOnMap((int)v.x, (int)v.y)) {
+                GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
+                pos.set(v);
+                board.centerOf((int)v.x, (int)v.y, v);
+                panzer.centerOn(v.x, v.y);
+                panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
+                GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+            }
             return true;
         }
 
@@ -78,7 +80,7 @@ public class BoardScreen extends AbstractScreen
             dy = 0;
             w = map.getWidth();
             h = map.getHeight();
-            board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
+            board = BoardFactory.getBoard(10, 9, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         }
 
         public void setHEX_H()
@@ -89,7 +91,7 @@ public class BoardScreen extends AbstractScreen
             dy = - dx;
             w = map.getHeight();
             h = map.getWidth();
-            board = BoardFactory.getBoard(BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
+            board = BoardFactory.getBoard(9, 10, BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
         }
 
         public void setSQUARE()
@@ -100,7 +102,7 @@ public class BoardScreen extends AbstractScreen
             dy = 0;
             w = map.getWidth();
             h = map.getHeight();
-            board = BoardFactory.getBoard(BoardFactory.BoardType.SQUARE, 83, 5, 5);
+            board = BoardFactory.getBoard(8, 8, BoardFactory.BoardType.SQUARE, 83, 5, 5);
         }
 
         public void setTRI_H()
@@ -111,7 +113,7 @@ public class BoardScreen extends AbstractScreen
             dy = 0;
             w = map.getWidth();
             h = map.getHeight();
-            board = BoardFactory.getBoard(BoardFactory.BoardType.TRIANGLE, 150, 109, 53, BoardFactory.BoardOrientation.HORIZONTAL);
+            board = BoardFactory.getBoard(21, 8, BoardFactory.BoardType.TRIANGLE, 150, 109, 53, BoardFactory.BoardOrientation.HORIZONTAL);
         }
 
         public void setTRI_V()
@@ -122,7 +124,7 @@ public class BoardScreen extends AbstractScreen
             dy = - dx;
             w = map.getHeight();
             h = map.getWidth();
-            board = BoardFactory.getBoard(BoardFactory.BoardType.TRIANGLE, 150, 16, 110, BoardFactory.BoardOrientation.VERTICAL);
+            board = BoardFactory.getBoard(8, 21, BoardFactory.BoardType.TRIANGLE, 150, 16, 110, BoardFactory.BoardOrientation.VERTICAL);
         }
     }
 
