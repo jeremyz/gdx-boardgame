@@ -62,6 +62,12 @@ public enum Orientation
         return (o.r == -1) ? o.right() : o;
     }
 
+    public Orientation opposite()
+    {
+        if (s <= NW.s) return fromS(this.s << 4);
+        return fromS(this.s >> 4);
+    }
+
     public static Orientation fromS(int s)
     {
              if (s ==  E.s) return  E;
