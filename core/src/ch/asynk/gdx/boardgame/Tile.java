@@ -38,6 +38,14 @@ public class Tile implements Drawable
         }
     }
 
+    public void enableOverlay(int i, Orientation o)
+    {
+        if (overlays != null) {
+            overlays.setRotation(i, o.r());
+            overlays.enable(i, true);
+        }
+    }
+
     @Override public String toString()
     {
         return "[" + x + ", " + y + "]";
