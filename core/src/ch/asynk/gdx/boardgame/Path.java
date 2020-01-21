@@ -70,6 +70,20 @@ public class Path extends IterableArray<Tile> implements Disposable, Pool.Poolab
         return to;
     }
 
+    public void show(int i, int j)
+    {
+        Tile prev = null;
+        for (int n = 0; n < size(); n++) {
+            final Tile tile = get(n);
+            if (prev != null) {
+                final Orientation o = Orientation.fromTiles(prev, tile);
+                prev.enableOverlay(i, o);
+                tile.enableOverlay(j, o.opposite());
+            }
+            prev = tile;
+        }
+    }
+
     public boolean nextPosition(Piece piece, Vector3 v)
     {
         if (hasNext()) {
