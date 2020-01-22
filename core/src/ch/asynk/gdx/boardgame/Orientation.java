@@ -29,15 +29,19 @@ public enum Orientation
 
     public static void setValues(int [] angles)
     {
-        DEFAULT.r = angles[0];
-        E.r  = angles[1];
-        NE.r = angles[2];
-        N.r  = angles[3];
-        NW.r = angles[4];
-        W.r  = angles[5];
-        SW.r = angles[6];
-        S.r  = angles[7];
-        SE.r = angles[8];
+        for (int i = 0; i < angles.length; i++) {
+            if (angles[i] < 0 && angles[i] != -1)
+                angles[i] += 360;
+        }
+        E.r  = angles[0];
+        NE.r = angles[1];
+        N.r  = angles[2];
+        NW.r = angles[3];
+        W.r  = angles[4];
+        SW.r = angles[5];
+        S.r  = angles[6];
+        SE.r = angles[7];
+        DEFAULT.r = angles[8];
     }
 
     public int allBut()
