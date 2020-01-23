@@ -88,3 +88,10 @@ repeat: none
   orig: 190, 16
   offset: 0, 0
   index: -1
+dot
+  rotate: false
+  xy: 882, 366
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1

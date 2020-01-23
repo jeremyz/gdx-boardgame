@@ -90,13 +90,13 @@ public class BoardScreen extends AbstractScreen
         {
             for (Tile tile : board.getAdjacents()) {
                 if (tile != null)
-                    tile.enableOverlay(2, false);
+                    tile.enableOverlay(12, false);
             }
             board.buildAdjacents((int)v.x, (int)v.y, this::getTile);
             for (Tile tile : board.getAdjacents()) {
                 if (tile != null) {
                     tilesToDraw.add(tile);
-                    tile.enableOverlay(2, true);
+                    tile.enableOverlay(12, true);
                 }
             }
             for (Tile tile : tilesToDraw) {
