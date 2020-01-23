@@ -3,7 +3,7 @@ package ch.asynk.gdx.boardgame.boards;
 import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Tile;
-import ch.asynk.gdx.boardgame.TileStorage.TileProvider;
+import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
 
 public class TriangleBoard implements Board
 {

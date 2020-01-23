@@ -1,4 +1,6 @@
-package ch.asynk.gdx.boardgame;
+package ch.asynk.gdx.boardgame.tilestorages;
+
+import ch.asynk.gdx.boardgame.Tile;
 
 public interface TileStorage
 {

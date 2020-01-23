@@ -11,7 +11,7 @@ import ch.asynk.gdx.boardgame.Camera;
 import ch.asynk.gdx.boardgame.Orientation;
 import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.Tile;
-import ch.asynk.gdx.boardgame.TileStorage;
+import ch.asynk.gdx.boardgame.tilestorages.TileStorage;
 import ch.asynk.gdx.boardgame.tilestorages.ArrayTileStorage;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;

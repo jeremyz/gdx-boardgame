@@ -3,8 +3,8 @@ package ch.asynk.gdx.boardgame.boards;
 import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Tile;
-import ch.asynk.gdx.boardgame.TileStorage.TileProvider;
-import ch.asynk.gdx.boardgame.TileStorage.TileKeyGenerator;
+import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
+import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileKeyGenerator;
 
 public interface Board extends TileKeyGenerator
 {

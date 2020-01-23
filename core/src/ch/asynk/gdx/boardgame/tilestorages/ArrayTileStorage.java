@@ -1,8 +1,6 @@
 package ch.asynk.gdx.boardgame.tilestorages;
 
 import ch.asynk.gdx.boardgame.Tile;
-import ch.asynk.gdx.boardgame.TileStorage;
-import ch.asynk.gdx.boardgame.TileStorage.TileFactory;
 
 public class ArrayTileStorage implements TileStorage
 {

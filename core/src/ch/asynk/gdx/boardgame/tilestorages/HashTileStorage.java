@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import ch.asynk.gdx.boardgame.Tile;
-import ch.asynk.gdx.boardgame.TileStorage;
-import ch.asynk.gdx.boardgame.TileStorage.TileFactory;
 
 public class HashTileStorage implements TileStorage
 {
