@@ -82,7 +82,7 @@ public class HexBoard implements Board
         }
     }
 
-    @Override public int getIdx(int x, int y)
+    @Override public int genKey(int x, int y)
     {
         if (!isOnMap(x, y)) return -1;
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {

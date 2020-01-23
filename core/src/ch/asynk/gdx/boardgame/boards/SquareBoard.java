@@ -30,7 +30,7 @@ public class SquareBoard implements Board
         return angles;
     }
 
-    @Override public int getIdx(int x, int y)
+    @Override public int genKey(int x, int y)
     {
         return (y * cols + x);
     }

@@ -40,9 +40,7 @@ public class TriangleBoard implements Board
         this.h43 = this.h * 1.33333f;
     }
 
-    // FIXME size() getIdx(int, int)
-    @Override public int size() { return 1; }
-    @Override public int getIdx(int x, int y) { return -1; }
+    @Override public int size() { return 0; } // FIXME
 
     @Override public int[] getAngles()
     {
@@ -52,6 +50,8 @@ public class TriangleBoard implements Board
             return hAngles;
         }
     }
+
+    @Override public int genKey(int x, int y) { return -1; } // FIXME
 
     @Override public boolean isOnMap(int x, int y)
     {
