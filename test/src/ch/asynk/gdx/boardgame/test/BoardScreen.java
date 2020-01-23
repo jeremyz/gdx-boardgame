@@ -10,22 +10,28 @@ import com.badlogic.gdx.math.Vector2;
 import ch.asynk.gdx.boardgame.Camera;
 import ch.asynk.gdx.boardgame.Orientation;
 import ch.asynk.gdx.boardgame.Piece;
+import ch.asynk.gdx.boardgame.Tile;
+import ch.asynk.gdx.boardgame.TileStorage;
+import ch.asynk.gdx.boardgame.tilestorages.ArrayTileStorage;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
 import ch.asynk.gdx.boardgame.ui.Root;
+import ch.asynk.gdx.boardgame.utils.IterableSet;
 
 public class BoardScreen extends AbstractScreen
 {
     private class MyBoard
     {
+        private final IterableSet<Tile> tilesToDraw;
         private final Assets assets;
         private final Piece panzer;
         private final Vector2 pos;
         private final Vector2 v;
         public Texture map;
         public Board board;
+        public TileStorage tileStorage;
         public int dx;
         public int dy;
         public int w;
@@ -39,17 +45,23 @@ public class BoardScreen extends AbstractScreen
             this.v = new Vector2();
             Piece.angleCorrection = 90;
             this.panzer = new Piece(assets.getTexture(assets.PANZER));
+            this.tilesToDraw = new IterableSet<Tile>(10);
+            Tile.defaultOverlay = assets.getAtlas(app.assets.HEX_OVERLAYS);
         }
 
         public void draw(SpriteBatch batch)
         {
             batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
+            for (Tile tile : tilesToDraw) {
+                tile.draw(batch);
+            }
             panzer.draw(batch);
         }
 
         public void reset()
         {
             pos.set(0, 0);
+            tilesToDraw.clear();
             board.centerOf(0, 0, v);
             panzer.centerOn(v.x, v.y);
             panzer.setRotation(Orientation.DEFAULT.r());
@@ -65,12 +77,45 @@ public class BoardScreen extends AbstractScreen
             if (board.isOnMap((int)v.x, (int)v.y)) {
                 GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
                 pos.set(v);
+                handleAdjacents();
                 board.centerOf((int)v.x, (int)v.y, v);
                 panzer.centerOn(v.x, v.y);
                 panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
                 GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
             }
             return true;
+        }
+
+        private void handleAdjacents()
+        {
+            for (Tile tile : board.getAdjacents()) {
+                if (tile != null)
+                    tile.enableOverlay(2, false);
+            }
+            board.buildAdjacents((int)v.x, (int)v.y, this::getTile);
+            for (Tile tile : board.getAdjacents()) {
+                if (tile != null) {
+                    tilesToDraw.add(tile);
+                    tile.enableOverlay(2, true);
+                }
+            }
+            for (Tile tile : tilesToDraw) {
+                if (!tile.overlaysEnabled()) {
+                    tilesToDraw.remove(tile);
+                }
+            }
+        }
+
+        private Tile getTile(int x, int y)
+        {
+            return tileStorage.getTile(x, y, board::genKey, this::buildTile);
+        }
+
+        private Tile buildTile(int x, int y)
+        {
+            final Vector2 v = new Vector2();
+            board.centerOf(x, y, v);
+            return new Tile(v.x, v.y);
         }
 
         public void setHEX_V()
@@ -82,6 +127,7 @@ public class BoardScreen extends AbstractScreen
             w = map.getWidth();
             h = map.getHeight();
             board = BoardFactory.getBoard(10, 9, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
+            tileStorage = new ArrayTileStorage(board.size());
         }
 
         public void setHEX_H()
@@ -93,6 +139,7 @@ public class BoardScreen extends AbstractScreen
             w = map.getHeight();
             h = map.getWidth();
             board = BoardFactory.getBoard(9, 10, BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
+            tileStorage = new ArrayTileStorage(board.size());
         }
 
         public void setSQUARE()
@@ -104,6 +151,7 @@ public class BoardScreen extends AbstractScreen
             w = map.getWidth();
             h = map.getHeight();
             board = BoardFactory.getBoard(8, 8, BoardFactory.BoardType.SQUARE, 83, 5, 5);
+            tileStorage = new ArrayTileStorage(board.size());
         }
 
         public void setTRI_H()
@@ -115,6 +163,7 @@ public class BoardScreen extends AbstractScreen
             w = map.getWidth();
             h = map.getHeight();
             board = BoardFactory.getBoard(21, 8, BoardFactory.BoardType.TRIANGLE, 150, 109, 53, BoardFactory.BoardOrientation.HORIZONTAL);
+            tileStorage = new ArrayTileStorage(board.size());
         }
 
         public void setTRI_V()
@@ -126,6 +175,7 @@ public class BoardScreen extends AbstractScreen
             w = map.getHeight();
             h = map.getWidth();
             board = BoardFactory.getBoard(8, 21, BoardFactory.BoardType.TRIANGLE, 150, 16, 110, BoardFactory.BoardOrientation.VERTICAL);
+            tileStorage = new ArrayTileStorage(board.size());
         }
     }
 
