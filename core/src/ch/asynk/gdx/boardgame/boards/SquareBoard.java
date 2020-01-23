@@ -2,6 +2,9 @@ package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ch.asynk.gdx.boardgame.Tile;
+import ch.asynk.gdx.boardgame.TileStorage.TileProvider;
+
 public class SquareBoard implements Board
 {
     private final int cols;     // # colmuns
@@ -14,6 +17,8 @@ public class SquareBoard implements Board
     // [8] is default
     private static final int [] angles = {0, -1, 90, -1, 180, -1, 270, -1, 90};
 
+    private final Tile[] adjacents;
+
     public SquareBoard(int cols, int rows, float side, float x0, float y0)
     {
         this.cols = cols;
@@ -21,13 +26,26 @@ public class SquareBoard implements Board
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
+
+        this.adjacents = new Tile[8];
     }
 
     @Override public int size() { return cols * rows; }
 
-    @Override public int[] getAngles()
+    @Override public int[] getAngles() { return angles; }
+
+    @Override public Tile[] getAdjacents() { return adjacents; }
+
+    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider)
     {
-        return angles;
+        adjacents[0] = tileProvider.getTile(x + 1, y);
+        adjacents[1] = tileProvider.getTile(x + 1, y + 1);
+        adjacents[2] = tileProvider.getTile(x    , y + 1);
+        adjacents[3] = tileProvider.getTile(x - 1, y + 1);
+        adjacents[4] = tileProvider.getTile(x - 1, y);
+        adjacents[5] = tileProvider.getTile(x - 1, y - 1);
+        adjacents[6] = tileProvider.getTile(x    , y - 1);
+        adjacents[7] = tileProvider.getTile(x + 1, y - 1);
     }
 
     @Override public int genKey(int x, int y)

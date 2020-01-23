@@ -2,6 +2,9 @@ package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ch.asynk.gdx.boardgame.Tile;
+import ch.asynk.gdx.boardgame.TileStorage.TileProvider;
+
 public class TriangleBoard implements Board
 {
     private final int cols;     // # colmuns
@@ -23,6 +26,8 @@ public class TriangleBoard implements Board
     private static final int [] vAngles = {  0, 60, -1, 120, 180, 240,  -1, 300,  0};
     private static final int [] hAngles = { -1, 30, 90, 150,  -1, 210, 270, 330, 30};
 
+    private final Tile[] adjacents;
+
     public TriangleBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
         this.cols = cols;
@@ -38,6 +43,8 @@ public class TriangleBoard implements Board
         this.h13 = this.h * 0.33333f;
         this.h23 = this.h * 0.66666f;
         this.h43 = this.h * 1.33333f;
+
+        this.adjacents = new Tile[3];
     }
 
     @Override public int size() { return 0; } // FIXME
@@ -49,6 +56,12 @@ public class TriangleBoard implements Board
         } else {
             return hAngles;
         }
+    }
+
+    @Override public Tile[] getAdjacents() { return adjacents; }
+
+    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider) // FIXME
+    {
     }
 
     @Override public int genKey(int x, int y) { return -1; } // FIXME

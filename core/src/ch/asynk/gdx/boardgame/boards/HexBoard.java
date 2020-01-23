@@ -2,6 +2,9 @@ package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ch.asynk.gdx.boardgame.Tile;
+import ch.asynk.gdx.boardgame.TileStorage.TileProvider;
+
 public class HexBoard implements Board
 {
     private final float side;   // length of the side of the hex
@@ -42,6 +45,8 @@ public class HexBoard implements Board
     private static final int [] vAngles = {  0, 60, -1, 120, 180, 240,  -1, 300, 60};
     private static final int [] hAngles = { -1, 30, 90, 150,  -1, 210, 270, 330, 30};
 
+    private final Tile[] adjacents;
+
     public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {
         this.cols = cols;
@@ -62,6 +67,8 @@ public class HexBoard implements Board
         } else {
             this.tl = (2 * rows - 1);
         }
+
+        this.adjacents = new Tile[6];
     }
 
     @Override public int size()
@@ -80,6 +87,18 @@ public class HexBoard implements Board
         } else {
             return hAngles;
         }
+    }
+
+    @Override public Tile[] getAdjacents() { return adjacents; }
+
+    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider)
+    {
+        adjacents[0] = tileProvider.getTile(x + 1, y);
+        adjacents[1] = tileProvider.getTile(x + 1, y + 1);
+        adjacents[2] = tileProvider.getTile(x    , y + 1);
+        adjacents[3] = tileProvider.getTile(x - 1, y);
+        adjacents[4] = tileProvider.getTile(x - 1, y - 1);
+        adjacents[5] = tileProvider.getTile(x    , y - 1);
     }
 
     @Override public int genKey(int x, int y)
