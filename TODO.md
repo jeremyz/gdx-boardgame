@@ -3,7 +3,6 @@
     - Box V/H/Grid
 
  - Algos
-    - Adjacents
     - Line Of Sight
     - Range Of Influence (LOS - Fire Power)
     - Reachable Tiles ::: BFS
