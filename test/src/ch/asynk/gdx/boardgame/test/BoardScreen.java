@@ -37,6 +37,7 @@ public class BoardScreen extends AbstractScreen
             this.assets = assets;
             this.pos = new Vector2();
             this.v = new Vector2();
+            Piece.angleCorrection = 90;
             this.panzer = new Piece(assets.getTexture(assets.PANZER));
         }
 

@@ -18,6 +18,8 @@ import ch.asynk.gdx.boardgame.Tile;
 
 public class Piece extends Sprite implements Drawable, Positionable, Rotable, Scalable
 {
+    public static int angleCorrection = 0;
+
     public Piece(Texture texture)
     {
         super(texture);
@@ -76,5 +78,15 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
         float w = getWidth();
         float h = getHeight();
         shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, getScaleX(), getScaleY(), getRotation());
+    }
+
+    @Override public void setRotation(float r)
+    {
+        super.setRotation(r - angleCorrection);
+    }
+
+    @Override public float getRotation()
+    {
+        return super.getRotation() + angleCorrection;
     }
 }

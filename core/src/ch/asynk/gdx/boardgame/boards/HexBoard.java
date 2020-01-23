@@ -39,8 +39,8 @@ public class HexBoard implements Board
 
     // [0] is 0° facing East
     // [8] is default
-    private static final int [] vAngles = {-90, -30, -1, 30, 90, 150,  -1, 210, -30};
-    private static final int [] hAngles = { -1, -60,  0, 60, -1, 120, 180, 240, -60};
+    private static final int [] vAngles = {  0, 60, -1, 120, 180, 240,  -1, 300, 60};
+    private static final int [] hAngles = { -1, 30, 90, 150,  -1, 210, 270, 330, 30};
 
     public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {

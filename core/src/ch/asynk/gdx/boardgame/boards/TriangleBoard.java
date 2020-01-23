@@ -20,8 +20,8 @@ public class TriangleBoard implements Board
 
     // [0] is 0° facing East
     // [8] is default
-    private static final int [] vAngles = {-1, 30, 90, 150,  -1, 210, 270, 330, 30};
-    private static final int [] hAngles = { 0, 60, -1, 120, 180, 240,  -1, 300, 60};
+    private static final int [] vAngles = {  0, 60, -1, 120, 180, 240,  -1, 300,  0};
+    private static final int [] hAngles = { -1, 30, 90, 150,  -1, 210, 270, 330, 30};
 
     public TriangleBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
     {

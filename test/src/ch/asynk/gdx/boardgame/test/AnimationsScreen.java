@@ -44,6 +44,7 @@ public class AnimationsScreen extends AbstractScreen
         this.board = BoardFactory.getBoard(0, 0, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
 
+        Piece.angleCorrection = 90;
         this.panzer = getPiece(app, 7, 4, Orientation.NW, app.assets.PANZER, 1f);
         this.other0 = getPiece(app, 9, 5, Orientation.SW, app.assets.PANZER, 0f);
         this.other1 = getPiece(app, 3, 1, Orientation.NE, app.assets.PANZER, 0f);

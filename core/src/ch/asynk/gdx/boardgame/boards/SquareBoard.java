@@ -12,7 +12,7 @@ public class SquareBoard implements Board
 
     // [0] is 0° facing East
     // [8] is default
-    private static final int [] angles = {0, -1, 90, -1, 180, -1, 270, -1, 0, 90};
+    private static final int [] angles = {0, -1, 90, -1, 180, -1, 270, -1, 90};
 
     public SquareBoard(int cols, int rows, float side, float x0, float y0)
     {
