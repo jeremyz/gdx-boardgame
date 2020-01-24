@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame;
 import java.lang.Math;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -16,18 +17,15 @@ import ch.asynk.gdx.boardgame.Rotable;
 import ch.asynk.gdx.boardgame.Scalable;
 import ch.asynk.gdx.boardgame.Tile;
 
-public class Piece extends Sprite implements Drawable, Positionable, Rotable, Scalable
+public class Piece implements Drawable, Positionable, Rotable, Scalable
 {
     public static int angleCorrection = 0;
 
+    private Sprite head;
+
     public Piece(Texture texture)
     {
-        super(texture);
-    }
-
-    @Override public float getScale()
-    {
-        return getScaleX();
+        head = new Sprite(texture);
     }
 
     public void getPosOn(Tile tile, Orientation orientation, Vector3 v)
@@ -73,20 +71,43 @@ public class Piece extends Sprite implements Drawable, Positionable, Rotable, Sc
         v.set(getX()+ (getWidth() / 2f), getY() + (getHeight() / 2f));
     }
 
-    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    @Override public float getX() { return head.getX(); }
+    @Override public float getY() { return head.getY(); }
+    @Override public float getWidth() { return head.getWidth(); }
+    @Override public float getHeight() { return head.getHeight(); }
+    @Override public void translate(float x, float y) { head.translate(x, y); }
+    @Override public void setPosition(float x, float y) { head.setPosition(x, y); }
+
+
+    @Override public float getScale()
     {
-        float w = getWidth();
-        float h = getHeight();
-        shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, getScaleX(), getScaleY(), getRotation());
+        return head.getScaleX();
     }
 
-    @Override public void setRotation(float r)
+    @Override public void setScale(float s)
     {
-        super.setRotation(r - angleCorrection);
+        head.setScale(s);
     }
 
     @Override public float getRotation()
     {
-        return super.getRotation() + angleCorrection;
+        return head.getRotation() + angleCorrection;
+    }
+
+    @Override public void setRotation(float r)
+    {
+        head.setRotation(r - angleCorrection);
+    }
+
+    @Override public void draw(Batch batch)
+    {
+        head.draw(batch);
+    }
+
+    @Override public void drawDebug(ShapeRenderer shapeRenderer)
+    {
+        float w = getWidth();
+        float h = getHeight();
+        shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, head.getScaleX(), head.getScaleY(), getRotation());
     }
 }
