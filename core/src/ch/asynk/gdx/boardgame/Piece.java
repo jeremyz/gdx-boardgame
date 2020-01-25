@@ -25,6 +25,11 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
 
     public Piece(Texture texture)
     {
+        setHead(texture);
+    }
+
+    public void setHead(Texture texture)
+    {
         head = new Sprite(texture);
     }
 
