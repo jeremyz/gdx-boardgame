@@ -21,7 +21,7 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
 {
     public static int angleCorrection = 0;
 
-    private Sprite head;
+    protected Sprite sprite;
 
     public Piece(Texture texture)
     {
@@ -30,7 +30,7 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
 
     public void setHead(Texture texture)
     {
-        head = new Sprite(texture);
+        sprite = new Sprite(texture);
     }
 
     public void getPosOn(Tile tile, Orientation orientation, Vector3 v)
@@ -76,43 +76,43 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
         v.set(getX()+ (getWidth() / 2f), getY() + (getHeight() / 2f));
     }
 
-    @Override public float getX() { return head.getX(); }
-    @Override public float getY() { return head.getY(); }
-    @Override public float getWidth() { return head.getWidth(); }
-    @Override public float getHeight() { return head.getHeight(); }
-    @Override public void translate(float x, float y) { head.translate(x, y); }
-    @Override public void setPosition(float x, float y) { head.setPosition(x, y); }
+    @Override public float getX() { return sprite.getX(); }
+    @Override public float getY() { return sprite.getY(); }
+    @Override public float getWidth() { return sprite.getWidth(); }
+    @Override public float getHeight() { return sprite.getHeight(); }
+    @Override public void translate(float x, float y) { sprite.translate(x, y); }
+    @Override public void setPosition(float x, float y) { sprite.setPosition(x, y); }
 
 
     @Override public float getScale()
     {
-        return head.getScaleX();
+        return sprite.getScaleX();
     }
 
     @Override public void setScale(float s)
     {
-        head.setScale(s);
+        sprite.setScale(s);
     }
 
     @Override public float getRotation()
     {
-        return head.getRotation() + angleCorrection;
+        return sprite.getRotation() + angleCorrection;
     }
 
     @Override public void setRotation(float r)
     {
-        head.setRotation(r - angleCorrection);
+        sprite.setRotation(r - angleCorrection);
     }
 
     @Override public void draw(Batch batch)
     {
-        head.draw(batch);
+        sprite.draw(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)
     {
         float w = getWidth();
         float h = getHeight();
-        shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, head.getScaleX(), head.getScaleY(), getRotation());
+        shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, sprite.getScaleX(), sprite.getScaleY(), getRotation());
     }
 }
