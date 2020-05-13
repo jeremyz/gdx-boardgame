@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.utils.IterableSet;
 
-public class Root extends Element
+public class Root extends Container
 {
     private Element touched;
 
@@ -29,7 +29,6 @@ public class Root extends Element
     {
         setPosition(x, y, width, height);
         taint();
-        taintChildren();
     }
 
     public Element touched()
@@ -51,12 +50,5 @@ public class Root extends Element
             touched = null;
         }
         return false;
-    }
-
-    @Override public void draw(Batch batch)
-    {
-        if (!visible) return;
-        if (tainted) computeGeometry();
-        children.forEach( c -> c.draw(batch) );
     }
 }

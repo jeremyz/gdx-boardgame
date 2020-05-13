@@ -1,6 +1,5 @@
 package ch.asynk.gdx.boardgame.ui;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -8,25 +7,21 @@ import ch.asynk.gdx.boardgame.Drawable;
 import ch.asynk.gdx.boardgame.Paddable;
 import ch.asynk.gdx.boardgame.Positionable;
 import ch.asynk.gdx.boardgame.Touchable;
-import ch.asynk.gdx.boardgame.utils.IterableSet;
 
 public abstract class Element implements Drawable, Paddable, Positionable, Touchable
 {
     public static boolean DEBUG_GEOMETRY = false;
-    public static int DEFAULT_CHILD_COUNT = 2;
 
     public boolean blocked;
     public boolean visible;
     protected float padding;
     protected Element parent;
-    protected Sizing sizing;            // set dimensions according to parent and children
+    protected Sizing sizing;            // sizing policy
     protected Alignment alignment;      // where to position itself
     protected Rectangle rect;           // outer drawing coordinates
     protected float x, y;               // given position
     protected boolean tainted;          // geometry must be computed
     public boolean taintParent;         // propagate tainted state up the tree
-
-    protected IterableSet<Element> children;
 
     protected Element()
     {
@@ -45,7 +40,6 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.x = this.y = 0;
         this.tainted = true;
         this.taintParent = taintParent;
-        this.children = null;
     }
 
     @Override public final float getX()         { return rect.x; }
@@ -84,34 +78,10 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         return r;
     }
 
-    public void add(Element e)
-    {
-        if (children == null)
-            children = new IterableSet<Element>(DEFAULT_CHILD_COUNT);
-        if (children.add(e)) {
-            e.setParent(this);
-        }
-    }
-
-    public void remove(Element e)
-    {
-        if (children != null) {
-            if (children.remove(e)) {
-                e.setParent(null);
-            }
-        }
-    }
-
     public void taint()
     {
         this.tainted = true;
         if (parent != null && taintParent) parent.taint();
-    }
-
-    public void taintChildren()
-    {
-        if (children != null)
-            children.forEach( c -> c.taint() );
     }
 
     @Override public void setPosition(float x, float y, float w, float h)
@@ -211,29 +181,14 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.tainted = false;
     }
 
-    public void drawChildren(Batch batch)
-    {
-        if (children != null)
-            children.forEach( c -> c.draw(batch) );
-    }
-
     @Override public void drawDebug(ShapeRenderer shapeRenderer)
     {
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
-        if (children != null)
-            children.forEach( c -> c.drawDebug(shapeRenderer) );
     }
 
     @Override public Element touch(float x, float y)
     {
         if (!blocked && visible && rect.contains(x, y)) {
-            if (children != null) {
-                for (Element e : children) {
-                    final Element t = e.touch(x, y);
-                    if (t != null)
-                        return t;
-                }
-            }
             return this;
         }
         return null;
