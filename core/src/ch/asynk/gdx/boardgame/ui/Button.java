@@ -27,7 +27,6 @@ public class Button extends Patch
         this.spacing = spacing;
         this.label = new Label(font);
         this.label.setParent(this, Alignment.MIDDLE_CENTER);
-        this.sizing = Sizing.EXPAND_BOTH;
     }
 
     public void write(String text)
@@ -43,17 +42,11 @@ public class Button extends Patch
 
     @Override public void computeDimensions()
     {
-        if(sizing.fill()) {
-            super.computeDimensions();
-        } else {
-            float dd = 2 * (padding + spacing);
-            label.computeDimensions();
-            if (sizing.expandWidth())
-                rect.width = label.getWidth() + dd;
-            if (sizing.expandHeight())
-                rect.height = label.getHeight() + dd;
-            if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-        }
+        float dd = 2 * (padding + spacing);
+        label.computeDimensions();
+        rect.width = label.getWidth() + dd;
+        rect.height = label.getHeight() + dd;
+        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
     }
 
     @Override public void computePosition()
