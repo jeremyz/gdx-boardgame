@@ -27,7 +27,6 @@ public class Label extends Element
         this.padding = padding;
         this.alignment = alignment;
         this.layout = new GlyphLayout();
-        this.sizing = Sizing.EXPAND_BOTH;
     }
 
     public String getText()
@@ -55,15 +54,9 @@ public class Label extends Element
 
     @Override public void computeDimensions()
     {
-        if(sizing.fill()) {
-            super.computeDimensions();
-        } else {
-            if (sizing.expandWidth())
-                this.rect.width = (layout.width + (2 * padding));
-            if (sizing.expandHeight())
-                this.rect.height = (layout.height + (2 * padding));
-            if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-        }
+        this.rect.width = (layout.width + (2 * padding));
+        this.rect.height = (layout.height + (2 * padding));
+        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
     }
 
     @Override public void draw(Batch batch)
