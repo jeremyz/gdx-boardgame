@@ -28,7 +28,7 @@ public class Root extends Container
     public void resize(float x, float y, float width, float height)
     {
         setPosition(x, y, width, height);
-        taint();
+        taintChildren();
     }
 
     public Element touched()

@@ -35,9 +35,8 @@ public class Container extends Element
         }
     }
 
-    @Override public void taint()
+    public void taintChildren()
     {
-        super.taint();
         if (children != null)
             children.forEach( c -> c.taint() );
     }
