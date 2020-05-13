@@ -32,7 +32,6 @@ public class List extends Element
         this.selected = new Bg(selected);
         this.selected.setParent(this);
         this.selected.visible = false;
-        this.sizing = Sizing.EXPAND_BOTH;
     }
 
     public void unselect() { idx = null; }
@@ -73,16 +72,9 @@ public class List extends Element
             if (layout.width > w) w = layout.width;
         }
         itemHeight = (layout.height + spacing);
-        if (sizing.fill()) {
-            super.computeDimensions();
-        } else if (sizing.expand()) {
-
-            if (sizing.expandWidth())
-                rect.width = w + (2 * padding);
-            if (sizing.expandHeight())
-                rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
-            if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-        }
+        rect.width = w + (2 * padding);
+        rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
+        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
     }
 
     @Override public void computePosition()
