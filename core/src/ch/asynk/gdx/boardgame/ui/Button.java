@@ -58,7 +58,7 @@ public class Button extends Patch
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         super.draw(batch);
         label.draw(batch);
     }

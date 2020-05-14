@@ -24,6 +24,7 @@ public class Container extends Element
         if (children.add(e)) {
             e.setParent(this);
         }
+        taint();
     }
 
     public void remove(Element e)
@@ -32,19 +33,21 @@ public class Container extends Element
             if (children.remove(e)) {
                 e.setParent(null);
             }
+            taint();
         }
     }
 
-    public void taintChildren()
+    @Override public void drip()
     {
+        super.drip();
         if (children != null)
-            children.forEach( c -> c.taint() );
+            children.forEach( c -> c.drip() );
     }
 
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         if (children != null)
             children.forEach( c -> c.draw(batch) );
     }

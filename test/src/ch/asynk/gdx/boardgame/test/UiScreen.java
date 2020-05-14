@@ -155,6 +155,7 @@ class MyButton extends Button
     @Override public void computePosition()
     {
         super.computePosition();
+        System.err.println("call to label.write(…)");
         label.write(String.format("%04d;%04d", (int)getX(), (int)getY()));
     }
 }
@@ -224,7 +225,7 @@ class MyList extends Patch
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         super.draw(batch);
         title.draw(batch);
         scrollable.draw(batch);

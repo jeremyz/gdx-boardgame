@@ -81,12 +81,13 @@ public class List extends Element
     {
         super.computePosition();
         selected.computePosition();
+        if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
     }
 
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         float x = getInnerX();
         float y = getInnerTop();
         for (Item e : items) {

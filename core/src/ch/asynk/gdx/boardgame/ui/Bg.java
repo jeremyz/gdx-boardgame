@@ -16,7 +16,7 @@ public class Bg extends Element
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         batch.draw(region, rect.x, rect.y, rect.width, rect.height);
     }
 }

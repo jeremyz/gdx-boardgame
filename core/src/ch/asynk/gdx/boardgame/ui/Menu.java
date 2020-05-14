@@ -87,12 +87,13 @@ public class Menu extends Patch
         super.computePosition();
 
         float y = getInnerHeight() - title.getHeight();
-        title.setPosition(0, y);
+        title.setPositionClear(0, y);
         y -= titleSpacing;
         for (Label l : entries) {
-            l.setPosition(x + entriesOffset, y - l.getHeight());
+            l.setPositionClear(x + entriesOffset, y - l.getHeight());
             y -= (l.getHeight() + entriesSpacing);
         }
+        if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
     }
 
     public int touched()
@@ -118,7 +119,7 @@ public class Menu extends Patch
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         super.draw(batch);
         title.draw(batch);
         for (Label label : entries) {

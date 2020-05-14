@@ -20,7 +20,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     protected Alignment alignment;      // where to position itself
     protected Rectangle rect;           // outer drawing coordinates
     protected float x, y;               // given position
-    protected boolean tainted;          // geometry must be computed
+    protected boolean dirty;            // geometry must be computed
 
     protected Element()
     {
@@ -61,7 +61,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         String r = suffix;
         r += " : " + (int)x + " " + (int)y +
             " [" + (int)rect.x + " " + (int)rect.y + " " + (int)rect.width + " " + (int)rect.height + "] +" +
-            (int)padding + " " + alignment + " " + sizing + " "+ getClass().getName();
+            (int)padding + " " + alignment + " " + sizing + " "+ getClass().getName() + " " + Integer.toHexString(hashCode());
         if (level < 0)
             return r;
         if (parent != null)
@@ -71,10 +71,34 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         return r;
     }
 
+    protected void print(String msg)
+    {
+        System.err.println(msg + " : " + getClass().getName() + " " + Integer.toHexString(hashCode()));
+    }
+
+    public void clear()
+    {
+        if (DEBUG_GEOMETRY) print(" clear");
+        this.dirty = false;
+    }
+
+    public void mark()
+    {
+        if (DEBUG_GEOMETRY) print("  mark");
+        this.dirty = true;
+    }
+
+    public void drip()
+    {
+        if (DEBUG_GEOMETRY) print("  drip");
+        this.dirty = true;
+    }
+
     public void taint()
     {
-        this.tainted = true;
-        if (parent != null) parent.taint();
+        if (DEBUG_GEOMETRY) print(" taint");
+        mark();
+        if (parent != null) parent.mark();
     }
 
     @Override public void setPosition(float x, float y, float w, float h)
@@ -84,6 +108,14 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.rect.width = w;
         this.rect.height = h;
         taint();
+    }
+
+    public final void setPositionClear(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+        computePosition();
+        clear();
     }
 
     public void setParent(Element parent)
@@ -167,11 +199,11 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
 
     public final void computeGeometry()
     {
-        if (DEBUG_GEOMETRY) System.err.println("[Geometry " + print(-1));
+        if (DEBUG_GEOMETRY) { print("[Geometry"); System.err.println("  --> " + print(-1)); }
         computeDimensions();
         computePosition();
-        if (DEBUG_GEOMETRY) System.err.println("Geometry]" + print(-1));
-        this.tainted = false;
+        clear();
+        if (DEBUG_GEOMETRY) System.err.println("Geometry]");
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)

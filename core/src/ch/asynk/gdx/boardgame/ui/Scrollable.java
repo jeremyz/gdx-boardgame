@@ -93,7 +93,7 @@ public class Scrollable extends Element
     {
         rect.set(x, y, w, h);
         clip.set((x + padding), (y + padding), (w - 2 * padding), (h - 2 * padding));
-        child.setPosition(clip.x, clip.y - (child.rect.height - clip.height));
+        child.setPositionClear(clip.x, clip.y - (child.rect.height - clip.height));
         scissorIdx = Scissors.compute(scissorIdx, clip);
     }
 

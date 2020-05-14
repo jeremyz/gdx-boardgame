@@ -62,7 +62,7 @@ public class Label extends Element
     @Override public void draw(Batch batch)
     {
         if (!visible) return;
-        if (tainted) computeGeometry();
+        if (dirty) computeGeometry();
         font.draw(batch, layout, getInnerX(), getInnerY() + layout.height);
     }
 }
