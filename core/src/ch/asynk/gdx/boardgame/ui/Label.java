@@ -59,10 +59,8 @@ public class Label extends Element
         if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
         font.draw(batch, layout, getInnerX(), getInnerY() + layout.height);
     }
 }

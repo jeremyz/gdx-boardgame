@@ -97,9 +97,8 @@ public class Scrollable extends Element
         scissorIdx = Scissors.compute(scissorIdx, clip);
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
         batch.flush();
         Rectangle scissor = Scissors.get(scissorIdx, clip);
         HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);

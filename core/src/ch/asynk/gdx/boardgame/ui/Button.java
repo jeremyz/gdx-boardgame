@@ -55,12 +55,10 @@ public class Button extends Patch
         label.computePosition();
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
-        super.draw(batch);
-        label.draw(batch);
+        super.drawReal(batch);
+        label.drawReal(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)

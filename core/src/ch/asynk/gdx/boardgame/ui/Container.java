@@ -44,10 +44,8 @@ public class Container extends Element
             children.forEach( c -> c.drip() );
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
         if (children != null)
             children.forEach( c -> c.draw(batch) );
     }

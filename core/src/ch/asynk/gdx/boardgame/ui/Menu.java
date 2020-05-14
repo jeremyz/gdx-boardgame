@@ -116,14 +116,12 @@ public class Menu extends Patch
         return null;
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
-        super.draw(batch);
-        title.draw(batch);
+        super.drawReal(batch);
+        title.drawReal(batch);
         for (Label label : entries) {
-            label.draw(batch);
+            label.drawReal(batch);
         }
     }
 

@@ -222,12 +222,10 @@ class MyList extends Patch
         return scrollable.drag(x, y, dx, dy);
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
-        super.draw(batch);
-        title.draw(batch);
+        super.drawReal(batch);
+        title.drawReal(batch);
         scrollable.draw(batch);
     }
 

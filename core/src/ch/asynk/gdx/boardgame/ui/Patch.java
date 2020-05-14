@@ -14,10 +14,8 @@ public class Patch extends Element
         setPosition(0, 0, patch.getTotalWidth(), patch.getTotalHeight());
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
         patch.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
 }

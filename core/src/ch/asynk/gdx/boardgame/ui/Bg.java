@@ -13,10 +13,8 @@ public class Bg extends Element
         rect.set(0, 0, region.getRegionWidth(), region.getRegionHeight());
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
         batch.draw(region, rect.x, rect.y, rect.width, rect.height);
     }
 }

@@ -1,5 +1,6 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -197,13 +198,19 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
     }
 
-    public final void computeGeometry()
+    public abstract void drawReal(Batch batch);
+
+    @Override public void draw(Batch batch)
     {
-        if (DEBUG_GEOMETRY) { print("[Geometry"); System.err.println("  --> " + print(-1)); }
-        computeDimensions();
-        computePosition();
-        clear();
-        if (DEBUG_GEOMETRY) System.err.println("Geometry]");
+        if (!visible) return;
+        if (dirty) {
+            if (DEBUG_GEOMETRY) { print("[Geometry"); System.err.println("  --> " + print(-1)); }
+            computeDimensions();
+            computePosition();
+            clear();
+            if (DEBUG_GEOMETRY) System.err.println("Geometry]");
+        }
+        drawReal(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)

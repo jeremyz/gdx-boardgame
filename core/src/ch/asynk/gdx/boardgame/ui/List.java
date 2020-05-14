@@ -84,10 +84,8 @@ public class List extends Element
         if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
     }
 
-    @Override public void draw(Batch batch)
+    @Override public void drawReal(Batch batch)
     {
-        if (!visible) return;
-        if (dirty) computeGeometry();
         float x = getInnerX();
         float y = getInnerTop();
         for (Item e : items) {
