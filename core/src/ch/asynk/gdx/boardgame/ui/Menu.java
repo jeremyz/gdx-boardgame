@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Menu extends Patch
 {
@@ -65,13 +66,13 @@ public class Menu extends Patch
         taint();
     }
 
-    @Override public void computeDimensions()
+    @Override public void computeGeometry(Rectangle area)
     {
-        title.computeDimensions();
+        title.computeGeometry(area);
         float h = title.getHeight();
         float w = title.getWidth();
         for (Label label : entries) {
-            label.computeDimensions();
+            label.computeGeometry(area);
             h += label.getHeight();
             float t = label.getWidth() + entriesOffset;
             if (t > w)
@@ -80,17 +81,14 @@ public class Menu extends Patch
         rect.width = w + (2 * padding);
         rect.height = h + (titleSpacing + (entriesSpacing * (entries.length - 1)) + (2 * padding));
         if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-    }
 
-    @Override public void computePosition()
-    {
-        super.computePosition();
+        super.computeGeometry(area);
 
         float y = getInnerHeight() - title.getHeight();
-        title.setPositionClear(0, y);
+        title.setPositionClear(0, y, innerRect);
         y -= titleSpacing;
         for (Label l : entries) {
-            l.setPositionClear(x + entriesOffset, y - l.getHeight());
+            l.setPositionClear(x + entriesOffset, y - l.getHeight(), innerRect);
             y -= (l.getHeight() + entriesSpacing);
         }
         if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));

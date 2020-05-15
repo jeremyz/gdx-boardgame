@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.ui;
 
+import com.badlogic.gdx.math.Rectangle;
+
 public enum Alignment
 {
     ABSOLUTE,           // Root
@@ -122,9 +124,9 @@ public enum Alignment
         return false;
     }
 
-    public float getX(Element element, float width)
+    public float getX(Rectangle area, float width)
     {
-        float x = element.getInnerX();
+        float x = area.x;
         switch(this) {
             case TOP_LEFT:
             case MIDDLE_LEFT:
@@ -133,30 +135,30 @@ public enum Alignment
             case TOP_CENTER:
             case MIDDLE_CENTER:
             case BOTTOM_CENTER:
-                x += ((element.getInnerWidth() - width) / 2);
+                x += ((area.width - width) / 2);
                 break;
             case TOP_RIGHT:
             case MIDDLE_RIGHT:
             case BOTTOM_RIGHT:
-                x += (element.getInnerWidth() - width);
+                x += (area.width - width);
                 break;
         }
         return x;
     }
 
-    public float getY(Element element, float height)
+    public float getY(Rectangle area, float height)
     {
-        float y = element.getInnerY();
+        float y = area.y;
         switch(this) {
             case TOP_LEFT:
             case TOP_CENTER:
             case TOP_RIGHT:
-                y += (element.getInnerHeight() - height);
+                y += (area.height - height);
                 break;
             case MIDDLE_LEFT:
             case MIDDLE_CENTER:
             case MIDDLE_RIGHT:
-                y += ((element.getInnerHeight() - height) / 2);
+                y += ((area.height - height) / 2);
                 break;
             case BOTTOM_LEFT:
             case BOTTOM_CENTER:

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Button extends Patch
 {
@@ -40,19 +41,16 @@ public class Button extends Patch
         label.setAlignment(alignment);
     }
 
-    @Override public void computeDimensions()
+    @Override public void computeGeometry(Rectangle area)
     {
         float dd = 2 * (padding + spacing);
-        label.computeDimensions();
+        label.computeGeometry(area);
         rect.width = label.getWidth() + dd;
         rect.height = label.getHeight() + dd;
         if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-    }
 
-    @Override public void computePosition()
-    {
-        super.computePosition();
-        label.computePosition();
+        super.computeGeometry(area);
+        label.computeGeometry(innerRect);
     }
 
     @Override public void drawReal(Batch batch)

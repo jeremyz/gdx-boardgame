@@ -2,6 +2,7 @@ package ch.asynk.gdx.boardgame.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.utils.IterableSet;
 
@@ -44,10 +45,20 @@ public class Container extends Element
             children.forEach( c -> c.drip() );
     }
 
+    @Override public void computeGeometry(Rectangle area)
+    {
+        if (children != null) {
+            for(Element e : children) {
+                e.computeGeometry(area);
+                e.clear();
+            }
+        }
+    }
+
     @Override public void drawReal(Batch batch)
     {
         if (children != null)
-            children.forEach( c -> c.draw(batch) );
+            children.forEach( c -> c.draw(batch, innerRect) );
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)

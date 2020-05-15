@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.utils.Collection;
 
@@ -64,7 +65,13 @@ public class List extends Element
         taint();
     }
 
-    @Override public void computeDimensions()
+    @Override public void translate(float x, float y)
+    {
+        super.translate(x, y);
+        selected.mark();
+    }
+
+    @Override public void computeGeometry(Rectangle area)
     {
         float w = 0f;
         for (Item e: items) {
@@ -75,13 +82,8 @@ public class List extends Element
         rect.width = w + (2 * padding);
         rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
         if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-    }
 
-    @Override public void computePosition()
-    {
-        super.computePosition();
-        selected.computePosition();
-        if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
+        super.computeGeometry(area);
     }
 
     @Override public void drawReal(Batch batch)
@@ -92,6 +94,6 @@ public class List extends Element
             font.draw(batch, e.s(), x, y);
             y -= itemHeight;
         }
-        selected.draw(batch);
+        selected.draw(batch, innerRect);
     }
 }

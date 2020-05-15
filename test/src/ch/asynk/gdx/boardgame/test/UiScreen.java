@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
@@ -152,9 +153,9 @@ class MyButton extends Button
         super(font, patch, padding, spacing);
     }
 
-    @Override public void computePosition()
+    @Override public void computeGeometry(Rectangle space)
     {
-        super.computePosition();
+        super.computeGeometry(space);
         System.err.println("call to label.write(…)");
         label.write(String.format("%04d;%04d", (int)getX(), (int)getY()));
     }
@@ -197,18 +198,15 @@ class MyList extends Patch
         this.scrollable.hScroll = true;
     }
 
-    @Override public void computeDimensions()
+    @Override public void computeGeometry(Rectangle space)
     {
-        title.computeDimensions();
-        scrollable.computeDimensions();
+        scrollable.computeGeometry(space);
         rect.height = 300;
         rect.width = scrollable.getBestWidth() + (2 * padding) - 100;
-    }
 
-    @Override public void computePosition()
-    {
-        super.computePosition();
-        title.computePosition();
+        super.computeGeometry(space);
+        title.computeGeometry(innerRect);
+        scrollable.computeGeometry(space);
         scrollable.setPosition(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 15);
     }
 
@@ -226,7 +224,7 @@ class MyList extends Patch
     {
         super.drawReal(batch);
         title.drawReal(batch);
-        scrollable.draw(batch);
+        scrollable.drawReal(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)

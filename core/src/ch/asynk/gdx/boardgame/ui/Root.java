@@ -31,6 +31,14 @@ public class Root extends Container
         drip();
     }
 
+    @Override public void computeGeometry(Rectangle area)
+    {
+        rect.x = x;
+        rect.y = y;
+        innerRect.set(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
+        super.computeGeometry(innerRect);
+    }
+
     public Element touched()
     {
         return touched;

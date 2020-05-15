@@ -20,6 +20,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     protected Sizing sizing;            // sizing policy
     protected Alignment alignment;      // where to position itself
     protected Rectangle rect;           // outer drawing coordinates
+    protected Rectangle innerRect;      // inner drawing coordinates
     protected float x, y;               // given position
     protected boolean dirty;            // geometry must be computed
 
@@ -32,6 +33,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.sizing = Sizing.NONE;
         this.alignment = alignment.RELATIVE;
         this.rect = new Rectangle(0, 0, 0, 0);
+        this.innerRect = new Rectangle(0, 0, 0, 0);
         this.x = this.y = 0;
         taint();
     }
@@ -111,11 +113,11 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         taint();
     }
 
-    public final void setPositionClear(float x, float y)
+    public final void setPositionClear(float x, float y, Rectangle area)
     {
         this.x = x;
         this.y = y;
-        computePosition();
+        computePosition(area);
         clear();
     }
 
@@ -154,7 +156,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         setPosition((cx - (rect.width / 2f)), (cy - (rect.height / 2f)));
     }
 
-    @Override public final void translate(float dx, float dy)
+    @Override public void translate(float dx, float dy)
     {
         setPosition(x + dx, y + dy);
     }
@@ -169,44 +171,44 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
        setPosition(x, y, rect.width, rect.height);
     }
 
-    public void computeDimensions()
+    private void computePosition(Rectangle area)
     {
-        if (parent != null && sizing.fill()) {
-            if (sizing.fillWidth()) {
-                rect.width = parent.getInnerWidth();
-            }
-            if (sizing.fillHeight()) {
-                rect.height = parent.getInnerHeight();
-            }
+        if (area == null) {
+            System.err.println("******** ERROR : computeGeometry(null) check for draw(batch) calls : " + print(-1));
+            return;
         }
-        // it is up to the subclass to implement the expand logic
-        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-    }
-
-    public void computePosition()
-    {
-        if (alignment == Alignment.ABSOLUTE || parent == null) {
+        if (alignment == Alignment.ABSOLUTE) {
             rect.x = x;
             rect.y = y;
         } else if (alignment == Alignment.RELATIVE) {
-            rect.x = x + parent.getInnerX();
-            rect.y = y + parent.getInnerY();
+            rect.x = x + area.x;
+            rect.y = y + area.y;
         } else {
-            rect.x = x + alignment.getX(parent, rect.width);
-            rect.y = y + alignment.getY(parent, rect.height);
+            rect.x = x + alignment.getX(area, rect.width);
+            rect.y = y + alignment.getY(area, rect.height);
         }
+        innerRect.set(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
         if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
+    }
+
+    public void computeGeometry(Rectangle area)
+    {
+        computePosition(area);
     }
 
     public abstract void drawReal(Batch batch);
 
     @Override public void draw(Batch batch)
     {
+        draw(batch, null);
+    }
+
+    public void draw(Batch batch, Rectangle area)
+    {
         if (!visible) return;
         if (dirty) {
             if (DEBUG_GEOMETRY) { print("[Geometry"); System.err.println("  --> " + print(-1)); }
-            computeDimensions();
-            computePosition();
+            computeGeometry(area);
             clear();
             if (DEBUG_GEOMETRY) System.err.println("Geometry]");
         }

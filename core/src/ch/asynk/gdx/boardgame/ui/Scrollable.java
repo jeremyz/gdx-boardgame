@@ -37,14 +37,9 @@ public class Scrollable extends Element
         return (child.getHeight() + (2 * padding));
     }
 
-    @Override public void computeDimensions()
+    @Override public void computeGeometry(Rectangle area)
     {
-        child.computeDimensions();
-    }
-
-    @Override public void computePosition()
-    {
-        child.computePosition();
+        child.computeGeometry(area);
     }
 
     @Override public Element touch(float x, float y)
@@ -93,7 +88,7 @@ public class Scrollable extends Element
     {
         rect.set(x, y, w, h);
         clip.set((x + padding), (y + padding), (w - 2 * padding), (h - 2 * padding));
-        child.setPositionClear(clip.x, clip.y - (child.rect.height - clip.height));
+        child.setPositionClear(clip.x, clip.y - (child.rect.height - clip.height), innerRect);
         scissorIdx = Scissors.compute(scissorIdx, clip);
     }
 
@@ -103,7 +98,7 @@ public class Scrollable extends Element
         Rectangle scissor = Scissors.get(scissorIdx, clip);
         HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
-        child.draw(batch);
+        child.draw(batch, innerRect);
         batch.flush();
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
     }

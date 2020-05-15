@@ -3,6 +3,7 @@ package ch.asynk.gdx.boardgame.ui;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Label extends Element
 {
@@ -52,11 +53,12 @@ public class Label extends Element
         taint();
     }
 
-    @Override public void computeDimensions()
+    @Override public void computeGeometry(Rectangle area)
     {
         this.rect.width = (layout.width + (2 * padding));
         this.rect.height = (layout.height + (2 * padding));
         if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
+        super.computeGeometry(area);
     }
 
     @Override public void drawReal(Batch batch)
