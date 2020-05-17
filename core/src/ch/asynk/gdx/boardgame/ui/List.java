@@ -35,6 +35,12 @@ public class List extends Element
         this.selected.visible = false;
     }
 
+    public void setSpacing(float spacing)
+    {
+        this.spacing = spacing;
+        taint();
+    }
+
     public void unselect() { idx = null; }
     public Integer getIdx() { return idx; }
     public Item getSelected() { return ((idx == null) ? null : items.get(idx)); }
