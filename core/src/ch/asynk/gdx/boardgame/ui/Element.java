@@ -23,6 +23,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     protected Rectangle innerRect;      // inner drawing coordinates
     protected float x, y;               // given position
     protected boolean dirty;            // geometry must be computed
+    protected boolean damaged;          // child Element is dirty
 
     protected Element()
     {
@@ -36,6 +37,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.innerRect = new Rectangle(0, 0, 0, 0);
         this.x = this.y = 0;
         this.dirty = true;
+        this.damaged = false;
     }
 
     @Override public final float getX()         { return rect.x; }
@@ -83,6 +85,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     {
         if (DEBUG_GEOMETRY) print(" clear");
         this.dirty = false;
+        this.damaged = false;
     }
 
     public void taint()
@@ -93,7 +96,18 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         }
         if (DEBUG_GEOMETRY) print(" taint");
         this.dirty = true;
-        if (parent != null) parent.taint();
+        if (parent != null) parent.damage();
+    }
+
+    public void damage()
+    {
+        if (this.damaged) {
+            if (DEBUG_GEOMETRY) print("  already damaged");
+            return;
+        }
+        if (DEBUG_GEOMETRY) print(" damage");
+        this.damaged = true;
+        if (parent != null) parent.damage();
     }
 
     @Override public void setPosition(float x, float y, float w, float h)
@@ -187,6 +201,8 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
             computeDimensions();
             computePosition(area);
             clear();
+        } else if (damaged) {
+            damaged = false;
         }
     }
 

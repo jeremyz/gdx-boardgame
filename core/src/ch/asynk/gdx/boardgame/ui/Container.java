@@ -40,9 +40,11 @@ public class Container extends Element
 
     @Override public void computeGeometry(Rectangle area, boolean resized)
     {
+        if ((dirty || damaged || resized) && children != null) {
+            children.forEach( c -> c.computeGeometry(area, resized) );
+            damaged = false;
+        }
         if (dirty || resized) {
-            if (children != null)
-                children.forEach( c -> c.computeGeometry(area, resized) );
             super.computeGeometry(area, resized);
         }
     }

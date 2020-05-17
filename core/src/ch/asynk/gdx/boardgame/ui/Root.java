@@ -47,7 +47,7 @@ public class Root extends Container
 
     @Override public void draw(Batch batch)
     {
-        if (dirty || resized) {
+        if (dirty || damaged || resized) {
             computeGeometry(null, resized);
             resized = false;
         }
