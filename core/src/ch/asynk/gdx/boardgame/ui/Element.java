@@ -35,7 +35,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.rect = new Rectangle(0, 0, 0, 0);
         this.innerRect = new Rectangle(0, 0, 0, 0);
         this.x = this.y = 0;
-        taint();
+        this.dirty = true;
     }
 
     @Override public final float getX()         { return rect.x; }
@@ -85,23 +85,15 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         this.dirty = false;
     }
 
-    public void mark()
-    {
-        if (DEBUG_GEOMETRY) print("  mark");
-        this.dirty = true;
-    }
-
-    public void drip()
-    {
-        if (DEBUG_GEOMETRY) print("  drip");
-        this.dirty = true;
-    }
-
     public void taint()
     {
+        if (this.dirty) {
+            if (DEBUG_GEOMETRY) print("  already dirty");
+            return;
+        }
         if (DEBUG_GEOMETRY) print(" taint");
-        mark();
-        if (parent != null) parent.mark();
+        this.dirty = true;
+        if (parent != null) parent.taint();
     }
 
     @Override public void setPosition(float x, float y, float w, float h)
@@ -171,12 +163,10 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
        setPosition(x, y, rect.width, rect.height);
     }
 
+    protected void computeDimensions() { }
+
     private void computePosition(Rectangle area)
     {
-        if (area == null) {
-            System.err.println("******** ERROR : computeGeometry(null) check for draw(batch) calls : " + print(-1));
-            return;
-        }
         if (alignment == Alignment.ABSOLUTE) {
             rect.x = x;
             rect.y = y;
@@ -191,27 +181,20 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
     }
 
-    public void computeGeometry(Rectangle area)
+    public void computeGeometry(Rectangle area, boolean resized)
     {
-        computePosition(area);
+        if (dirty || resized) {
+            computeDimensions();
+            computePosition(area);
+            clear();
+        }
     }
 
     public abstract void drawReal(Batch batch);
 
     @Override public void draw(Batch batch)
     {
-        draw(batch, null);
-    }
-
-    public void draw(Batch batch, Rectangle area)
-    {
         if (!visible) return;
-        if (dirty) {
-            if (DEBUG_GEOMETRY) { print("[Geometry"); System.err.println("  --> " + print(-1)); }
-            computeGeometry(area);
-            clear();
-            if (DEBUG_GEOMETRY) System.err.println("Geometry]");
-        }
         drawReal(batch);
     }
 

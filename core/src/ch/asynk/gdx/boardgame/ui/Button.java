@@ -41,22 +41,21 @@ public class Button extends Patch
         label.setAlignment(alignment);
     }
 
-    @Override public void computeGeometry(Rectangle area)
+    @Override public void computeGeometry(Rectangle area, boolean resized)
     {
+        label.computeDimensions();
         float dd = 2 * (padding + spacing);
-        label.computeGeometry(area);
         rect.width = label.getWidth() + dd;
         rect.height = label.getHeight() + dd;
-        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
 
-        super.computeGeometry(area);
-        label.computeGeometry(innerRect);
+        super.computeGeometry(area, resized);
+        label.computeGeometry(innerRect, resized);
     }
 
     @Override public void drawReal(Batch batch)
     {
         super.drawReal(batch);
-        label.drawReal(batch);
+        label.draw(batch);
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)

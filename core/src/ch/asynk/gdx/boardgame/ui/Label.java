@@ -53,12 +53,10 @@ public class Label extends Element
         taint();
     }
 
-    @Override public void computeGeometry(Rectangle area)
+    @Override public void computeDimensions()
     {
         this.rect.width = (layout.width + (2 * padding));
         this.rect.height = (layout.height + (2 * padding));
-        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
-        super.computeGeometry(area);
     }
 
     @Override public void drawReal(Batch batch)

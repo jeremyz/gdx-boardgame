@@ -47,7 +47,7 @@ public class List extends Element
             if (i >= 0 && i < items.size()) {
                 if (idx == null || idx != i) {
                     idx = i;
-                    selected.setPosition(0, getInnerHeight() - ((idx + 1) * itemHeight) + spacing / 2f, getWidth(), itemHeight);
+                    selected.setPosition(0, getHeight() - padding + spacing / 2 - ((idx + 1) * itemHeight), getWidth(), itemHeight);
                     selected.visible = true;
                 }
                 return touched;
@@ -68,10 +68,10 @@ public class List extends Element
     @Override public void translate(float x, float y)
     {
         super.translate(x, y);
-        selected.mark();
+        selected.taint();
     }
 
-    @Override public void computeGeometry(Rectangle area)
+    public void computeDimensions()
     {
         float w = 0f;
         for (Item e: items) {
@@ -81,9 +81,13 @@ public class List extends Element
         itemHeight = (layout.height + spacing);
         rect.width = w + (2 * padding);
         rect.height = (itemHeight * items.size()) + (2 * padding) - spacing;
-        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
+    }
 
-        super.computeGeometry(area);
+    @Override public void computeGeometry(Rectangle area, boolean resized)
+    {
+        computeDimensions();
+        super.computeGeometry(area, resized);
+        selected.computeGeometry(rect, resized);
     }
 
     @Override public void drawReal(Batch batch)
@@ -94,6 +98,6 @@ public class List extends Element
             font.draw(batch, e.s(), x, y);
             y -= itemHeight;
         }
-        selected.draw(batch, innerRect);
+        selected.draw(batch);
     }
 }

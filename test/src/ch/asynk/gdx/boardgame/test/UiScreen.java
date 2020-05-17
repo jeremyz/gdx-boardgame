@@ -153,19 +153,20 @@ class MyButton extends Button
         super(font, patch, padding, spacing);
     }
 
-    @Override public void computeGeometry(Rectangle space)
+    @Override public void computeGeometry(Rectangle space, boolean resized)
     {
-        super.computeGeometry(space);
-        System.err.println("call to label.write(…)");
+        super.computeGeometry(space, resized);
         label.write(String.format("%04d;%04d", (int)getX(), (int)getY()));
+        label.clear();
+        clear();
     }
 }
 
 class MyList extends Patch
 {
     private Label title;
-    private Scrollable scrollable;
     private List list;
+    private Scrollable scrollable;
 
     class Item implements List.Item
     {
@@ -198,16 +199,16 @@ class MyList extends Patch
         this.scrollable.hScroll = true;
     }
 
-    @Override public void computeGeometry(Rectangle space)
+    @Override public void computeGeometry(Rectangle space, boolean resized)
     {
-        scrollable.computeGeometry(space);
+        scrollable.computeDimensions();
         rect.height = 300;
         rect.width = scrollable.getBestWidth() + (2 * padding) - 100;
 
-        super.computeGeometry(space);
-        title.computeGeometry(innerRect);
-        scrollable.computeGeometry(space);
-        scrollable.setPosition(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 15);
+        super.computeGeometry(space, resized);
+        title.computeGeometry(innerRect, resized);
+        Rectangle a = new Rectangle(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 0);
+        scrollable.computeGeometry(a, resized);
     }
 
     @Override public Element touch(float x, float y)

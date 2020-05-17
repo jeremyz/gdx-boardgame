@@ -20,9 +20,10 @@ public class Scrollable extends Element
         super();
         this.vScroll = true;
         this.hScroll = false;
-        this.child = child;
         this.scissorIdx = -1;
         this.clip = new Rectangle();
+        this.child = child;
+        child.setParent(this);
     }
 
     public Element getChild() { return child; }
@@ -37,10 +38,19 @@ public class Scrollable extends Element
         return (child.getHeight() + (2 * padding));
     }
 
-    @Override public void computeGeometry(Rectangle area)
+    public void computeDimensions()
     {
-        child.computeGeometry(area);
+        child.computeDimensions();
     }
+
+    @Override public void computeGeometry(Rectangle area, boolean resized)
+    {
+        if (resized || scissorIdx == -1)
+            setPosition(area.x, area.y, area.width, area.height);
+        child.computeGeometry(clip, resized);
+        clear();
+    }
+
 
     @Override public Element touch(float x, float y)
     {
@@ -88,8 +98,8 @@ public class Scrollable extends Element
     {
         rect.set(x, y, w, h);
         clip.set((x + padding), (y + padding), (w - 2 * padding), (h - 2 * padding));
-        child.setPositionClear(clip.x, clip.y - (child.rect.height - clip.height), innerRect);
         scissorIdx = Scissors.compute(scissorIdx, clip);
+        child.setPositionClear(0, - (child.rect.height - clip.height), clip);
     }
 
     @Override public void drawReal(Batch batch)
@@ -98,7 +108,7 @@ public class Scrollable extends Element
         Rectangle scissor = Scissors.get(scissorIdx, clip);
         HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
-        child.draw(batch, innerRect);
+        child.draw(batch);
         batch.flush();
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
     }

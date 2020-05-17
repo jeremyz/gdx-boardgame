@@ -66,13 +66,13 @@ public class Menu extends Patch
         taint();
     }
 
-    @Override public void computeGeometry(Rectangle area)
+    @Override public void computeGeometry(Rectangle area, boolean resized)
     {
-        title.computeGeometry(area);
+        title.computeGeometry(area, resized);
         float h = title.getHeight();
         float w = title.getWidth();
         for (Label label : entries) {
-            label.computeGeometry(area);
+            label.computeGeometry(area, resized);
             h += label.getHeight();
             float t = label.getWidth() + entriesOffset;
             if (t > w)
@@ -80,9 +80,8 @@ public class Menu extends Patch
         }
         rect.width = w + (2 * padding);
         rect.height = h + (titleSpacing + (entriesSpacing * (entries.length - 1)) + (2 * padding));
-        if (DEBUG_GEOMETRY) System.err.println("  dim " + print(-1));
 
-        super.computeGeometry(area);
+        super.computeGeometry(area, resized);
 
         float y = getInnerHeight() - title.getHeight();
         title.setPositionClear(0, y, innerRect);
@@ -91,7 +90,6 @@ public class Menu extends Patch
             l.setPositionClear(x + entriesOffset, y - l.getHeight(), innerRect);
             y -= (l.getHeight() + entriesSpacing);
         }
-        if (DEBUG_GEOMETRY) System.err.println("  pos " + print(-1));
     }
 
     public int touched()
@@ -117,9 +115,9 @@ public class Menu extends Patch
     @Override public void drawReal(Batch batch)
     {
         super.drawReal(batch);
-        title.drawReal(batch);
+        title.draw(batch);
         for (Label label : entries) {
-            label.drawReal(batch);
+            label.draw(batch);
         }
     }
 

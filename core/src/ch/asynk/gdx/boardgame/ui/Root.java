@@ -8,6 +8,7 @@ import ch.asynk.gdx.boardgame.utils.IterableSet;
 public class Root extends Container
 {
     private Element touched;
+    private boolean resized;
 
     public Root(int c)
     {
@@ -28,20 +29,29 @@ public class Root extends Container
     public void resize(float x, float y, float width, float height)
     {
         setPosition(x, y, width, height);
-        drip();
+        resized = true;
     }
 
-    @Override public void computeGeometry(Rectangle area)
+    @Override public void computeGeometry(Rectangle area, boolean resized)
     {
         rect.x = x;
         rect.y = y;
         innerRect.set(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight());
-        super.computeGeometry(innerRect);
+        super.computeGeometry(innerRect, resized);
     }
 
     public Element touched()
     {
         return touched;
+    }
+
+    @Override public void draw(Batch batch)
+    {
+        if (dirty || resized) {
+            computeGeometry(null, resized);
+            resized = false;
+        }
+        super.draw(batch);
     }
 
     @Override public Element touch(float x, float y)

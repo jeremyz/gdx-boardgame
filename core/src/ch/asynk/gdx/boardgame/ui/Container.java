@@ -38,27 +38,19 @@ public class Container extends Element
         }
     }
 
-    @Override public void drip()
+    @Override public void computeGeometry(Rectangle area, boolean resized)
     {
-        super.drip();
-        if (children != null)
-            children.forEach( c -> c.drip() );
-    }
-
-    @Override public void computeGeometry(Rectangle area)
-    {
-        if (children != null) {
-            for(Element e : children) {
-                e.computeGeometry(area);
-                e.clear();
-            }
+        if (dirty || resized) {
+            if (children != null)
+                children.forEach( c -> c.computeGeometry(area, resized) );
+            super.computeGeometry(area, resized);
         }
     }
 
     @Override public void drawReal(Batch batch)
     {
         if (children != null)
-            children.forEach( c -> c.draw(batch, innerRect) );
+            children.forEach( c -> c.draw(batch) );
     }
 
     @Override public void drawDebug(ShapeRenderer shapeRenderer)
