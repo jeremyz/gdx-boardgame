@@ -17,7 +17,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     public boolean visible;
     protected float padding;
     protected Element parent;
-    protected Sizing sizing;            // sizing policy
+    protected int sizing;               // sizing policy
     protected Alignment alignment;      // where to position itself
     protected Rectangle rect;           // outer drawing coordinates
     protected Rectangle innerRect;      // inner drawing coordinates
@@ -66,7 +66,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         String r = suffix;
         r += " : " + (int)x + " " + (int)y +
             " [" + (int)rect.x + " " + (int)rect.y + " " + (int)rect.width + " " + (int)rect.height + "] +" +
-            (int)padding + " " + alignment + " " + sizing + " "+ getClass().getName() + " " + Integer.toHexString(hashCode());
+            (int)padding + " " + alignment + " " + Sizing.print(sizing) + " "+ getClass().getName() + " " + Integer.toHexString(hashCode());
         if (level < 0)
             return r;
         if (parent != null)
@@ -145,7 +145,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
         taint();
     }
 
-    public void setSizing(Sizing sizing)
+    public void setSizing(int sizing)
     {
         this.sizing = sizing;
         taint();
