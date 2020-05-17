@@ -11,7 +11,6 @@ public class Scrollable extends Element
 {
     private Element child;
     private int scissorIdx;
-    private Rectangle clip;
     public boolean vScroll;
     public boolean hScroll;
 
@@ -21,7 +20,6 @@ public class Scrollable extends Element
         this.vScroll = true;
         this.hScroll = false;
         this.scissorIdx = -1;
-        this.clip = new Rectangle();
         this.child = child;
         child.setParent(this);
     }
@@ -47,14 +45,14 @@ public class Scrollable extends Element
     {
         if (resized || scissorIdx == -1)
             setPosition(area.x, area.y, area.width, area.height);
-        child.computeGeometry(clip, resized);
+        child.computeGeometry(innerRect, resized);
         clear();
     }
 
 
     @Override public Element touch(float x, float y)
     {
-        if (clip.contains(x, y)) {
+        if (innerRect.contains(x, y)) {
             final Element touched = child.touch(x, y);
             if (touched == child)
                 return this;
@@ -69,22 +67,22 @@ public class Scrollable extends Element
         float tx = 0;
         float ty = 0;
         if (vScroll) {
-            if (dy > 0 && child.rect.y < clip.y) {
-                ty = Math.min(dy, clip.y - child.rect.y);
+            if (dy > 0 && child.rect.y < innerRect.y) {
+                ty = Math.min(dy, innerRect.y - child.rect.y);
             }
             else if (dy < 0) {
-                float cly = clip.y + clip.height;
+                float cly = innerRect.y + innerRect.height;
                 float chy = child.rect.y + child.rect.height;
                 if (chy > cly)
                     ty = Math.max(dy, cly - chy);
             }
         }
         if (hScroll) {
-            if (dx > 0 && child.rect.x < clip.x) {
-                tx = Math.min(dx, clip.x - child.rect.x);
+            if (dx > 0 && child.rect.x < innerRect.x) {
+                tx = Math.min(dx, innerRect.x - child.rect.x);
             }
             else if (dx < 0) {
-                float clx = clip.x + clip.width;
+                float clx = innerRect.x + innerRect.width;
                 float chx = child.rect.x + child.rect.width;
                 if (chx > clx)
                     tx = Math.max(dx, clx - chx);
@@ -97,15 +95,15 @@ public class Scrollable extends Element
     @Override public void setPosition(float x, float y, float w, float h)
     {
         rect.set(x, y, w, h);
-        clip.set((x + padding), (y + padding), (w - 2 * padding), (h - 2 * padding));
-        scissorIdx = Scissors.compute(scissorIdx, clip);
-        child.setPositionClear(0, - (child.rect.height - clip.height), clip);
+        innerRect.set((x + padding), (y + padding), (w - 2 * padding), (h - 2 * padding));
+        scissorIdx = Scissors.compute(scissorIdx, innerRect);
+        child.setPositionClear(0, - (child.rect.height - innerRect.height), innerRect);
     }
 
     @Override public void drawReal(Batch batch)
     {
         batch.flush();
-        Rectangle scissor = Scissors.get(scissorIdx, clip);
+        Rectangle scissor = Scissors.get(scissorIdx, innerRect);
         HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
         child.draw(batch);
