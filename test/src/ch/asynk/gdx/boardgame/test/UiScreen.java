@@ -11,30 +11,38 @@ import com.badlogic.gdx.math.Rectangle;
 
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
+import ch.asynk.gdx.boardgame.ui.Container;
 import ch.asynk.gdx.boardgame.ui.Element;
 import ch.asynk.gdx.boardgame.ui.Label;
 import ch.asynk.gdx.boardgame.ui.List;
 import ch.asynk.gdx.boardgame.ui.Patch;
 import ch.asynk.gdx.boardgame.ui.Scissors;
 import ch.asynk.gdx.boardgame.ui.Scrollable;
+import ch.asynk.gdx.boardgame.ui.Sizing;
 import ch.asynk.gdx.boardgame.utils.Collection;
 import ch.asynk.gdx.boardgame.utils.IterableArray;
 
 public class UiScreen extends AbstractScreen
 {
     private final Button next;
-    private final Button[] buttons = new Button[8];
+    private final Button[] buttons0 = new Button[8];
+    private final Button[] buttons1 = new Button[3];
     private final MyList list;
+    private final Container container;
 
     public enum State
     {
-        POSITIONS, SCROLL, DONE;
+        POSITIONS, SCROLL, CONTAINER_V, CONTAINER_H, DONE;
         public State next()
         {
             switch(this) {
                 case POSITIONS:
                     return SCROLL;
                 case SCROLL:
+                    return CONTAINER_V;
+                case CONTAINER_V:
+                    return CONTAINER_H;
+                case CONTAINER_H:
                     return DONE;
                 default:
                     return POSITIONS;
@@ -53,14 +61,20 @@ public class UiScreen extends AbstractScreen
         final NinePatch patch = app.assets.getNinePatch(app.assets.PATCH, 23, 23, 23 ,23);
         final BitmapFont font = app.assets.getFont(app.assets.FONT_25);
 
-        this.buttons[0] = buildButton(font, patch, 10, 15, Alignment.TOP_LEFT, Alignment.BOTTOM_RIGHT);
-        this.buttons[1] = buildButton(font, patch, 10, 15, Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER);
-        this.buttons[2] = buildButton(font, patch, 10, 15, Alignment.TOP_RIGHT, Alignment.BOTTOM_LEFT);
-        this.buttons[3] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_LEFT, Alignment.MIDDLE_RIGHT);
-        this.buttons[4] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER);
-        this.buttons[5] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_RIGHT, Alignment.MIDDLE_LEFT);
-        this.buttons[6] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.TOP_RIGHT);
-        this.buttons[7] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_CENTER, Alignment.TOP_CENTER);
+        this.buttons0[0] = buildButton(font, patch, 10, 15, Alignment.TOP_LEFT, Alignment.BOTTOM_RIGHT);
+        this.buttons0[1] = buildButton(font, patch, 10, 15, Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER);
+        this.buttons0[2] = buildButton(font, patch, 10, 15, Alignment.TOP_RIGHT, Alignment.BOTTOM_LEFT);
+        this.buttons0[3] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_LEFT, Alignment.MIDDLE_RIGHT);
+        this.buttons0[4] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER);
+        this.buttons0[5] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_RIGHT, Alignment.MIDDLE_LEFT);
+        this.buttons0[6] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.TOP_RIGHT);
+        this.buttons0[7] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_CENTER, Alignment.TOP_CENTER);
+
+        this.buttons1[0] = buildButton(font, patch, 10, 15, Alignment.TOP_CENTER, Alignment.TOP_CENTER, Sizing.FILL_X);
+        this.buttons1[1] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_RIGHT, Alignment.TOP_CENTER, Sizing.FILL_BOTH | Sizing.EXPAND_BOTH);
+        this.buttons1[2] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.TOP_CENTER, Sizing.FILL_Y);
+
+        this.container = buildContainer();
 
         this.list = new MyList(font, patch, app.assets.getTextureRegion(app.assets.SELECTED));
         this.list.setAlignment(Alignment.MIDDLE_CENTER);
@@ -79,11 +93,38 @@ public class UiScreen extends AbstractScreen
 
     private Button buildButton(BitmapFont font, NinePatch patch, int padding, int spacing, Alignment a, Alignment la)
     {
-        final Button button = new MyButton(font, patch, padding, spacing);
+        return buildButton(font, patch, padding, spacing, a, la, -1);
+    }
+
+    private Button buildButton(BitmapFont font, NinePatch patch, int padding, int spacing, Alignment a, Alignment la, int s)
+    {
+        final Button button = getButton(font, patch, padding, spacing, s < 0);
         button.setAlignment(a);
         button.setLabelAlignment(la);
         button.write(String.format("%04d;%04d", 0, 0));
+        if (s >= 0) {
+            button.setSizing(s);
+            button.write(Sizing.print(s));
+        }
         return button;
+    }
+
+    private Button getButton(BitmapFont font, NinePatch patch, int padding, int spacing, boolean mine)
+    {
+        if (mine)
+            return new MyButton(font, patch, padding, spacing);
+        else
+            return new Button(font, patch, padding, spacing);
+    }
+
+    private Container buildContainer()
+    {
+        Container c = new Container();
+        c.setDirection(Container.Direction.VERTICAL);
+        c.add(this.buttons1[0]);
+        c.add(this.buttons1[1]);
+        c.add(this.buttons1[2]);
+        return c;
     }
 
     private void setState(State state)
@@ -96,8 +137,15 @@ public class UiScreen extends AbstractScreen
                 setButtons(false);
                 root.add(list);
                 break;
-            case DONE:
+            case CONTAINER_V:
                 root.remove(list);
+                root.add(container);
+                break;
+            case CONTAINER_H:
+                this.container.setDirection(Container.Direction.HORIZONTAL);
+                break;
+            case DONE:
+                root.remove(container);
                 app.switchToMenu();
                 break;
         }
@@ -121,11 +169,11 @@ public class UiScreen extends AbstractScreen
     private void setButtons(boolean add)
     {
         if (add) {
-            for (Button button : buttons) {
+            for (Button button : buttons0) {
                 root.add(button);
             }
         } else {
-            for (Button button : buttons)
+            for (Button button : buttons0)
                 root.remove(button);
         }
     }
@@ -153,9 +201,9 @@ class MyButton extends Button
         super(font, patch, padding, spacing);
     }
 
-    @Override public void computeGeometry(Rectangle space, boolean resized)
+    @Override public void computeGeometry(Rectangle area, boolean resized)
     {
-        super.computeGeometry(space, resized);
+        super.computeGeometry(area, resized);
         label.write(String.format("%04d;%04d", (int)getX(), (int)getY()));
         label.clear();
         clear();
@@ -199,13 +247,13 @@ class MyList extends Patch
         this.scrollable.hScroll = true;
     }
 
-    @Override public void computeGeometry(Rectangle space, boolean resized)
+    @Override public void computeGeometry(Rectangle area, boolean resized)
     {
         scrollable.computeDimensions();
         rect.height = 300;
         rect.width = scrollable.getBestWidth() + (2 * padding) - 100;
 
-        super.computeGeometry(space, resized);
+        super.computeGeometry(area, resized);
         title.computeGeometry(innerRect, resized);
         Rectangle a = new Rectangle(getInnerX(), getInnerY(), getInnerWidth(), getInnerHeight() - title.getHeight() - 0);
         scrollable.computeGeometry(a, resized);
