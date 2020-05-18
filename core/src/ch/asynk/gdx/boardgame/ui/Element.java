@@ -179,6 +179,16 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
 
     protected void computeDimensions() { }
 
+    protected void computeDimensions(Rectangle area)
+    {
+        if (Sizing.contains(sizing, Sizing.FILL_X)) {
+            this.rect.width = area.width;
+        }
+        if (Sizing.contains(sizing, Sizing.FILL_Y)) {
+            this.rect.height = area.height;
+        }
+    }
+
     private void computePosition(Rectangle area)
     {
         if (alignment == Alignment.ABSOLUTE) {
@@ -199,6 +209,7 @@ public abstract class Element implements Drawable, Paddable, Positionable, Touch
     {
         if (dirty || resized) {
             computeDimensions();
+            computeDimensions(area);
             computePosition(area);
             clear();
         } else if (damaged) {

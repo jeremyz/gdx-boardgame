@@ -41,13 +41,16 @@ public class Button extends Patch
         label.setAlignment(alignment);
     }
 
-    @Override public void computeGeometry(Rectangle area, boolean resized)
+    @Override public void computeDimensions()
     {
         label.computeDimensions();
         float dd = 2 * (padding + spacing);
         rect.width = label.getWidth() + dd;
         rect.height = label.getHeight() + dd;
+    }
 
+    @Override public void computeGeometry(Rectangle area, boolean resized)
+    {
         super.computeGeometry(area, resized);
         label.computeGeometry(innerRect, resized);
     }
