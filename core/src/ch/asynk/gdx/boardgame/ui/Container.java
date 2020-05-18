@@ -10,9 +10,11 @@ public class Container extends Element
 {
     public static int DEFAULT_CHILD_COUNT = 2;
 
+    public enum Pack { BEGIN, END };
     public enum Direction { FREE, HORIZONTAL, VERTICAL };
 
     protected float spacing;
+    protected Pack pack;
     protected Direction direction;
     protected IterableSet<Element> children;
     private Rectangle subArea;
@@ -29,6 +31,12 @@ public class Container extends Element
     public void setSpacing(float spacing)
     {
         this.spacing = spacing;
+        taint();
+    }
+
+    public void setPacking(Pack pack)
+    {
+        this.pack = pack;
         taint();
     }
 
@@ -73,18 +81,18 @@ public class Container extends Element
                 };
                 float f = (area.width - c) / m;
                 subArea.set(area);
-                subArea.x += subArea.width;
-                subArea.width = 0;
+                boolean end = (pack == Pack.END);
+                if (end) subArea.x += subArea.width;
                 for (Element e : children) {
                     float available = e.rect.width;
                     if (Sizing.contains(e.sizing, Sizing.EXPAND_X))
                         available += f;
-                    subArea.x -= available;
                     subArea.width = available;
+                    if (end) subArea.x -= available;
                     e.computeGeometry(subArea, true);
+                    if (!end) subArea.x += available;
                 }
             } else if (direction == Direction.VERTICAL) {
-                // packs at the begining
                 int n = children.size();
                 int m = 0;
                 int c = 0;
@@ -95,15 +103,16 @@ public class Container extends Element
                 };
                 float f = (area.height - c) / m;
                 subArea.set(area);
-                subArea.y += subArea.height;
-                subArea.height = 0;
+                boolean begin = (pack == Pack.BEGIN);
+                if (begin) subArea.y += subArea.height;
                 for (Element e : children) {
                     float available = e.rect.height;
                     if (Sizing.contains(e.sizing, Sizing.EXPAND_Y))
                         available += f;
-                    subArea.y -= available;
                     subArea.height = available;
+                    if (begin) subArea.y -= available;
                     e.computeGeometry(subArea, true);
+                    if (!begin) subArea.y += available;
                 }
             } else {
                 children.forEach( c -> c.computeGeometry(area, resized) );

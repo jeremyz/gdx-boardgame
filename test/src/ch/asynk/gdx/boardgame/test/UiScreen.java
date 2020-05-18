@@ -32,17 +32,21 @@ public class UiScreen extends AbstractScreen
 
     public enum State
     {
-        POSITIONS, SCROLL, CONTAINER_V, CONTAINER_H, DONE;
+        POSITIONS, SCROLL, CONTAINER_BV, CONTAINER_BH, CONTAINER_EV, CONTAINER_EH, DONE;
         public State next()
         {
             switch(this) {
                 case POSITIONS:
                     return SCROLL;
                 case SCROLL:
-                    return CONTAINER_V;
-                case CONTAINER_V:
-                    return CONTAINER_H;
-                case CONTAINER_H:
+                    return CONTAINER_BV;
+                case CONTAINER_BV:
+                    return CONTAINER_BH;
+                case CONTAINER_BH:
+                    return CONTAINER_EV;
+                case CONTAINER_EV:
+                    return CONTAINER_EH;
+                case CONTAINER_EH:
                     return DONE;
                 default:
                     return POSITIONS;
@@ -120,6 +124,7 @@ public class UiScreen extends AbstractScreen
     private Container buildContainer()
     {
         Container c = new Container();
+        c.setPacking(Container.Pack.BEGIN);
         c.setDirection(Container.Direction.VERTICAL);
         c.add(this.buttons1[0]);
         c.add(this.buttons1[1]);
@@ -137,11 +142,22 @@ public class UiScreen extends AbstractScreen
                 setButtons(false);
                 root.add(list);
                 break;
-            case CONTAINER_V:
+            case CONTAINER_BV:
                 root.remove(list);
                 root.add(container);
+                this.container.setPacking(Container.Pack.BEGIN);
+                this.container.setDirection(Container.Direction.VERTICAL);
                 break;
-            case CONTAINER_H:
+            case CONTAINER_BH:
+                this.container.setPacking(Container.Pack.BEGIN);
+                this.container.setDirection(Container.Direction.HORIZONTAL);
+                break;
+            case CONTAINER_EV:
+                this.container.setPacking(Container.Pack.END);
+                this.container.setDirection(Container.Direction.VERTICAL);
+                break;
+            case CONTAINER_EH:
+                this.container.setPacking(Container.Pack.END);
                 this.container.setDirection(Container.Direction.HORIZONTAL);
                 break;
             case DONE:
