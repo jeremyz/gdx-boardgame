@@ -26,7 +26,7 @@ public class UiScreen extends AbstractScreen
 {
     private final Button next;
     private final Button[] buttons0 = new Button[8];
-    private final Button[] buttons1 = new Button[3];
+    private final Button[] buttons1 = new Button[4];
     private final MyList list;
     private final Container container;
 
@@ -74,9 +74,10 @@ public class UiScreen extends AbstractScreen
         this.buttons0[6] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.TOP_RIGHT);
         this.buttons0[7] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_CENTER, Alignment.TOP_CENTER);
 
-        this.buttons1[0] = buildButton(font, patch, 10, 15, Alignment.TOP_CENTER, Alignment.TOP_CENTER, Sizing.FILL_X);
-        this.buttons1[1] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_RIGHT, Alignment.TOP_CENTER, Sizing.FILL_BOTH | Sizing.EXPAND_BOTH);
-        this.buttons1[2] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.TOP_CENTER, Sizing.FILL_Y);
+        this.buttons1[0] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER, Sizing.FILL_X);
+        this.buttons1[1] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_RIGHT, Alignment.MIDDLE_CENTER, Sizing.FILL_BOTH | Sizing.EXPAND_BOTH);
+        this.buttons1[2] = buildButton(font, patch, 10, 15, Alignment.MIDDLE_CENTER, Alignment.MIDDLE_CENTER, Sizing.FILL_Y| Sizing.EXPAND_Y);
+        this.buttons1[3] = buildButton(font, patch, 10, 15, Alignment.BOTTOM_LEFT, Alignment.MIDDLE_CENTER, Sizing.FILL_Y);
 
         this.container = buildContainer();
 
@@ -129,6 +130,7 @@ public class UiScreen extends AbstractScreen
         c.add(this.buttons1[0]);
         c.add(this.buttons1[1]);
         c.add(this.buttons1[2]);
+        c.add(this.buttons1[3]);
         return c;
     }
 
@@ -145,20 +147,16 @@ public class UiScreen extends AbstractScreen
             case CONTAINER_BV:
                 root.remove(list);
                 root.add(container);
-                this.container.setPacking(Container.Pack.BEGIN);
-                this.container.setDirection(Container.Direction.VERTICAL);
+                containerSetup(Container.Pack.BEGIN, Container.Direction.VERTICAL, true);
                 break;
             case CONTAINER_BH:
-                this.container.setPacking(Container.Pack.BEGIN);
-                this.container.setDirection(Container.Direction.HORIZONTAL);
+                containerSetup(Container.Pack.BEGIN, Container.Direction.HORIZONTAL, false);
                 break;
             case CONTAINER_EV:
-                this.container.setPacking(Container.Pack.END);
-                this.container.setDirection(Container.Direction.VERTICAL);
+                containerSetup(Container.Pack.END, Container.Direction.VERTICAL, true);
                 break;
             case CONTAINER_EH:
-                this.container.setPacking(Container.Pack.END);
-                this.container.setDirection(Container.Direction.HORIZONTAL);
+                containerSetup(Container.Pack.END, Container.Direction.HORIZONTAL, false);
                 break;
             case DONE:
                 root.remove(container);
@@ -167,6 +165,13 @@ public class UiScreen extends AbstractScreen
         }
         System.err.println("switched to : " + state);
         this.state = state;
+    }
+
+    private void containerSetup(Container.Pack pack, Container.Direction direction, boolean visible)
+    {
+        this.container.setPacking(pack);
+        this.container.setDirection(direction);
+        this.buttons1[2].visible = visible;
     }
 
     @Override protected boolean animate(float delta) { return true; }
