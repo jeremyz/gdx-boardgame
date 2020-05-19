@@ -71,10 +71,11 @@ public class Container extends Element
         if ((dirty || damaged || resized) && children != null) {
             if (direction == Direction.HORIZONTAL) {
                 // packs at the end
-                int n = children.size();
+                int n = 0;
                 int m = 0;
                 int c = 0;
                 for (Element e : children) {
+                    if (!e.visible) continue;
                     e.computeDimensions();
                     c += e.rect.width;
                     if (Sizing.contains(e.sizing, Sizing.EXPAND_X)) m += 1;
@@ -84,6 +85,7 @@ public class Container extends Element
                 boolean end = (pack == Pack.END);
                 if (end) subArea.x += subArea.width;
                 for (Element e : children) {
+                    if (!e.visible) continue;
                     float available = e.rect.width;
                     if (Sizing.contains(e.sizing, Sizing.EXPAND_X))
                         available += f;
@@ -93,10 +95,11 @@ public class Container extends Element
                     if (!end) subArea.x += available;
                 }
             } else if (direction == Direction.VERTICAL) {
-                int n = children.size();
+                int n = 0;
                 int m = 0;
                 int c = 0;
                 for (Element e : children) {
+                    if (!e.visible) continue;
                     e.computeDimensions();
                     c += e.rect.height;
                     if (Sizing.contains(e.sizing, Sizing.EXPAND_Y)) m += 1;
@@ -106,6 +109,7 @@ public class Container extends Element
                 boolean begin = (pack == Pack.BEGIN);
                 if (begin) subArea.y += subArea.height;
                 for (Element e : children) {
+                    if (!e.visible) continue;
                     float available = e.rect.height;
                     if (Sizing.contains(e.sizing, Sizing.EXPAND_Y))
                         available += f;
