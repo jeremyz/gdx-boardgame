@@ -60,8 +60,10 @@ public class BoardScreen extends AbstractScreen
 
         public void reset()
         {
-            pos.set(0, 0);
             tilesToDraw.clear();
+            v.set(0, 0);
+            pos.set(0, 0);
+            handleAdjacents();
             board.centerOf(0, 0, v);
             panzer.centerOn(v.x, v.y);
             panzer.setRotation(Orientation.DEFAULT.r());
@@ -108,6 +110,7 @@ public class BoardScreen extends AbstractScreen
 
         private Tile getTile(int x, int y)
         {
+            if (!board.isOnMap(x, y)) return null;
             return tileStorage.getTile(x, y, board::genKey, this::buildTile);
         }
 
