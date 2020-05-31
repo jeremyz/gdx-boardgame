@@ -69,7 +69,7 @@ public class MenuScreen extends AbstractScreen
 
     @Override protected void onZoom(float dz) { }
     @Override protected void onDragged(int dx, int dy) { }
-    @Override protected void onTouch(int x, int y)
+    @Override protected void onTouch(int x, int y, boolean down)
     {
         hudTouch.set(x, y, 0);
         camera.unproject(hudTouch);

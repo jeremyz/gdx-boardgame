@@ -269,14 +269,16 @@ public class BoardScreen extends AbstractScreen
         cam.translate(dx, dy);
     }
 
-    @Override protected void onTouch(int x, int y)
+    @Override protected void onTouch(int x, int y, boolean down)
     {
-        cam.unproject(x, y, boardTouch);
-        cam.unprojectHud(x, y, hudTouch);
-        if (btn.touch(hudTouch.x, hudTouch.y) != null) {
-            setState(state.next());
-        } else {
-            board.touch(boardTouch.x, boardTouch.y);
+        if (down) {
+            cam.unproject(x, y, boardTouch);
+            cam.unprojectHud(x, y, hudTouch);
+            if (btn.touch(hudTouch.x, hudTouch.y) != null) {
+                setState(state.next());
+            } else {
+                board.touch(boardTouch.x, boardTouch.y);
+            }
         }
     }
 

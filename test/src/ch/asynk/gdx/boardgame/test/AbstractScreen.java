@@ -135,7 +135,7 @@ public abstract class AbstractScreen implements Screen
         paused = false;
     }
 
-    protected abstract void onTouch(int x, int y);
+    protected abstract void onTouch(int x, int y, boolean down);
     protected abstract void onZoom(float dz);
     protected abstract void onDragged(int dx, int dy);
     private InputMultiplexer getMultiplexer()
@@ -147,15 +147,27 @@ public abstract class AbstractScreen implements Screen
                 onZoom(amount * ZOOM_SCROLL_FACTOR);
                 return true;
             }
+
+            @Override public boolean touchUp(int x, int y, int pointer, int button)
+            {
+                if (inputBlocked) return true;
+                if (button == Input.Buttons.LEFT) {
+                    dragPos.set(x, y);
+                    onTouch(x, y, false);
+                }
+                return true;
+            }
+
             @Override public boolean touchDown(int x, int y, int pointer, int button)
             {
                 if (inputBlocked) return true;
                 if (button == Input.Buttons.LEFT) {
                     dragPos.set(x, y);
-                    onTouch(x, y);
+                    onTouch(x, y, true);
                 }
                 return true;
             }
+
             @Override public boolean touchDragged(int x, int y, int pointer)
             {
                 int dx = (int) (x - dragPos.x);

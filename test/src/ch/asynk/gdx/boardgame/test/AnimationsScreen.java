@@ -222,5 +222,5 @@ public class AnimationsScreen extends AbstractScreen
 
     @Override protected void onZoom(float dz) { }
     @Override protected void onDragged(int dx, int dy) { }
-    @Override protected void onTouch(int x, int y) { }
+    @Override protected void onTouch(int x, int y, boolean down) { }
 }
