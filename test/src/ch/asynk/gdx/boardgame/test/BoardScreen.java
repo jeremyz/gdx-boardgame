@@ -28,6 +28,7 @@ public class BoardScreen extends AbstractScreen
         private final Piece panzer;
         private final Vector2 pos;
         private final Vector2 v;
+        private boolean dragging;
         public Texture map;
         public Board board;
         public TileStorage tileStorage;
@@ -39,6 +40,7 @@ public class BoardScreen extends AbstractScreen
 
         public MyBoard(final Assets assets)
         {
+            this.dragging = false;
             this.assets = assets;
             this.pos = new Vector2();
             this.v = new Vector2();
@@ -68,7 +70,7 @@ public class BoardScreen extends AbstractScreen
             panzer.setRotation(Orientation.DEFAULT.r());
         }
 
-        public boolean touch(float x, float y)
+        public boolean touch(float x, float y, boolean down)
         {
             board.toBoard(x, y, v);
             GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d] => %d", (int)x, (int)y, (int)v.x, (int)v.y, board.genKey((int)v.x, (int)v.y)));
@@ -77,22 +79,50 @@ public class BoardScreen extends AbstractScreen
             float d2 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.EUCLIDEAN);
             if (board.isOnMap((int)v.x, (int)v.y)) {
                 GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
-                pos.set(v);
-                handleAdjacents();
-                board.centerOf((int)v.x, (int)v.y, v);
-                panzer.centerOn(v.x, v.y);
-                panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
-                GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+                if (down) {
+                    Tile tile = getTile((int)v.x, (int)v.y);
+                    if (!dragging && panzer.isOn(tile)) {
+                        dragging = true;
+                        clearAdjacents();
+                    } else {
+                        pos.set(v);
+                        handleAdjacents();
+                        board.centerOf((int)v.x, (int)v.y, v);
+                        panzer.centerOn(v.x, v.y);
+                        panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
+                        GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+                    }
+                } else {
+                    if (dragging) {
+                        handleAdjacents();
+                        panzer.dropOnBoard(board, v);
+                        dragging = false;
+                    }
+                }
             }
             return true;
         }
 
-        private void handleAdjacents()
+        public boolean drag(float dx, float dy)
+        {
+            if (dragging) {
+                panzer.translate(dx, dy);
+                return true;
+            }
+            return false;
+        }
+
+        private void clearAdjacents()
         {
             for (Tile tile : board.getAdjacents()) {
                 if (tile != null)
                     tile.enableOverlay(12, false);
             }
+        }
+
+        private void handleAdjacents()
+        {
+            clearAdjacents();
             board.buildAdjacents((int)v.x, (int)v.y, this::getTile);
             for (Tile tile : board.getAdjacents()) {
                 if (tile != null) {
@@ -208,10 +238,12 @@ public class BoardScreen extends AbstractScreen
     private final MyBoard board;
     private final Button btn;
     private final Root root;
+    private final Vector2 relative;
 
     public BoardScreen(final GdxBoardTest app)
     {
         super(app, "");
+        this.relative = new Vector2();
         this.board = new MyBoard(app.assets);
         this.camera = this.cam = new Camera(10, board.w, board.h, 1.0f, 0.3f, false);
         this.btn = new Button(
@@ -266,7 +298,10 @@ public class BoardScreen extends AbstractScreen
 
     @Override protected void onDragged(int dx, int dy)
     {
-        cam.translate(dx, dy);
+        cam.unprojectTranslation(dx, dy, relative);
+        if (!board.drag(relative.x, relative.y)) {
+            cam.translate(dx, dy);
+        }
     }
 
     @Override protected void onTouch(int x, int y, boolean down)
@@ -277,8 +312,11 @@ public class BoardScreen extends AbstractScreen
             if (btn.touch(hudTouch.x, hudTouch.y) != null) {
                 setState(state.next());
             } else {
-                board.touch(boardTouch.x, boardTouch.y);
+                board.touch(boardTouch.x, boardTouch.y, true);
             }
+        } else {
+            cam.unproject(x, y, boardTouch);
+            board.touch(boardTouch.x, boardTouch.y, false);
         }
     }
 
