@@ -40,6 +40,11 @@ public class Container extends Element
         taint();
     }
 
+    public Direction getDirection()
+    {
+        return direction;
+    }
+
     public void setDirection(Direction direction)
     {
         this.direction = direction;
