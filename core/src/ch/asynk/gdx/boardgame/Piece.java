@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.MathUtils;
 
+import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.Drawable;
 import ch.asynk.gdx.boardgame.Orientation;
 import ch.asynk.gdx.boardgame.Positionable;
@@ -42,6 +43,13 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
     {
         setPosition(x, y);
         setRotation(r);
+    }
+
+    public void dropOnBoard(Board board, Vector2 v)
+    {
+        board.toBoard(getCX(), getCY(), v);
+        board.centerOf((int)v.x, (int)v.y, v);
+        centerOn(v.x, v.y);
     }
 
     public boolean isOn(Tile tile)

@@ -2,6 +2,7 @@ package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileKeyGenerator;
@@ -25,4 +26,11 @@ public interface Board extends TileKeyGenerator
         TCHEBYCHEV
     }
     public float distance(int x0, int y0, int x1, int y1, Geometry geometry);
+
+    default public void dropInPlace(Piece piece, Vector2 v)
+    {
+        toBoard(piece.getCX(), piece.getCY(), v);
+        centerOf((int)v.x, (int)v.y, v);
+        piece.centerOn(v.x, v.y);
+    }
 }
