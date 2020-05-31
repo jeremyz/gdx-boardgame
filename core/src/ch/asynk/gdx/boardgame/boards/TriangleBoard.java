@@ -19,7 +19,6 @@ public class TriangleBoard implements Board
     private final float m;      // h / d
     private final float h13;    // 1/3 height of the triangle
     private final float h23;    // 2/3 height of the triangle
-    private final float h43;    // 4/3 height of the triangle
 
     // [0] is 0° facing East
     // [8] is default
@@ -42,7 +41,6 @@ public class TriangleBoard implements Board
         this.m = this.h / this.d;
         this.h13 = this.h * 0.33333f;
         this.h23 = this.h * 0.66666f;
-        this.h43 = this.h * 1.33333f;
 
         this.adjacents = new Tile[3];
     }
@@ -60,8 +58,9 @@ public class TriangleBoard implements Board
 
     @Override public Tile[] getAdjacents() { return adjacents; }
 
-    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider) // FIXME
+    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider)
     {
+        // FIXME
     }
 
     @Override public int genKey(int x, int y)
@@ -158,9 +157,9 @@ public class TriangleBoard implements Board
             case EUCLIDEAN:
                 return 0; // FIXME
             case TAXICAB:
-                return dx + dy; // move should only be allowed through the 3 sides not through de vertices
-            case TCHEBYCHEV:
                 return dx + dy;
+            case TCHEBYCHEV:
+                return (dx > dy ? dx : dy);
         }
         return -1;
     }
