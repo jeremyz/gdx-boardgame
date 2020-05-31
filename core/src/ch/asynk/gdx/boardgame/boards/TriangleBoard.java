@@ -47,7 +47,7 @@ public class TriangleBoard implements Board
         this.adjacents = new Tile[3];
     }
 
-    @Override public int size() { return 0; } // FIXME
+    @Override public int size() { return cols * rows; }
 
     @Override public int[] getAngles()
     {
@@ -64,17 +64,14 @@ public class TriangleBoard implements Board
     {
     }
 
-    @Override public int genKey(int x, int y) { return -1; } // FIXME
+    @Override public int genKey(int x, int y)
+    {
+        return (y * cols + x);
+    }
 
     @Override public boolean isOnMap(int x, int y)
     {
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
-            if ((y < 0) || (y >= rows)) return false;
-            if ((x < 0) || (x >= cols)) return false;
-        } else {
-            if ((y < 0) || (y >= rows)) return false;
-            if ((x < -1) || (x >= (cols - 1))) return false;
-        }
+        if (x < 0 || x >= cols || y < 0 || y >= rows) return false;
         return true;
     }
 
@@ -87,8 +84,8 @@ public class TriangleBoard implements Board
             cy += (y * this.d);
             cx += ((x * this.h) + (((x + y) % 2 == 0) ? this.h23 : this.h13));
         } else {
-            cx += (this.d + (x * this.d));
-            cy += ((y * this.h) + (((x + y) % 2 == 0) ? this.h13 : this.h23));
+            cx += (this.d + ((x -1) * this.d));
+            cy += ((y * this.h) + (((x + y) % 2 == 0) ? this.h23 : this.h13));
         }
 
         v.set(cx, cy);
@@ -146,6 +143,7 @@ public class TriangleBoard implements Board
                         col -= 1;
                 }
             }
+            col += 1;
         }
 
         v.set(col, row);
