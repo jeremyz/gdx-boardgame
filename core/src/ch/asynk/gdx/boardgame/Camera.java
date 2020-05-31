@@ -153,7 +153,7 @@ public class Camera extends OrthographicCamera
     {
         float deltaX = (dx * zoom * widthFactor);
         float deltaY = (dy * zoom * heightFactor);
-        translate(deltaX, -deltaY, 0);
+        translate(-deltaX, deltaY, 0);
         clampPosition();
         update(true);
     }

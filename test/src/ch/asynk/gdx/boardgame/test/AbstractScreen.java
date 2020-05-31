@@ -158,8 +158,8 @@ public abstract class AbstractScreen implements Screen
             }
             @Override public boolean touchDragged(int x, int y, int pointer)
             {
-                int dx = (int) (dragPos.x - x);
-                int dy = (int) (dragPos.y - y);
+                int dx = (int) (x - dragPos.x);
+                int dy = (int) (y - dragPos.y);
                 dragPos.set(x, y);
                 onDragged(dx, dy);
                 return true;
