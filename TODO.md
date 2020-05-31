@@ -1,6 +1,6 @@
 ## TODO
  - UI widgets
-    - Box V/H/Grid
+    - Grid
 
  - Algos
     - Line Of Sight
