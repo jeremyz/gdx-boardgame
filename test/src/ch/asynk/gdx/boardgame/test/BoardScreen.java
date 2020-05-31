@@ -73,34 +73,41 @@ public class BoardScreen extends AbstractScreen
         public boolean touch(float x, float y, boolean down)
         {
             board.toBoard(x, y, v);
+            if (!board.isOnMap((int)v.x, (int)v.y))
+                return false;
+            if (down) {
+                Tile tile = getTile((int)v.x, (int)v.y);
+                if (!dragging && panzer.isOn(tile)) {
+                    dragging = true;
+                    clearAdjacents();
+                } else {
+                    touchInfo(x, y);
+                    pos.set(v);
+                    handleAdjacents();
+                    board.centerOf((int)v.x, (int)v.y, v);
+                    panzer.centerOn(v.x, v.y);
+                    panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
+                    GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+                }
+            } else {
+                if (dragging) {
+                    touchInfo(x, y);
+                    handleAdjacents();
+                    panzer.dropOnBoard(board, v);
+                    GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
+                    dragging = false;
+                }
+            }
+            return true;
+        }
+
+        private void touchInfo(float x, float y)
+        {
             GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d] => %d", (int)x, (int)y, (int)v.x, (int)v.y, board.genKey((int)v.x, (int)v.y)));
             float d0 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TCHEBYCHEV);
             float d1 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.TAXICAB);
             float d2 = board.distance((int)pos.x, (int)pos.y, (int)v.x, (int)v.y, Board.Geometry.EUCLIDEAN);
-            if (board.isOnMap((int)v.x, (int)v.y)) {
-                GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
-                if (down) {
-                    Tile tile = getTile((int)v.x, (int)v.y);
-                    if (!dragging && panzer.isOn(tile)) {
-                        dragging = true;
-                        clearAdjacents();
-                    } else {
-                        pos.set(v);
-                        handleAdjacents();
-                        board.centerOf((int)v.x, (int)v.y, v);
-                        panzer.centerOn(v.x, v.y);
-                        panzer.setRotation(Orientation.fromR(panzer.getRotation()).left().r());
-                        GdxBoardTest.debug("BoardScreen", String.format("                  => [%d;%d]", (int)v.x, (int)v.y));
-                    }
-                } else {
-                    if (dragging) {
-                        handleAdjacents();
-                        panzer.dropOnBoard(board, v);
-                        dragging = false;
-                    }
-                }
-            }
-            return true;
+            GdxBoardTest.debug("BoardScreen", String.format("     from [%d;%d] => %d :: %d :: %f", (int)pos.x, (int)pos.y, (int)d0, (int)d1, d2));
         }
 
         public boolean drag(float dx, float dy)
