@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
@@ -177,6 +178,11 @@ public class Camera extends OrthographicCamera
         } else {
             position.y = (boardHeight / 2f);
         }
+    }
+
+    public void unprojectTranslation(int dx, int dy, Vector2 v)
+    {
+        v.set((dx * zoom * widthFactor), (-dy * zoom * heightFactor));
     }
 
     public void unproject(int x, int y, Vector3 v)
