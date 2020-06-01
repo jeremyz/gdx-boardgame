@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
+import ch.asynk.gdx.boardgame.utils.Collection;
 
 public class HexBoard implements Board
 {
@@ -258,5 +259,177 @@ public class HexBoard implements Board
                     return dz;
             }
         }
+    }
+
+    @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    {
+        tiles.clear();
+
+        // orthogonal projection
+        int ox0 = x0 - ((y0 + 1) / 2);
+        int ox1 = x1 - ((y1 + 1) / 2);
+        int dy = y1 - y0;
+        int dx = ox1 - ox0;
+
+        // same sign
+        boolean sig = !(((dx < 0) && (dy >= 0)) || ((dx >= 0) && (dy < 0)));
+
+        // is positive
+        int xs = 1;
+        int ys = 1;
+        if (dx < 0) xs = -1;
+        if (dy < 0) ys = -1;
+
+        // dx counts half width
+        dy = Math.abs(dy);
+        dx = Math.abs(2 * dx);
+        if ((dy % 2) == 1) {
+            if ((y0 % 2) == 0) {
+                dx += xs;
+            } else {
+                dx -= xs;
+                Math.abs(dx);
+            }
+        }
+
+        int dx3 = 3 * dx;
+        int dy3 = 3 * dy;
+
+        if (dx == 0)
+            return verticalLineOfSight(x0, y0, x1, y1, tiles);
+        if (dx == dy3)
+            return diagonalLineOfSight(x0, y0, x1, y1, tiles);
+
+        // angle is smaller than diagonal
+        boolean flat = (dx > dy3);
+
+        int x = x0;
+        int y = y0;
+        int e = -2 * dx;
+
+        Tile from = getTile(x0, y0);
+        Tile to = getTile(x1, y1);
+        tiles.add(from);
+        boolean losBlocked = false;
+        while ((x != x1) || (y != y1)) {
+            if (e > 0) {
+                e -= (dy3 + dx3);
+                y += ys;
+                if (!sig)
+                    x -= xs;
+            } else {
+                e += dy3;
+                if ((e > -dx) || (!flat && (e == -dx))) {
+                    e -= dx3;
+                    y += ys;
+                    if (sig)
+                        x += xs;
+                } else if (e < -dx3) {
+                    e += dx3;
+                    y -= ys;
+                    if (!sig)
+                        x += xs;
+                } else {
+                    e += dy3;
+                    x += xs;
+                }
+            }
+            final Tile t = getTile(x, y);
+            tiles.add(t);
+            t.blocked = losBlocked;
+            losBlocked = (losBlocked || t.blockLos(from, to));
+        }
+
+        return tiles.get(tiles.size() - 1).blocked;
+    }
+
+    private boolean verticalLineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    {
+        int d = ( (y1 > y0) ? 1 : -1);
+        int x = x0;
+        int y = y0;
+
+
+        Tile t = null;
+        Tile from = getTile(x0, y0);
+        Tile to = getTile(x1, y1);
+        tiles.add(from);
+        boolean losBlocked = false;
+        while ((x != x1) || (y != y1)) {
+            boolean blocked = losBlocked;
+
+            y += d;
+            t = getTile(x, y);
+            if (t != null) {
+                tiles.add(t);
+                t.blocked = losBlocked;
+                blocked = (blocked || t.blockLos(from, to));
+            }
+
+            x += d;
+            t = getTile(x, y);
+            if (t != null) {
+                tiles.add(t);
+                t.blocked = losBlocked;
+                blocked = (blocked && t.blockLos(from, to));
+            }
+
+            y += d;
+            t = getTile(x, y);
+            if (t != null) {
+                tiles.add(t);
+                t.blocked = (losBlocked || blocked);
+                losBlocked = (t.blocked || t.blockLos(from, to));
+            }
+        }
+
+        return tiles.get(tiles.size() - 1).blocked;
+    }
+
+    private boolean diagonalLineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    {
+        int dy = ( (y1 > y0) ? 1 : -1);
+        int dx = ( (x1 > x0) ? 1 : -1);
+        boolean sig = !(((dx < 0) && (dy >= 0)) || ((dx >= 0) && (dy < 0)));
+
+        int x = x0;
+        int y = y0;
+
+        Tile t = null;
+        Tile from = getTile(x0, y0);
+        Tile to = getTile(x1, y1);
+        tiles.add(from);
+        boolean losBlocked = false;
+        while ((x != x1) || (y != y1)) {
+            boolean blocked = losBlocked;
+
+            x += dx;
+            t = getTile(x, y);
+            if (t != null) {
+                tiles.add(t);
+                t.blocked = losBlocked;
+                blocked = (blocked || t.blockLos(from, to));
+            }
+
+            y += dy;
+            if (!sig)
+                x -= dx;
+            t = getTile(x, y);
+            if (t != null) {
+                tiles.add(t);
+                t.blocked = losBlocked;
+                blocked = (blocked && t.blockLos(from, to));
+            }
+
+            x += dx;
+            t = getTile(x, y);
+            if (t != null) {
+                tiles.add(t);
+                t.blocked = (losBlocked || blocked);
+                losBlocked = (t.blocked || t.blockLos(from, to));
+            }
+        }
+
+        return tiles.get(tiles.size() - 1).blocked;
     }
 }

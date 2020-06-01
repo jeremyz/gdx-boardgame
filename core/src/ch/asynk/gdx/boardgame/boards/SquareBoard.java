@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
+import ch.asynk.gdx.boardgame.utils.Collection;
 
 public class SquareBoard implements Board
 {
@@ -101,5 +102,11 @@ public class SquareBoard implements Board
                 return (dx > dy ? dx : dy);
         }
         return -1;
+    }
+
+    @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    {
+        System.err.println("NOT implemented yet.");
+        return false;
     }
 }

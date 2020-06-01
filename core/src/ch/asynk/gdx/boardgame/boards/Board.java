@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileKeyGenerator;
+import ch.asynk.gdx.boardgame.utils.Collection;
 
 public interface Board extends TileKeyGenerator
 {
@@ -18,6 +19,8 @@ public interface Board extends TileKeyGenerator
 
     public Tile[] getAdjacents();
     public void buildAdjacents(int x, int y);
+
+    public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles);
 
     enum Geometry
     {

@@ -14,6 +14,7 @@ public class Tile implements Drawable
     public int y;
     public float cx;
     public float cy;
+    public boolean blocked;
     private Overlays overlays;
 
     public Tile(int x, int y, float cx, float cy)
@@ -22,9 +23,15 @@ public class Tile implements Drawable
         this.y = y;
         this.cx = cx;
         this.cy = cy;
+        this.blocked = false;
         if (defaultOverlay != null) {
             setOverlay(defaultOverlay);
         }
+    }
+
+    public boolean blockLos(final Tile from, final Tile to)
+    {
+        return false;
     }
 
     public boolean overlaysEnabled()
