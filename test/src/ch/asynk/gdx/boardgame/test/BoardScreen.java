@@ -122,8 +122,10 @@ public class BoardScreen extends AbstractScreen
         private void clearAdjacents()
         {
             for (Tile tile : board.getAdjacents()) {
-                if (tile != null)
+                if (tile != null) {
+                    tilesToDraw.remove(tile);
                     tile.enableOverlay(12, false);
+                }
             }
         }
 
@@ -135,11 +137,6 @@ public class BoardScreen extends AbstractScreen
                 if (tile != null) {
                     tilesToDraw.add(tile);
                     tile.enableOverlay(12, true);
-                }
-            }
-            for (Tile tile : tilesToDraw) {
-                if (!tile.overlaysEnabled()) {
-                    tilesToDraw.remove(tile);
                 }
             }
         }
