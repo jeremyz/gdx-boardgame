@@ -18,34 +18,42 @@ public class SquareBoard implements Board
     private static final int [] angles = {0, -1, 90, -1, 180, -1, 270, -1, 90};
 
     private final Tile[] adjacents;
+    private final TileProvider tileProvider;
 
-    public SquareBoard(int cols, int rows, float side, float x0, float y0)
+    public SquareBoard(int cols, int rows, float side, float x0, float y0, TileProvider tileProvider)
     {
         this.cols = cols;
         this.rows = rows;
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
+        this.tileProvider = tileProvider;
 
         this.adjacents = new Tile[8];
     }
 
     @Override public int size() { return cols * rows; }
 
+    @Override public Tile getTile(int x, int y)
+    {
+        if (!isOnMap(x, y)) return null;
+        return tileProvider.getTile(x, y);
+    }
+
     @Override public int[] getAngles() { return angles; }
 
     @Override public Tile[] getAdjacents() { return adjacents; }
 
-    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider)
+    @Override public void buildAdjacents(int x, int y)
     {
-        adjacents[0] = tileProvider.getTile(x + 1, y);
-        adjacents[1] = tileProvider.getTile(x + 1, y + 1);
-        adjacents[2] = tileProvider.getTile(x    , y + 1);
-        adjacents[3] = tileProvider.getTile(x - 1, y + 1);
-        adjacents[4] = tileProvider.getTile(x - 1, y);
-        adjacents[5] = tileProvider.getTile(x - 1, y - 1);
-        adjacents[6] = tileProvider.getTile(x    , y - 1);
-        adjacents[7] = tileProvider.getTile(x + 1, y - 1);
+        adjacents[0] = getTile(x + 1, y);
+        adjacents[1] = getTile(x + 1, y + 1);
+        adjacents[2] = getTile(x    , y + 1);
+        adjacents[3] = getTile(x - 1, y + 1);
+        adjacents[4] = getTile(x - 1, y);
+        adjacents[5] = getTile(x - 1, y - 1);
+        adjacents[6] = getTile(x    , y - 1);
+        adjacents[7] = getTile(x + 1, y - 1);
     }
 
     @Override public int genKey(int x, int y)

@@ -40,7 +40,7 @@ public class AnimationsScreen extends AbstractScreen
         super(app, "");
 
         this.map = app.assets.getTexture(app.assets.MAP_00);
-        this.board = BoardFactory.getBoard(0, 0, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
+        this.board = BoardFactory.getBoard(0, 0, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL, null);
         this.camera = this.cam = new Camera(10, map.getWidth(), map.getHeight(), 1.0f, 0.3f, false);
 
         Piece.angleCorrection = 90;

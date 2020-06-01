@@ -46,8 +46,9 @@ public class HexBoard implements Board
     private static final int [] hAngles = { -1, 30, 90, 150,  -1, 210, 270, 330, 30};
 
     private final Tile[] adjacents;
+    private final TileProvider tileProvider;
 
-    public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
+    public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation, TileProvider tileProvider)
     {
         this.cols = cols;
         this.rows = rows;
@@ -55,6 +56,7 @@ public class HexBoard implements Board
         this.x0 = x0;
         this.y0 = y0;
         this.orientation = boardOrientation;
+        this.tileProvider = tileProvider;
 
         this.w  = side * 1.73205f;
         this.dw = w / 2.0f;
@@ -80,6 +82,12 @@ public class HexBoard implements Board
         }
     }
 
+    @Override public Tile getTile(int x, int y)
+    {
+        if (!isOnMap(x, y)) return null;
+        return tileProvider.getTile(x, y);
+    }
+
     @Override public int[] getAngles()
     {
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
@@ -91,14 +99,14 @@ public class HexBoard implements Board
 
     @Override public Tile[] getAdjacents() { return adjacents; }
 
-    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider)
+    @Override public void buildAdjacents(int x, int y)
     {
-        adjacents[0] = tileProvider.getTile(x + 1, y);
-        adjacents[1] = tileProvider.getTile(x + 1, y + 1);
-        adjacents[2] = tileProvider.getTile(x    , y + 1);
-        adjacents[3] = tileProvider.getTile(x - 1, y);
-        adjacents[4] = tileProvider.getTile(x - 1, y - 1);
-        adjacents[5] = tileProvider.getTile(x    , y - 1);
+        adjacents[0] = getTile(x + 1, y);
+        adjacents[1] = getTile(x + 1, y + 1);
+        adjacents[2] = getTile(x    , y + 1);
+        adjacents[3] = getTile(x - 1, y);
+        adjacents[4] = getTile(x - 1, y - 1);
+        adjacents[5] = getTile(x    , y - 1);
     }
 
     @Override public int genKey(int x, int y)

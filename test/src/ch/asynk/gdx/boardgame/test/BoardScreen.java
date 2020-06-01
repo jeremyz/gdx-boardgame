@@ -130,7 +130,7 @@ public class BoardScreen extends AbstractScreen
         private void handleAdjacents()
         {
             clearAdjacents();
-            board.buildAdjacents((int)v.x, (int)v.y, this::getTile);
+            board.buildAdjacents((int)v.x, (int)v.y);
             for (Tile tile : board.getAdjacents()) {
                 if (tile != null) {
                     tilesToDraw.add(tile);
@@ -146,7 +146,6 @@ public class BoardScreen extends AbstractScreen
 
         private Tile getTile(int x, int y)
         {
-            if (!board.isOnMap(x, y)) return null;
             return tileStorage.getTile(x, y, board::genKey, this::buildTile);
         }
 
@@ -165,7 +164,7 @@ public class BoardScreen extends AbstractScreen
             dy = 0;
             w = map.getWidth();
             h = map.getHeight();
-            board = BoardFactory.getBoard(10, 9, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL);
+            board = BoardFactory.getBoard(10, 9, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL, this::getTile);
             tileStorage = new ArrayTileStorage(board.size());
         }
 
@@ -177,7 +176,7 @@ public class BoardScreen extends AbstractScreen
             dy = - dx;
             w = map.getHeight();
             h = map.getWidth();
-            board = BoardFactory.getBoard(9, 10, BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL);
+            board = BoardFactory.getBoard(9, 10, BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL, this::getTile);
             tileStorage = new ArrayTileStorage(board.size());
         }
 
@@ -189,7 +188,7 @@ public class BoardScreen extends AbstractScreen
             dy = 0;
             w = map.getWidth();
             h = map.getHeight();
-            board = BoardFactory.getBoard(8, 8, BoardFactory.BoardType.SQUARE, 83, 5, 5);
+            board = BoardFactory.getBoard(8, 8, BoardFactory.BoardType.SQUARE, 83, 5, 5, this::getTile);
             tileStorage = new ArrayTileStorage(board.size());
         }
 
@@ -201,7 +200,7 @@ public class BoardScreen extends AbstractScreen
             dy = 0;
             w = map.getWidth();
             h = map.getHeight();
-            board = BoardFactory.getBoard(21, 8, BoardFactory.BoardType.TRIANGLE, 150, 109, 53, BoardFactory.BoardOrientation.HORIZONTAL);
+            board = BoardFactory.getBoard(21, 8, BoardFactory.BoardType.TRIANGLE, 150, 109, 53, BoardFactory.BoardOrientation.HORIZONTAL, this::getTile);
             tileStorage = new ArrayTileStorage(board.size());
         }
 
@@ -213,7 +212,7 @@ public class BoardScreen extends AbstractScreen
             dy = - dx;
             w = map.getHeight();
             h = map.getWidth();
-            board = BoardFactory.getBoard(8, 21, BoardFactory.BoardType.TRIANGLE, 150, 16, 110, BoardFactory.BoardOrientation.VERTICAL);
+            board = BoardFactory.getBoard(8, 21, BoardFactory.BoardType.TRIANGLE, 150, 16, 110, BoardFactory.BoardOrientation.VERTICAL, this::getTile);
             tileStorage = new ArrayTileStorage(board.size());
         }
     }

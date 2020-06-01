@@ -26,8 +26,9 @@ public class TriangleBoard implements Board
     private static final int [] hAngles = { -1, 30, 90, 150,  -1, 210, 270, 330, 30};
 
     private final Tile[] adjacents;
+    private final TileProvider tileProvider;
 
-    public TriangleBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation)
+    public TriangleBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation, TileProvider tileProvider)
     {
         this.cols = cols;
         this.rows = rows;
@@ -35,6 +36,7 @@ public class TriangleBoard implements Board
         this.x0 = x0;
         this.y0 = y0;
         this.orientation = boardOrientation;
+        this.tileProvider = tileProvider;
 
         this.d = side / 2f;
         this.h = side * 0.866f;
@@ -47,6 +49,12 @@ public class TriangleBoard implements Board
 
     @Override public int size() { return cols * rows; }
 
+    @Override public Tile getTile(int x, int y)
+    {
+        if (!isOnMap(x, y)) return null;
+        return tileProvider.getTile(x, y);
+    }
+
     @Override public int[] getAngles()
     {
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
@@ -58,7 +66,7 @@ public class TriangleBoard implements Board
 
     @Override public Tile[] getAdjacents() { return adjacents; }
 
-    @Override public void buildAdjacents(int x, int y, TileProvider tileProvider)
+    @Override public void buildAdjacents(int x, int y)
     {
         // FIXME
     }
