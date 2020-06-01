@@ -10,14 +10,18 @@ public class Tile implements Drawable
 {
     public static TextureAtlas defaultOverlay = null;
 
-    public float x;
-    public float y;
+    public int x;
+    public int y;
+    public float cx;
+    public float cy;
     private Overlays overlays;
 
-    public Tile(float x, float y)
+    public Tile(int x, int y, float cx, float cy)
     {
         this.x = x;
         this.y = y;
+        this.cx = cx;
+        this.cy = cy;
         if (defaultOverlay != null) {
             setOverlay(defaultOverlay);
         }
@@ -34,7 +38,7 @@ public class Tile implements Drawable
     public void setOverlay(TextureAtlas textureAtlas)
     {
             this.overlays = new Overlays(textureAtlas);
-            this.overlays.centerOn(x, y);
+            this.overlays.centerOn(cx, cy);
     }
 
     public void enableOverlay(int i, boolean enable)
@@ -54,7 +58,7 @@ public class Tile implements Drawable
 
     @Override public String toString()
     {
-        return "[" + x + ", " + y + "]";
+        return "[" + x + ", " + y + "] => [" + cx + "," + cy + "]";
     }
 
     @Override public void draw(Batch batch)

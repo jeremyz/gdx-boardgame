@@ -150,7 +150,7 @@ public class BoardScreen extends AbstractScreen
         {
             final Vector2 v = new Vector2();
             board.centerOf(x, y, v);
-            return new Tile(v.x, v.y);
+            return new Tile(x, y, v.x, v.y);
         }
 
         public void setHEX_V()

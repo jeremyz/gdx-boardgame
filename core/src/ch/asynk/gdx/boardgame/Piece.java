@@ -36,7 +36,7 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
 
     public void getPosOn(Tile tile, Orientation orientation, Vector3 v)
     {
-        v.set((tile.x - (getWidth() / 2f)), (tile.y - (getHeight() / 2f)), orientation.r());
+        v.set((tile.cx - (getWidth() / 2f)), (tile.cy - (getHeight() / 2f)), orientation.r());
     }
 
     public void setPosition(float x, float y, float r)
@@ -55,8 +55,8 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
     public boolean isOn(Tile tile)
     {
         return (
-                (Math.abs(getX() - (tile.x - (getWidth() / 2f))) < 3) &&
-                (Math.abs(getY() - (tile.y - (getHeight() / 2f))) < 3)
+                (Math.abs(getX() - (tile.cx - (getWidth() / 2f))) < 3) &&
+                (Math.abs(getY() - (tile.cy - (getHeight() / 2f))) < 3)
                 );
     }
 

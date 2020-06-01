@@ -102,6 +102,6 @@ public enum Orientation
 
     public static Orientation fromTiles(Tile from, Tile to)
     {
-        return fromR(MathUtils.atan2((to.y - from.y), (to.x - from.x)) * MathUtils.radiansToDegrees);
+        return fromR(MathUtils.atan2((to.cy - from.cy), (to.cx - from.cx)) * MathUtils.radiansToDegrees);
     }
 }

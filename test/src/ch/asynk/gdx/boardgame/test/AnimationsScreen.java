@@ -127,31 +127,27 @@ public class AnimationsScreen extends AbstractScreen
     private Path buildPath(final GdxBoardTest app)
     {
         Tile.defaultOverlay = app.assets.getAtlas(app.assets.HEX_OVERLAYS);
-        Vector2 v = new Vector2();
         Path path = Path.obtain();
         path.ensureCapacity(10);
-        board.centerOf(7, 4, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(6, 4, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(5, 3, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(5, 2, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(6, 2, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(7, 2, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(8, 3, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(9, 4, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(8, 4, v);
-        path.add(new Tile(v.x, v.y));
-        board.centerOf(7, 4, v);
-        path.add(new Tile(v.x, v.y));
+        addTile(path, 7, 4);
+        addTile(path, 6, 4);
+        addTile(path, 5, 3);
+        addTile(path, 5, 2);
+        addTile(path, 6, 2);
+        addTile(path, 7, 2);
+        addTile(path, 8, 3);
+        addTile(path, 9, 4);
+        addTile(path, 8, 4);
+        addTile(path, 7, 4);
         path.setFinalOrientation(Orientation.NE);
         return path;
+    }
+
+    private void addTile(Path path, int x, int y)
+    {
+        final Vector2 v = new Vector2();
+        board.centerOf(x, y, v);
+        path.add(new Tile(x, y, v.x, v.y));
     }
 
     private AnimationBatch getFireAnimationBatch()
