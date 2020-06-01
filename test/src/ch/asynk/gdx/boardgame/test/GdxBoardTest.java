@@ -16,6 +16,7 @@ public class GdxBoardTest extends Game
         UI,
         ANIMATIONS,
         BOARD,
+        HEX,
         EXIT
     }
     private State state;
@@ -93,6 +94,11 @@ public class GdxBoardTest extends Game
     public void switchToBoard()
     {
         switchTo(new BoardScreen(this), State.BOARD);
+    }
+
+    public void switchToHex()
+    {
+        switchTo(new HexScreen(this), State.HEX);
     }
 
     public void switchToExit()
