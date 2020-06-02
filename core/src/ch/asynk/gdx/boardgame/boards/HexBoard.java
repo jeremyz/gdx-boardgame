@@ -72,6 +72,8 @@ public class HexBoard implements Board
         }
 
         this.adjacents = new Tile[6];
+        for (int i = 0; i < 6; i++)
+            this.adjacents[i] = Tile.OffMap;
     }
 
     @Override public int size()
@@ -85,8 +87,7 @@ public class HexBoard implements Board
 
     @Override public Tile getTile(int x, int y)
     {
-        if (!isOnMap(x, y)) return null;
-        return tileProvider.getTile(x, y);
+        return tileProvider.getTile(x, y, isOnMap(x, y));
     }
 
     @Override public int[] getAngles()
@@ -350,7 +351,6 @@ public class HexBoard implements Board
         int y = y0;
 
 
-        Tile t = null;
         Tile from = getTile(x0, y0);
         Tile to = getTile(x1, y1);
         tiles.add(from);
@@ -359,8 +359,8 @@ public class HexBoard implements Board
             boolean blocked = losBlocked;
 
             y += d;
-            t = getTile(x, y);
-            if (t != null) {
+            Tile t = getTile(x, y);
+            if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
                 blocked = (blocked || t.blockLos(from, to));
@@ -368,7 +368,7 @@ public class HexBoard implements Board
 
             x += d;
             t = getTile(x, y);
-            if (t != null) {
+            if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
                 blocked = (blocked && t.blockLos(from, to));
@@ -376,7 +376,7 @@ public class HexBoard implements Board
 
             y += d;
             t = getTile(x, y);
-            if (t != null) {
+            if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = (losBlocked || blocked);
                 losBlocked = (t.blocked || t.blockLos(from, to));
@@ -395,7 +395,6 @@ public class HexBoard implements Board
         int x = x0;
         int y = y0;
 
-        Tile t = null;
         Tile from = getTile(x0, y0);
         Tile to = getTile(x1, y1);
         tiles.add(from);
@@ -404,8 +403,8 @@ public class HexBoard implements Board
             boolean blocked = losBlocked;
 
             x += dx;
-            t = getTile(x, y);
-            if (t != null) {
+            Tile t = getTile(x, y);
+            if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
                 blocked = (blocked || t.blockLos(from, to));
@@ -415,7 +414,7 @@ public class HexBoard implements Board
             if (!sig)
                 x -= dx;
             t = getTile(x, y);
-            if (t != null) {
+            if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
                 blocked = (blocked && t.blockLos(from, to));
@@ -423,7 +422,7 @@ public class HexBoard implements Board
 
             x += dx;
             t = getTile(x, y);
-            if (t != null) {
+            if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = (losBlocked || blocked);
                 losBlocked = (t.blocked || t.blockLos(from, to));

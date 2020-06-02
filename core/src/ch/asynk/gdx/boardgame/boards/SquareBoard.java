@@ -31,14 +31,15 @@ public class SquareBoard implements Board
         this.tileProvider = tileProvider;
 
         this.adjacents = new Tile[8];
+        for (int i = 0; i < 8; i++)
+            this.adjacents[i] = Tile.OffMap;
     }
 
     @Override public int size() { return cols * rows; }
 
     @Override public Tile getTile(int x, int y)
     {
-        if (!isOnMap(x, y)) return null;
-        return tileProvider.getTile(x, y);
+        return tileProvider.getTile(x, y, isOnMap(x, y));
     }
 
     @Override public int[] getAngles() { return angles; }

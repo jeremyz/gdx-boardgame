@@ -149,10 +149,9 @@ public class HexScreen extends AbstractScreen
         public boolean touch(float x, float y, boolean down)
         {
             board.toBoard(x, y, v);
-            if (!board.isOnMap((int)v.x, (int)v.y)) {
-                return false;
-            }
             Hex hex = getHex((int)v.x, (int)v.y);
+            if (!hex.isOnMap())
+                return false;
             if (down) {
                 if (!panzer.dragging && panzer.isOn(hex)) {
                     panzer.dragging = true;
@@ -223,9 +222,11 @@ public class HexScreen extends AbstractScreen
             return (Hex) board.getTile(x, y);
         }
 
-        private Tile getTile(int x, int y)
+        private Tile getTile(int x, int y, boolean isOnMap)
         {
-            return tileStorage.getTile(x, y, board::genKey, this::buildTile);
+            if (isOnMap)
+                return tileStorage.getTile(x, y, board::genKey, this::buildTile);
+            return Tile.OffMap;
         }
 
         private Tile buildTile(int x, int y)

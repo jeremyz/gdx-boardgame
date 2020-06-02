@@ -19,7 +19,7 @@ public interface TileStorage
     @FunctionalInterface
     public interface TileProvider
     {
-        public Tile getTile(int x, int y);
+        public Tile getTile(int x, int y, boolean isOffMap);
     }
 
     Tile getTile(int x, int y, int k, TileFactory tileFactory);

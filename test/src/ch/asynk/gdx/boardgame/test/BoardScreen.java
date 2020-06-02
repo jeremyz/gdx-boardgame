@@ -73,10 +73,10 @@ public class BoardScreen extends AbstractScreen
         public boolean touch(float x, float y, boolean down)
         {
             board.toBoard(x, y, v);
-            if (!board.isOnMap((int)v.x, (int)v.y))
+            Tile tile = board.getTile((int)v.x, (int)v.y);
+            if (!tile.isOnMap())
                 return false;
             if (down) {
-                Tile tile = getTile((int)v.x, (int)v.y);
                 if (!dragging && panzer.isOn(tile)) {
                     dragging = true;
                     clearAdjacents();
@@ -122,7 +122,7 @@ public class BoardScreen extends AbstractScreen
         private void clearAdjacents()
         {
             for (Tile tile : board.getAdjacents()) {
-                if (tile != null) {
+                if (tile.isOnMap()) {
                     tilesToDraw.remove(tile);
                     tile.enableOverlay(12, false);
                 }
@@ -134,16 +134,18 @@ public class BoardScreen extends AbstractScreen
             clearAdjacents();
             board.buildAdjacents((int)v.x, (int)v.y);
             for (Tile tile : board.getAdjacents()) {
-                if (tile != null) {
+                if (tile.isOnMap()) {
                     tilesToDraw.add(tile);
                     tile.enableOverlay(12, true);
                 }
             }
         }
 
-        private Tile getTile(int x, int y)
+        private Tile getTile(int x, int y, boolean isOnMap)
         {
-            return tileStorage.getTile(x, y, board::genKey, this::buildTile);
+            if (isOnMap)
+                return tileStorage.getTile(x, y, board::genKey, this::buildTile);
+            return Tile.OffMap;
         }
 
         private Tile buildTile(int x, int y)

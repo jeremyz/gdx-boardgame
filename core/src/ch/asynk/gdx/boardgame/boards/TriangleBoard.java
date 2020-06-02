@@ -46,14 +46,15 @@ public class TriangleBoard implements Board
         this.h23 = this.h * 0.66666f;
 
         this.adjacents = new Tile[3];
+        for (int i = 0; i < 3; i++)
+            this.adjacents[i] = Tile.OffMap;
     }
 
     @Override public int size() { return cols * rows; }
 
     @Override public Tile getTile(int x, int y)
     {
-        if (!isOnMap(x, y)) return null;
-        return tileProvider.getTile(x, y);
+        return tileProvider.getTile(x, y, isOnMap(x, y));
     }
 
     @Override public int[] getAngles()
