@@ -262,6 +262,8 @@ public class HexBoard implements Board
         }
     }
 
+    // http://zvold.blogspot.com/2010/01/bresenhams-line-drawing-algorithm-on_26.html
+    // http://zvold.blogspot.com/2010/02/line-of-sight-on-hexagonal-grid.html
     @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
     {
         tiles.clear();
@@ -272,8 +274,8 @@ public class HexBoard implements Board
         int dy = y1 - y0;
         int dx = ox1 - ox0;
 
-        // same sign
-        boolean sig = !(((dx < 0) && (dy >= 0)) || ((dx >= 0) && (dy < 0)));
+        // quadrant I && III
+        boolean q13 = (((dx >= 0) && (dy >= 0)) || ((dx < 0) && (dy < 0)));
 
         // is positive
         int xs = 1;
@@ -301,7 +303,7 @@ public class HexBoard implements Board
         if (dx == dy3)
             return diagonalLineOfSight(x0, y0, x1, y1, tiles);
 
-        // angle is smaller than diagonal
+        // angle is less than 45°
         boolean flat = (dx > dy3);
 
         int x = x0;
@@ -312,25 +314,31 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         tiles.add(from);
         boolean losBlocked = false;
+
         while ((x != x1) || (y != y1)) {
             if (e > 0) {
+                // quadrant I : up left
                 e -= (dy3 + dx3);
                 y += ys;
-                if (!sig)
+                if (!q13) {
                     x -= xs;
+                }
             } else {
                 e += dy3;
                 if ((e > -dx) || (!flat && (e == -dx))) {
+                    // quadrant I : up right
                     e -= dx3;
                     y += ys;
-                    if (sig)
+                    if (q13)
                         x += xs;
                 } else if (e < -dx3) {
+                    // quadrant I : down right
                     e += dx3;
                     y -= ys;
-                    if (!sig)
+                    if (!q13)
                         x += xs;
                 } else {
+                    // quadrant I : right
                     e += dy3;
                     x += xs;
                 }
@@ -358,7 +366,7 @@ public class HexBoard implements Board
         while ((x != x1) || (y != y1)) {
             boolean blocked = losBlocked;
 
-            y += d;
+            y += d; // up left
             Tile t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
@@ -366,7 +374,7 @@ public class HexBoard implements Board
                 blocked = (blocked || t.blockLos(from, to));
             }
 
-            x += d;
+            x += d; // up right
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
@@ -374,7 +382,7 @@ public class HexBoard implements Board
                 blocked = (blocked && t.blockLos(from, to));
             }
 
-            y += d;
+            y += d; // vertical
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
@@ -390,7 +398,8 @@ public class HexBoard implements Board
     {
         int dy = ( (y1 > y0) ? 1 : -1);
         int dx = ( (x1 > x0) ? 1 : -1);
-        boolean sig = !(((dx < 0) && (dy >= 0)) || ((dx >= 0) && (dy < 0)));
+        // quadrant I && III
+        boolean q13 = (((dx >= 0) && (dy >= 0)) || ((dx < 0) && (dy < 0)));
 
         int x = x0;
         int y = y0;
@@ -402,7 +411,7 @@ public class HexBoard implements Board
         while ((x != x1) || (y != y1)) {
             boolean blocked = losBlocked;
 
-            x += dx;
+            x += dx; // right
             Tile t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
@@ -410,8 +419,8 @@ public class HexBoard implements Board
                 blocked = (blocked || t.blockLos(from, to));
             }
 
-            y += dy;
-            if (!sig)
+            y += dy; // up right
+            if (!q13)
                 x -= dx;
             t = getTile(x, y);
             if (t.isOnMap()) {
@@ -420,7 +429,7 @@ public class HexBoard implements Board
                 blocked = (blocked && t.blockLos(from, to));
             }
 
-            x += dx;
+            x += dx; // diagonal
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
