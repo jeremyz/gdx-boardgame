@@ -10,23 +10,37 @@ public class Tile implements Drawable
 {
     public static TextureAtlas defaultOverlay = null;
 
+    public static final Tile OffMap = new Tile(Integer.MIN_VALUE, Integer.MIN_VALUE, 0f, 0f, false);
+
     public int x;
     public int y;
     public float cx;
     public float cy;
     public boolean blocked;
+    public boolean onMap;
     private Overlays overlays;
 
     public Tile(int x, int y, float cx, float cy)
+    {
+        this(x, y, cx, cy, true);
+    }
+
+    public Tile(int x, int y, float cx, float cy, boolean onMap)
     {
         this.x = x;
         this.y = y;
         this.cx = cx;
         this.cy = cy;
+        this.onMap = onMap;
         this.blocked = false;
         if (defaultOverlay != null) {
             setOverlay(defaultOverlay);
         }
+    }
+
+    public boolean isOnMap()
+    {
+        return onMap;
     }
 
     public boolean blockLos(final Tile from, final Tile to)
