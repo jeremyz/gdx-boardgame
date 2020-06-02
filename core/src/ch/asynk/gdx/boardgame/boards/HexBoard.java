@@ -314,7 +314,6 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         tiles.add(from);
         boolean losBlocked = false;
-
         while ((x != x1) || (y != y1)) {
             if (e > 0) {
                 // quadrant I : up left
