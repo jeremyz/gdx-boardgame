@@ -237,7 +237,6 @@ public class HexScreen extends AbstractScreen
 
         public void setHEX_V()
         {
-            System.err.println("nrstnrst");
             map = assets.getTexture(assets.MAP_00);
             r = 0;
             dx = 0;
