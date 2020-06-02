@@ -37,22 +37,43 @@ public class HexScreen extends AbstractScreen
     {
         WOODS, CITY, HILL, PLAIN;
 
-        static private int[] c = {23, 74};
-        static private int[] h = {68, 78, 79, 15, 45, 46};
-        static private int[] w = {20, 30, 51, 52, 62, 63, 26, 17};
+        static private int[] cv = {23, 74};
+        static private int[] hv = {68, 78, 79, 15, 45, 46};
+        static private int[] wv = {20, 30, 51, 52, 62, 63, 26, 17};
+        static private int[] ch = {17, 61};
+        static private int[] hh = {2, 3, 11, 45, 46, 72};
+        static private int[] wh = {24, 25, 32, 33, 49, 58, 64, 74};
+
+        static public boolean v = true;
+
         static public Terrain get(int k)
         {
-            for (int i : c) {
-                if (i == k)
-                    return CITY;
-            }
-            for (int i : h) {
-                if (i == k)
-                    return HILL;
-            }
-            for (int i : w) {
-                if (i == k)
-                    return WOODS;
+            if (v) {
+                for (int i : cv) {
+                    if (i == k)
+                        return CITY;
+                }
+                for (int i : hv) {
+                    if (i == k)
+                        return HILL;
+                }
+                for (int i : wv) {
+                    if (i == k)
+                        return WOODS;
+                }
+            } else {
+                for (int i : ch) {
+                    if (i == k)
+                        return CITY;
+                }
+                for (int i : hh) {
+                    if (i == k)
+                        return HILL;
+                }
+                for (int i : wh) {
+                    if (i == k)
+                        return WOODS;
+                }
             }
             return PLAIN;
         }
@@ -76,7 +97,7 @@ public class HexScreen extends AbstractScreen
 
         public String toString()
         {
-            return terrain.toString();
+            return terrain.toString() + super.toString();
         }
     }
 
@@ -200,8 +221,8 @@ public class HexScreen extends AbstractScreen
             }
             board.lineOfSight(h0.x, h0.y, h1.x, h1.y, tilesToDraw);
             for (Tile tile: tilesToDraw) {
-                if (tile.blocked) tile.enableOverlay(0, true);
-                else tile.enableOverlay(2, true);
+                if (tile.blocked) tile.enableOverlay(0, Orientation.N);
+                else tile.enableOverlay(2, Orientation.N);
             }
         }
 
@@ -238,6 +259,7 @@ public class HexScreen extends AbstractScreen
 
         public void setHEX_V()
         {
+            Terrain.v = true;
             map = assets.getTexture(assets.MAP_00);
             r = 0;
             dx = 0;
@@ -247,15 +269,30 @@ public class HexScreen extends AbstractScreen
             board = BoardFactory.getBoard(10, 9, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL, this::getTile);
             tileStorage = new ArrayTileStorage(board.size());
         }
+
+        public void setHEX_H()
+        {
+            Terrain.v = false;
+            map = assets.getTexture(assets.MAP_00);
+            r = 90;
+            dx = - ( map.getWidth() - map.getHeight() ) / 2;
+            dy = - dx;
+            w = map.getHeight();
+            h = map.getWidth();
+            board = BoardFactory.getBoard(9, 10, BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL, this::getTile);
+            tileStorage = new ArrayTileStorage(board.size());
+        }
     }
 
     public enum State
     {
-        HEX_V, HEX_H, SQUARE, TRI_H, TRI_V, DONE;
+        HEX_V, HEX_H, DONE;
         public State next()
         {
             switch(this) {
                 case HEX_V:
+                    return HEX_H;
+                case HEX_H:
                     return DONE;
                 default:
                     return HEX_V;
@@ -339,7 +376,8 @@ public class HexScreen extends AbstractScreen
         cam.unproject(x, y, boardTouch);
         cam.unprojectHud(x, y, hudTouch);
         if (btn.touch(hudTouch.x, hudTouch.y) != null) {
-            setState(state.next());
+            if (down)
+                setState(state.next());
         } else {
             board.touch(boardTouch.x, boardTouch.y, down);
         }
@@ -355,6 +393,7 @@ public class HexScreen extends AbstractScreen
     {
         switch (state) {
             case HEX_V: board.setHEX_V(); break;
+            case HEX_H: board.setHEX_H(); break;
             case DONE:
                 this.app.switchToMenu();
                 return;
