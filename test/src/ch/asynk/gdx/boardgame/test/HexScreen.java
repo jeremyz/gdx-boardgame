@@ -1,5 +1,7 @@
 package ch.asynk.gdx.boardgame.test;
 
+import com.badlogic.gdx.math.MathUtils;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,7 +37,7 @@ public class HexScreen extends AbstractScreen
 
     private enum Terrain
     {
-        WOODS, CITY, HILL, PLAIN;
+        WOODS(0,1), CITY(0,2), HILL(2,0), PLAIN(0,0);
 
         static private int[] cv = {23, 74};
         static private int[] hv = {68, 78, 79, 15, 45, 46};
@@ -45,6 +47,13 @@ public class HexScreen extends AbstractScreen
         static private int[] wh = {24, 25, 32, 33, 49, 58, 64, 74};
 
         static public boolean v = true;
+
+        public int elevation;
+        public int height;
+        private Terrain(int elevation, int height) {
+            this.elevation = elevation;
+            this.height = height;
+        }
 
         static public Terrain get(int k)
         {
@@ -89,10 +98,19 @@ public class HexScreen extends AbstractScreen
             this.terrain = terrain;
         }
 
-        @Override public boolean blockLos(final Tile from, final Tile to)
+        @Override public boolean blockLos(final Tile from, final Tile to, float d, float dt)
         {
-            if (terrain != Terrain.PLAIN) return true;
-            return false;
+            int h = terrain.elevation + terrain.height;
+            if (h == 0) return false;
+
+            int e = ((Hex)from).terrain.elevation;
+            if (e > h) {
+                if (((Hex)to).terrain.elevation > h) return false;
+                return (h * dt / (e - h)) >= (d - dt);
+            } else {
+                h -= e;
+                return (h * d / dt) >= (((Hex)to).terrain.elevation - e);
+            }
         }
 
         public String toString()

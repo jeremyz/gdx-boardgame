@@ -43,7 +43,7 @@ public class Tile implements Drawable
         return onMap;
     }
 
-    public boolean blockLos(final Tile from, final Tile to)
+    public boolean blockLos(final Tile from, final Tile to, float d, float dt)
     {
         return false;
     }
