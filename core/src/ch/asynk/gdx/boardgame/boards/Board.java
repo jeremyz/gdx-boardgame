@@ -30,6 +30,11 @@ public interface Board extends TileKeyGenerator
     }
     public float distance(int x0, int y0, int x1, int y1, Geometry geometry);
 
+    default public float distance(int x0, int y0, int x1, int y1)
+    {
+        return distance(x0, y0, x1, y1, Geometry.EUCLIDEAN);
+    }
+
     default public void dropInPlace(Piece piece, Vector2 v)
     {
         toBoard(piece.getCX(), piece.getCY(), v);
