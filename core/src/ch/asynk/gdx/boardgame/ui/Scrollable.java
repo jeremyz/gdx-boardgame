@@ -67,14 +67,13 @@ public class Scrollable extends Element
         float tx = 0;
         float ty = 0;
         if (vScroll) {
-            if (dy > 0 && child.rect.y < innerRect.y) {
-                ty = Math.min(dy, innerRect.y - child.rect.y);
-            }
-            else if (dy < 0) {
+            if (dy < 0 && child.rect.y < innerRect.y) {
+                ty = Math.min(-dy, innerRect.y - child.rect.y);
+            } else if (dy > 0) {
                 float cly = innerRect.y + innerRect.height;
                 float chy = child.rect.y + child.rect.height;
                 if (chy > cly)
-                    ty = Math.max(dy, cly - chy);
+                    ty = -Math.min(dy, chy - cly);
             }
         }
         if (hScroll) {

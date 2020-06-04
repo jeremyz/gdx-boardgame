@@ -211,7 +211,7 @@ public class UiScreen extends AbstractScreen
     {
         hudTouch.set(dragPos.x, dragPos.y, 0);
         camera.unproject(hudTouch);
-        root.drag(hudTouch.x, hudTouch.y, -dx, dy);
+        root.drag(hudTouch.x, hudTouch.y, dx, dy);
     }
 }
 
