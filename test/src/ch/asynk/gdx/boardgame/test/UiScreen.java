@@ -204,7 +204,7 @@ public class UiScreen extends AbstractScreen
     {
         hudTouch.set(x, y, 0);
         camera.unproject(hudTouch);
-        if (root.touch(hudTouch.x, hudTouch.y) == next)
+        if (down && root.touch(hudTouch.x, hudTouch.y) == next)
             setState(state.next());
     }
     @Override protected void onDragged(int dx, int dy)
