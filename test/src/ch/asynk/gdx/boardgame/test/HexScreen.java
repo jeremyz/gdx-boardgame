@@ -168,13 +168,13 @@ public class HexScreen extends AbstractScreen
 
         public void reset()
         {
+            board.centerOf(0, 0, v);
             tilesToDraw.clear();
             v.set(0, 0);
             h0 = getHex(0, 0);
-            setUnitOn(panzer, 0, 0, Orientation.DEFAULT);
+            setUnitOn(panzer, h0.x, h0.y, Orientation.DEFAULT);
             h1 = getHex(8, 5);
-            setUnitOn(engineer, 8, 5, Orientation.SW);
-            board.centerOf(0, 0, v);
+            setUnitOn(engineer, h1.x, h1.y, Orientation.SW);
             updateLine();
         }
 
@@ -201,17 +201,9 @@ public class HexScreen extends AbstractScreen
                 }
             } else {
                 if (panzer.dragging) {
-                    touchInfo(hex);
-                    board.dropInPlace(panzer, v);
-                    panzer.dragging = false;
-                    h0 = hex;
-                    updateLine();
+                    updateUnit(hex, panzer);
                 } else if (engineer.dragging) {
-                    touchInfo(hex);
-                    engineer.dropOnBoard(board, v);
-                    engineer.dragging = false;
-                    h1 = hex;
-                    updateLine();
+                    updateUnit(hex, engineer);
                 }
             }
             return true;
@@ -220,6 +212,18 @@ public class HexScreen extends AbstractScreen
         private void touchInfo(Hex hex)
         {
             GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => %s[%d]", (int)v.x, (int)v.y, hex, board.genKey((int)v.x, (int)v.y)));
+        }
+
+        private void updateUnit(Hex hex, Unit u)
+        {
+            touchInfo(hex);
+            u.centerOn(hex.cx, hex.cy);
+            u.dragging = false;
+            if (u == panzer)
+                h0 = hex;
+            else
+                h1 = hex;
+            updateLine();
         }
 
         private void updateLine()
@@ -237,7 +241,7 @@ public class HexScreen extends AbstractScreen
                 tile.enableOverlay(0, false);
                 tile.enableOverlay(2, false);
             }
-            board.lineOfSight(h0.x, h0.y, h1.x, h1.y, tilesToDraw);
+            board.lineOfSight(h0, h1, tilesToDraw);
             for (Tile tile: tilesToDraw) {
                 if (tile.blocked) tile.enableOverlay(0, Orientation.N);
                 else tile.enableOverlay(2, Orientation.N);
