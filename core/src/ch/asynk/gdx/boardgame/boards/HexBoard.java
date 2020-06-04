@@ -363,16 +363,17 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         float d = distance(x0, y0, x1, y1);
         tiles.add(from);
+        int blocked = 0;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
-            boolean blocked = losBlocked;
 
             y += dt; // up left
             Tile t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
-                blocked = (blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
+                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
+                    blocked |= 0x01;
             }
 
             x += dt; // up right
@@ -380,14 +381,15 @@ public class HexBoard implements Board
             if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
-                blocked = (blocked && t.blockLos(from, to, d, distance(x0, y0, x, y)));
+                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
+                    blocked |= 0x02;
             }
 
             y += dt; // vertical
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
-                t.blocked = (losBlocked || blocked);
+                t.blocked = (losBlocked || blocked == 0x03);
                 losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
             }
         }
@@ -409,16 +411,17 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         float d = distance(x0, y0, x1, y1);
         tiles.add(from);
+        int blocked = 0;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
-            boolean blocked = losBlocked;
 
             x += dx; // right
             Tile t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
-                blocked = (blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
+                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
+                    blocked |= 0x01;
             }
 
             y += dy; // up right
@@ -428,14 +431,15 @@ public class HexBoard implements Board
             if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
-                blocked = (blocked && t.blockLos(from, to, d, distance(x0, y0, x, y)));
+                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
+                    blocked |= 0x02;
             }
 
             x += dx; // diagonal
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
-                t.blocked = (losBlocked || blocked);
+                t.blocked = (losBlocked || blocked == 0x03);
                 losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
             }
         }
