@@ -314,6 +314,7 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         float d = distance(x0, y0, x1, y1);
         tiles.add(from);
+        from.blocked = false;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
             if (e > 0) {
@@ -363,6 +364,7 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         float d = distance(x0, y0, x1, y1);
         tiles.add(from);
+        from.blocked = false;
         int blocked = 0;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
@@ -411,6 +413,7 @@ public class HexBoard implements Board
         Tile to = getTile(x1, y1);
         float d = distance(x0, y0, x1, y1);
         tiles.add(from);
+        from.blocked = false;
         int blocked = 0;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
