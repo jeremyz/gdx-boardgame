@@ -22,6 +22,11 @@ public interface Board extends TileKeyGenerator
 
     public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles);
 
+    default public boolean lineOfSight(Tile from, Tile  to, Collection<Tile> tiles)
+    {
+        return lineOfSight(from.x, from.y, to.x, to.y, tiles);
+    }
+
     enum Geometry
     {
         EUCLIDEAN,
