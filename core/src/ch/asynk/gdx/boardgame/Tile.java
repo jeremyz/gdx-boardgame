@@ -67,6 +67,11 @@ public class Tile implements Drawable
             this.overlays.centerOn(cx, cy);
     }
 
+    public void disableOverlays()
+    {
+        overlays.disableAll();
+    }
+
     public void enableOverlay(int i, boolean enable)
     {
         if (overlays != null) {
