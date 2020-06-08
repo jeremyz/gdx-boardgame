@@ -2,6 +2,7 @@ package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
 import ch.asynk.gdx.boardgame.utils.Collection;
@@ -109,5 +110,12 @@ public class SquareBoard implements Board
     {
         System.err.println("NOT implemented yet.");
         return false;
+    }
+
+    @Override public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles)
+    {
+        System.err.println("NOT implemented yet.");
+        tiles.clear();
+        return tiles.size();
     }
 }

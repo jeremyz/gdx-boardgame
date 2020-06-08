@@ -2,9 +2,12 @@ package ch.asynk.gdx.boardgame.boards;
 
 import com.badlogic.gdx.math.Vector2;
 
+import ch.asynk.gdx.boardgame.Orientation;
+import ch.asynk.gdx.boardgame.Piece;
 import ch.asynk.gdx.boardgame.Tile;
 import ch.asynk.gdx.boardgame.tilestorages.TileStorage.TileProvider;
 import ch.asynk.gdx.boardgame.utils.Collection;
+import ch.asynk.gdx.boardgame.utils.IterableStack;
 
 public class HexBoard implements Board
 {
@@ -20,6 +23,10 @@ public class HexBoard implements Board
     private final float dh;     // hex top : s/2
     private final float h;      // square height : s + dh
     private final float slope;  // dh / dw
+
+    private int aOffset;        // to fix Orientation computation from adjacents
+    private int searchCount;    // to differentiate move computations
+    private IterableStack<Tile> stack;
 
     private final int tl;       // tiles in 2 consecutive lines
 
@@ -65,9 +72,14 @@ public class HexBoard implements Board
         this.h  = side + dh;
         this.slope = dh / dw;
 
+        this.searchCount = 0;
+        this.stack = new IterableStack<Tile>(10);
+
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            this.aOffset = 0;
             this.tl = (2 * cols - 1);
         } else {
+            this.aOffset = -60;
             this.tl = (2 * rows - 1);
         }
 
@@ -103,6 +115,7 @@ public class HexBoard implements Board
 
     @Override public void buildAdjacents(int x, int y)
     {
+        // VERTICAL starts with E 0°, HORIZONTAL starts with SE -30°
         adjacents[0] = getTile(x + 1, y);
         adjacents[1] = getTile(x + 1, y + 1);
         adjacents[2] = getTile(x    , y + 1);
@@ -448,5 +461,53 @@ public class HexBoard implements Board
         }
 
         return tiles.get(tiles.size() - 1).blocked;
+    }
+
+    public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles)
+    {
+        tiles.clear();
+        searchCount += 1;
+
+        from.acc = piece.getAvailableMP();
+        from.parent = null;
+        from.searchCount = searchCount;
+
+        if (from.acc <= 0 || !from.isOnMap())
+            return tiles.size();
+
+        stack.push(from);
+
+        while(!stack.isEmpty()) {
+            final Tile src = stack.pop();
+
+            if (src.acc <= 0) continue;
+
+            buildAdjacents(src.x, src.y);
+            for (int i = 0, j = 0; i < 6; i++, j++) {
+                final Tile dst = adjacents[i];
+                if (!dst.isOnMap()) continue;
+
+                if (getAngles()[j] == -1) j++;
+                int cost = piece.moveCost(src, dst, Orientation.fromR(getAngles()[j] + aOffset));
+                if (cost == Integer.MAX_VALUE) continue;    // impracticable
+
+                int r = src.acc - cost;
+                if (r < 0 && src != from) continue;         // allow at least 1 tile move
+
+                if (dst.searchCount != searchCount) {
+                    dst.searchCount = searchCount;
+                    dst.acc = r;
+                    dst.parent = src;
+                    stack.push(dst);
+                    tiles.add(dst);
+                } else if (r > dst.acc) {
+                    dst.acc = r;
+                    dst.parent = src;
+                    stack.push(dst);
+                }
+            }
+        }
+
+        return tiles.size();
     }
 }

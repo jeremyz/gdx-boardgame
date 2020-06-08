@@ -123,4 +123,15 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
         float h = getHeight();
         shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, sprite.getScaleX(), sprite.getScaleY(), getRotation());
     }
+
+    public int getAvailableMP()
+    {
+        return 0;
+    }
+
+    public int moveCost(Tile from, Tile to, Orientation orientation)
+    {
+        // Integer.MAX_VALUE means impracticable
+        return Integer.MAX_VALUE;
+    }
 }

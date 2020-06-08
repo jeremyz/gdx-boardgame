@@ -18,6 +18,11 @@ public class Tile implements Drawable
     public float cy;
     public boolean blocked;
     public boolean onMap;
+
+    public Tile parent;
+    public int acc;
+    public int searchCount;
+
     private Overlays overlays;
 
     public Tile(int x, int y, float cx, float cy)

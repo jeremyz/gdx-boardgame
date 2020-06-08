@@ -20,6 +20,8 @@ public interface Board extends TileKeyGenerator
     public Tile[] getAdjacents();
     public void buildAdjacents(int x, int y);
 
+    public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles);
+
     public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles);
 
     default public boolean lineOfSight(Tile from, Tile  to, Collection<Tile> tiles)
