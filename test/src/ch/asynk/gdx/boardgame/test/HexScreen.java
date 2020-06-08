@@ -223,8 +223,8 @@ public class HexScreen extends AbstractScreen
 {
     private class MyBoard
     {
+        private final IterableSet<Tile> losTiles;
         private final IterableSet<Tile> moveTiles;
-        private final IterableSet<Tile> tilesToDraw;
         private final Vector2 v;
         private final Vector3 v3;
         private final Assets assets;
@@ -251,8 +251,8 @@ public class HexScreen extends AbstractScreen
             this.panzer = new Unit(assets.getTexture(assets.PANZER), true);
             this.engineer = new Unit(assets.getTexture(assets.ENGINEER), false);
             this.line = new Sprite(assets.getTexture(assets.LINE));
+            this.losTiles = new IterableSet<Tile>(15);
             this.moveTiles = new IterableSet<Tile>(20);
-            this.tilesToDraw = new IterableSet<Tile>(15);
             Tile.defaultOverlay = assets.getAtlas(app.assets.HEX_OVERLAYS);
         }
 
@@ -262,8 +262,8 @@ public class HexScreen extends AbstractScreen
         public void draw(SpriteBatch batch)
         {
             batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
+            for (Tile tile: losTiles) tile.draw(batch);
             for (Tile tile: moveTiles) tile.draw(batch);
-            for (Tile tile: tilesToDraw) tile.draw(batch);
             panzer.draw(batch);
             engineer.draw(batch);
             line.draw(batch);
@@ -272,14 +272,14 @@ public class HexScreen extends AbstractScreen
         public void reset()
         {
             board.centerOf(0, 0, v);
+            losTiles.clear();
             moveTiles.clear();
-            tilesToDraw.clear();
             v.set(0, 0);
             h0 = getHex(0, 0);
             setUnitOn(panzer, h0.x, h0.y, Orientation.DEFAULT);
             h1 = getHex(8, 5);
             setUnitOn(engineer, h1.x, h1.y, Orientation.SW);
-            updateLine();
+            updateUnit(h0, panzer);
         }
 
         private void setUnitOn(Unit unit, int x, int y, Orientation o)
@@ -327,13 +327,11 @@ public class HexScreen extends AbstractScreen
                 h0 = hex;
             else
                 h1 = hex;
-            updateLine();
-            for (Tile tile: moveTiles) tile.enableOverlay(3, false);
+            for (Tile tile: losTiles) tile.disableOverlays();
+            for (Tile tile: moveTiles) tile.disableOverlays();
             board.possibleMoves(u, hex, moveTiles);
-            for (Tile tile: moveTiles) {
-                tile.enableOverlay(3, true);
-                tilesToDraw.remove(tile);
-            }
+            for (Tile tile: moveTiles) tile.enableOverlay(3, true);
+            updateLine();
         }
 
         private void updateLine()
@@ -347,14 +345,11 @@ public class HexScreen extends AbstractScreen
             line.setPosition(x0, y0);
             line.setSize(d, line.getHeight());
             line.setRotation((float) Math.toDegrees(Math.atan2(dy, dx)));
-            for (Tile tile: tilesToDraw) {
-                tile.enableOverlay(0, false);
-                tile.enableOverlay(2, false);
-            }
-            board.lineOfSight(h0, h1, tilesToDraw);
-            for (Tile tile: tilesToDraw) {
+            board.lineOfSight(h0, h1, losTiles);
+            for (Tile tile: losTiles) {
                 if (tile.blocked) tile.enableOverlay(0, Orientation.N);
                 else tile.enableOverlay(2, Orientation.N);
+                moveTiles.remove(tile);
             }
         }
 
