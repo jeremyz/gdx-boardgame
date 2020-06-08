@@ -23,128 +23,204 @@ import ch.asynk.gdx.boardgame.ui.Button;
 import ch.asynk.gdx.boardgame.ui.Root;
 import ch.asynk.gdx.boardgame.utils.IterableSet;
 
+class Unit extends Piece
+{
+    public boolean dragging;
+    private final int mp;
+    private final boolean hardTarget;
+
+    public Unit(Texture texture, boolean hardTarget)
+    {
+        super(texture);
+        this.hardTarget = hardTarget;
+        if (hardTarget) {
+            this.mp = 3;
+        } else {
+            this.mp = 2;
+        }
+    }
+
+    @Override public int getAvailableMP()
+    {
+        return mp;
+    }
+
+    @Override public int moveCost(Tile from, Tile to, Orientation orientation)
+    {
+        if (!hardTarget) return 1;
+        if (orientation.belongsTo(((Hex)from).roads)) return 1;
+        Terrain dst = ((Hex)to).terrain;
+        if (dst.difficult()) return 2;
+        return 1;
+    }
+}
+
+enum Terrain
+{
+    WOODS(0,1), CITY(0,2), HILL(2,0), PLAIN(0,0);
+
+    public int elevation;
+    public int height;
+    private Terrain(int elevation, int height) {
+        this.elevation = elevation;
+        this.height = height;
+    }
+
+    public boolean difficult()
+    {
+        return (this != PLAIN);
+    }
+
+    static public boolean v = true;
+
+    static private int[] cv = {23, 74};
+    static private int[] hv = {68, 78, 79, 15, 45, 46};
+    static private int[] wv = {20, 30, 51, 52, 62, 63, 26, 17};
+    static private int[] ch = {17, 61};
+    static private int[] hh = {2, 3, 11, 45, 46, 72};
+    static private int[] wh = {24, 25, 32, 33, 49, 58, 64, 74};
+
+    static public Terrain get(int k)
+    {
+        if (v) {
+            for (int i : cv) {
+                if (i == k)
+                    return CITY;
+            }
+            for (int i : hv) {
+                if (i == k)
+                    return HILL;
+            }
+            for (int i : wv) {
+                if (i == k)
+                    return WOODS;
+            }
+        } else {
+            for (int i : ch) {
+                if (i == k)
+                    return CITY;
+            }
+            for (int i : hh) {
+                if (i == k)
+                    return HILL;
+            }
+            for (int i : wh) {
+                if (i == k)
+                    return WOODS;
+            }
+        }
+        return PLAIN;
+    }
+}
+
+class Hex extends Tile
+{
+    public final int roads;
+    public final Terrain terrain;
+
+    public Hex(int x, int y, float cx, float cy, int k, Terrain terrain)
+    {
+        super(x, y, cx, cy);
+        this.terrain = terrain;
+        this.roads = getRoad(k);
+    }
+
+    @Override public boolean blockLos(final Tile from, final Tile to, float d, float dt)
+    {
+        int h = terrain.elevation + terrain.height;
+        if (h == 0) return false;
+
+        int e = ((Hex)from).terrain.elevation;
+        if (e > h) {
+            if (((Hex)to).terrain.elevation > h) return false;
+            return (h * dt / (e - h)) >= (d - dt);
+        } else {
+            h -= e;
+            return (h * d / dt) >= (((Hex)to).terrain.elevation - e);
+        }
+    }
+
+    public String toString()
+    {
+        return String.format("%s r:%s %s", terrain.toString(), roads, super.toString());
+    }
+
+    static public boolean v = true;
+
+    static private int[] vre  = {35, 36, 37, 41, 42, 43, 48, 49};
+    static private int[] vrne = {13, 32, 44, 54, 64};
+    static private int[] vrnw = {4, 23, 35, 41, 74, 83};
+    static private int[] vrw  = {36, 37, 42, 43, 44, 48, 49, 50};
+    static private int[] vrsw = {23, 42, 54, 64, 74};
+    static private int[] vrse = {4, 13, 32, 44, 50, 83};
+    static private int[] hrne = {7, 31, 44, 51, 70, 80};
+    static private int[] hrn  = {29, 30, 41, 42, 43, 54, 55, 56};
+    static private int[] hrnw = {26, 35, 44, 51, 70};
+    static private int[] hrsw = {17, 41, 54, 61, 80};
+    static private int[] hrs  = {29, 30, 31, 42, 43, 44, 55, 56};
+    static private int[] hrse = {17, 26, 35, 42, 63};
+
+    private static int getRoad(int k)
+    {
+        int r = 0;
+        if (v) {
+            for (int i : vre) {
+                if (i == k)
+                    r |= Orientation.E.s();
+            }
+            for (int i : vrne) {
+                if (i == k)
+                    r |= Orientation.NE.s();
+            }
+            for (int i : vrnw) {
+                if (i == k)
+                    r |= Orientation.NW.s();
+            }
+            for (int i : vrw) {
+                if (i == k)
+                    r |= Orientation.W.s();
+            }
+            for (int i : vrsw) {
+                if (i == k)
+                    r |= Orientation.SW.s();
+            }
+            for (int i : vrse) {
+                if (i == k)
+                    r |= Orientation.SE.s();
+            }
+        } else {
+            for (int i : hrne) {
+                if (i == k)
+                    r |= Orientation.NE.s();
+            }
+            for (int i : hrn) {
+                if (i == k)
+                    r |= Orientation.N.s();
+            }
+            for (int i : hrnw) {
+                if (i == k)
+                    r |= Orientation.NW.s();
+            }
+            for (int i : hrsw) {
+                if (i == k)
+                    r |= Orientation.SW.s();
+            }
+            for (int i : hrs) {
+                if (i == k)
+                    r |= Orientation.S.s();
+            }
+            for (int i : hrse) {
+                if (i == k)
+                    r |= Orientation.SE.s();
+            }
+        }
+        return r;
+    }
+
+}
+
 public class HexScreen extends AbstractScreen
 {
-    private class Unit extends Piece
-    {
-        public boolean dragging;
-        private final int mp;
-        private final boolean hardTarget;
-
-        public Unit(Texture texture, boolean hardTarget)
-        {
-            super(texture);
-            this.hardTarget = hardTarget;
-            if (hardTarget) {
-                this.mp = 3;
-            } else {
-                this.mp = 2;
-            }
-        }
-
-        @Override public int getAvailableMP()
-        {
-            return mp;
-        }
-
-        @Override public int moveCost(Tile from, Tile to, Orientation orientation)
-        {
-            if (!hardTarget) return 1;
-            Terrain dst = ((Hex)to).terrain;
-            if (dst.difficult()) return 2;
-            return 1;
-        }
-    }
-
-    private enum Terrain
-    {
-        WOODS(0,1), CITY(0,2), HILL(2,0), PLAIN(0,0);
-
-        static private int[] cv = {23, 74};
-        static private int[] hv = {68, 78, 79, 15, 45, 46};
-        static private int[] wv = {20, 30, 51, 52, 62, 63, 26, 17};
-        static private int[] ch = {17, 61};
-        static private int[] hh = {2, 3, 11, 45, 46, 72};
-        static private int[] wh = {24, 25, 32, 33, 49, 58, 64, 74};
-
-        static public boolean v = true;
-
-        public int elevation;
-        public int height;
-        private Terrain(int elevation, int height) {
-            this.elevation = elevation;
-            this.height = height;
-        }
-
-        public boolean difficult()
-        {
-            return (this != PLAIN);
-        }
-
-        static public Terrain get(int k)
-        {
-            if (v) {
-                for (int i : cv) {
-                    if (i == k)
-                        return CITY;
-                }
-                for (int i : hv) {
-                    if (i == k)
-                        return HILL;
-                }
-                for (int i : wv) {
-                    if (i == k)
-                        return WOODS;
-                }
-            } else {
-                for (int i : ch) {
-                    if (i == k)
-                        return CITY;
-                }
-                for (int i : hh) {
-                    if (i == k)
-                        return HILL;
-                }
-                for (int i : wh) {
-                    if (i == k)
-                        return WOODS;
-                }
-            }
-            return PLAIN;
-        }
-    }
-
-    private class Hex extends Tile
-    {
-        public final Terrain terrain;
-
-        public Hex(int x, int y, float cx, float cy, Terrain terrain)
-        {
-            super(x, y, cx, cy);
-            this.terrain = terrain;
-        }
-
-        @Override public boolean blockLos(final Tile from, final Tile to, float d, float dt)
-        {
-            int h = terrain.elevation + terrain.height;
-            if (h == 0) return false;
-
-            int e = ((Hex)from).terrain.elevation;
-            if (e > h) {
-                if (((Hex)to).terrain.elevation > h) return false;
-                return (h * dt / (e - h)) >= (d - dt);
-            } else {
-                h -= e;
-                return (h * d / dt) >= (((Hex)to).terrain.elevation - e);
-            }
-        }
-
-        public String toString()
-        {
-            return terrain.toString() + super.toString();
-        }
-    }
-
     private class MyBoard
     {
         private final IterableSet<Tile> moveTiles;
@@ -310,12 +386,14 @@ public class HexScreen extends AbstractScreen
         {
             final Vector2 v = new Vector2();
             board.centerOf(x, y, v);
-            return new Hex(x, y, v.x, v.y, Terrain.get(board.genKey(x, y)));
+            int k = board.genKey(x, y);
+            return new Hex(x, y, v.x, v.y, k, Terrain.get(k));
         }
 
         public void setHEX_V()
         {
             Terrain.v = true;
+            Hex.v = true;
             map = assets.getTexture(assets.MAP_00);
             r = 0;
             dx = 0;
@@ -329,6 +407,7 @@ public class HexScreen extends AbstractScreen
         public void setHEX_H()
         {
             Terrain.v = false;
+            Hex.v = false;
             map = assets.getTexture(assets.MAP_00);
             r = 90;
             dx = - ( map.getWidth() - map.getHeight() ) / 2;
