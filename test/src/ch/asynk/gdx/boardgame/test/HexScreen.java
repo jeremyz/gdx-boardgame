@@ -28,10 +28,31 @@ public class HexScreen extends AbstractScreen
     private class Unit extends Piece
     {
         public boolean dragging;
+        private final int mp;
+        private final boolean hardTarget;
 
-        public Unit(Texture texture)
+        public Unit(Texture texture, boolean hardTarget)
         {
             super(texture);
+            this.hardTarget = hardTarget;
+            if (hardTarget) {
+                this.mp = 3;
+            } else {
+                this.mp = 2;
+            }
+        }
+
+        @Override public int getAvailableMP()
+        {
+            return mp;
+        }
+
+        @Override public int moveCost(Tile from, Tile to, Orientation orientation)
+        {
+            if (!hardTarget) return 1;
+            Terrain dst = ((Hex)to).terrain;
+            if (dst.difficult()) return 2;
+            return 1;
         }
     }
 
@@ -53,6 +74,11 @@ public class HexScreen extends AbstractScreen
         private Terrain(int elevation, int height) {
             this.elevation = elevation;
             this.height = height;
+        }
+
+        public boolean difficult()
+        {
+            return (this != PLAIN);
         }
 
         static public Terrain get(int k)
@@ -121,6 +147,7 @@ public class HexScreen extends AbstractScreen
 
     private class MyBoard
     {
+        private final IterableSet<Tile> moveTiles;
         private final IterableSet<Tile> tilesToDraw;
         private final Vector2 v;
         private final Vector3 v3;
@@ -145,9 +172,10 @@ public class HexScreen extends AbstractScreen
             this.v = new Vector2();
             this.v3 = new Vector3();
             Piece.angleCorrection = 90;
-            this.panzer = new Unit(assets.getTexture(assets.PANZER));
-            this.engineer = new Unit(assets.getTexture(assets.ENGINEER));
+            this.panzer = new Unit(assets.getTexture(assets.PANZER), true);
+            this.engineer = new Unit(assets.getTexture(assets.ENGINEER), false);
             this.line = new Sprite(assets.getTexture(assets.LINE));
+            this.moveTiles = new IterableSet<Tile>(20);
             this.tilesToDraw = new IterableSet<Tile>(15);
             Tile.defaultOverlay = assets.getAtlas(app.assets.HEX_OVERLAYS);
         }
@@ -158,9 +186,8 @@ public class HexScreen extends AbstractScreen
         public void draw(SpriteBatch batch)
         {
             batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
-            for (Tile tile: tilesToDraw) {
-                tile.draw(batch);
-            }
+            for (Tile tile: moveTiles) tile.draw(batch);
+            for (Tile tile: tilesToDraw) tile.draw(batch);
             panzer.draw(batch);
             engineer.draw(batch);
             line.draw(batch);
@@ -169,6 +196,7 @@ public class HexScreen extends AbstractScreen
         public void reset()
         {
             board.centerOf(0, 0, v);
+            moveTiles.clear();
             tilesToDraw.clear();
             v.set(0, 0);
             h0 = getHex(0, 0);
@@ -224,6 +252,12 @@ public class HexScreen extends AbstractScreen
             else
                 h1 = hex;
             updateLine();
+            for (Tile tile: moveTiles) tile.enableOverlay(3, false);
+            board.possibleMoves(u, hex, moveTiles);
+            for (Tile tile: moveTiles) {
+                tile.enableOverlay(3, true);
+                tilesToDraw.remove(tile);
+            }
         }
 
         private void updateLine()
