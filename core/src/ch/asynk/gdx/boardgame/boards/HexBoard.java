@@ -475,12 +475,14 @@ public class HexBoard implements Board
         if (from.acc <= 0 || !from.isOnMap())
             return tiles.size();
 
+        int roadMarchBonus = piece.roadMarchBonus();
+        from.roadMarch = roadMarchBonus > 0;
         stack.push(from);
 
         while(!stack.isEmpty()) {
             final Tile src = stack.pop();
 
-            if (src.acc <= 0) continue;
+            if ((src.acc + (src.roadMarch ? roadMarchBonus : 0)) <= 0) continue;
 
             buildAdjacents(src.x, src.y);
             for (int i = 0, j = 0; i < 6; i++, j++) {
@@ -488,21 +490,26 @@ public class HexBoard implements Board
                 if (!dst.isOnMap()) continue;
 
                 if (getAngles()[j] == -1) j++;
-                int cost = piece.moveCost(src, dst, Orientation.fromR(getAngles()[j] + aOffset));
+                final Orientation o = Orientation.fromR(getAngles()[j] + aOffset);
+                int cost = piece.moveCost(src, dst, o);
                 if (cost == Integer.MAX_VALUE) continue;    // impracticable
 
                 int r = src.acc - cost;
-                if (r < 0 && !(src == from && piece.atLeastOneTileMove())) continue;         // allow at least 1 tile move
+                boolean rm = src.roadMarch && src.hasRoad(o);
+                // not enough MP even with RM, maybe first move allowed
+                if ((r + (rm ? roadMarchBonus : 0)) < 0 && !(src == from && piece.atLeastOneTileMove())) continue;
 
                 if (dst.searchCount != searchCount) {
                     dst.searchCount = searchCount;
                     dst.acc = r;
                     dst.parent = src;
+                    dst.roadMarch = rm;
                     stack.push(dst);
                     tiles.add(dst);
-                } else if (r > dst.acc) {
+                } else if (r > dst.acc || (!dst.roadMarch && rm)) {
                     dst.acc = r;
                     dst.parent = src;
+                    dst.roadMarch = rm;
                     stack.push(dst);
                 }
             }
