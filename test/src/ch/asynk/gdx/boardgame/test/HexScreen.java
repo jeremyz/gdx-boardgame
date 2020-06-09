@@ -303,6 +303,11 @@ public class HexScreen extends AbstractScreen
             unit.setRotation(o.r());
         }
 
+        private void touchInfo(Tile t)
+        {
+            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => %s[%d]", t.x, t.y, t, board.genKey(t.x, t.y)));
+        }
+
         public boolean touch(float x, float y, boolean down)
         {
             board.toBoard(x, y, v);
@@ -327,11 +332,6 @@ public class HexScreen extends AbstractScreen
             return true;
         }
 
-        private void touchInfo(Tile t)
-        {
-            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => %s[%d]", t.x, t.y, t, board.genKey(t.x, t.y)));
-        }
-
         private void updateUnit(Tile t, Unit u)
         {
             touchInfo(t);
@@ -344,7 +344,7 @@ public class HexScreen extends AbstractScreen
             for (Tile tile: losTiles) tile.disableOverlays();
             for (Tile tile: moveTiles) tile.disableOverlays();
             board.possibleMoves(u, t, moveTiles);
-            for (Tile tile: moveTiles) tile.enableOverlay(3, true);
+            for (Tile tile: moveTiles) tile.enableOverlay(3, Orientation.N);
             updateLine();
         }
 
