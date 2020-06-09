@@ -5,7 +5,7 @@
     - [ ] Grid
     - [x] List
     - [x] Box V/H
-    - [x] Scrollbale vert/horiz
+    - [x] Scrollable V/H
 
  -  Basics
     - [x] GameScreen
