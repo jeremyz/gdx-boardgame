@@ -29,6 +29,27 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
         setHead(texture);
     }
 
+    public int getAvailableMP()
+    {
+        return 0;
+    }
+
+    public int moveCost(Tile from, Tile to, Orientation orientation)
+    {
+        // Integer.MAX_VALUE means impracticable
+        return Integer.MAX_VALUE;
+    }
+
+    public boolean atLeastOneTileMove()
+    {
+        return true;
+    }
+
+    public int roadMarchBonus()
+    {
+        return 0;
+    }
+
     public void setHead(Texture texture)
     {
         sprite = new Sprite(texture);
@@ -122,21 +143,5 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
         float w = getWidth();
         float h = getHeight();
         shapeRenderer.rect(getX(), getY(), (w / 2f), (h / 2f), w, h, sprite.getScaleX(), sprite.getScaleY(), getRotation());
-    }
-
-    public int getAvailableMP()
-    {
-        return 0;
-    }
-
-    public int moveCost(Tile from, Tile to, Orientation orientation)
-    {
-        // Integer.MAX_VALUE means impracticable
-        return Integer.MAX_VALUE;
-    }
-
-    public boolean atLeastOneTileMove()
-    {
-        return true;
     }
 }
