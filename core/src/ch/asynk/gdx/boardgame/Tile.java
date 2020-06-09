@@ -22,6 +22,7 @@ public class Tile implements Drawable
     public Tile parent;
     public int acc;
     public int searchCount;
+    public boolean roadMarch;
 
     private Overlays overlays;
 
@@ -46,6 +47,11 @@ public class Tile implements Drawable
     public boolean isOnMap()
     {
         return onMap;
+    }
+
+    public boolean hasRoad(Orientation orientation)
+    {
+        return false;
     }
 
     public boolean blockLos(final Tile from, final Tile to, float d, float dt)
