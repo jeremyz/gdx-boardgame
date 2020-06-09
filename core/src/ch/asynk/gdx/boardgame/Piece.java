@@ -134,4 +134,9 @@ public class Piece implements Drawable, Positionable, Rotable, Scalable
         // Integer.MAX_VALUE means impracticable
         return Integer.MAX_VALUE;
     }
+
+    public boolean atLeastOneTileMove()
+    {
+        return true;
+    }
 }

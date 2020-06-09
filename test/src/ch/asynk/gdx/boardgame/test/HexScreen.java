@@ -47,9 +47,10 @@ class Unit extends Piece
 
     @Override public int moveCost(Tile from, Tile to, Orientation orientation)
     {
+        Terrain dst = ((Hex)to).terrain;
+        if (dst == Terrain.HILL) return 3;
         if (!hardTarget) return 1;
         if (orientation.belongsTo(((Hex)from).roads)) return 1;
-        Terrain dst = ((Hex)to).terrain;
         if (dst.difficult()) return 2;
         return 1;
     }

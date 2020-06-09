@@ -492,7 +492,7 @@ public class HexBoard implements Board
                 if (cost == Integer.MAX_VALUE) continue;    // impracticable
 
                 int r = src.acc - cost;
-                if (r < 0 && src != from) continue;         // allow at least 1 tile move
+                if (r < 0 && !(src == from && piece.atLeastOneTileMove())) continue;         // allow at least 1 tile move
 
                 if (dst.searchCount != searchCount) {
                     dst.searchCount = searchCount;
