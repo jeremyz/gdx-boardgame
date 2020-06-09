@@ -231,8 +231,8 @@ public class HexScreen extends AbstractScreen
         public Texture map;
         public Board board;
         public TileStorage tileStorage;
-        private Hex h0;
-        private Hex h1;
+        private Tile t0;
+        private Tile t1;
         private final Unit panzer;
         private final Unit engineer;
         private final Sprite line;
@@ -259,6 +259,21 @@ public class HexScreen extends AbstractScreen
         public int getWidth() { return map.getWidth(); }
         public int getHeight() { return map.getHeight(); }
 
+        private Tile getTile(int x, int y, boolean isOnMap)
+        {
+            if (isOnMap)
+                return tileStorage.getTile(x, y, board::genKey, this::buildTile);
+            return Tile.OffMap;
+        }
+
+        private Tile buildTile(int x, int y)
+        {
+            final Vector2 v = new Vector2();
+            board.centerOf(x, y, v);
+            int k = board.genKey(x, y);
+            return new Hex(x, y, v.x, v.y, k, Terrain.get(k));
+        }
+
         public void draw(SpriteBatch batch)
         {
             batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
@@ -271,15 +286,14 @@ public class HexScreen extends AbstractScreen
 
         public void reset()
         {
-            board.centerOf(0, 0, v);
+            v.set(0, 0);
             losTiles.clear();
             moveTiles.clear();
-            v.set(0, 0);
-            h0 = getHex(0, 0);
-            setUnitOn(panzer, h0.x, h0.y, Orientation.DEFAULT);
-            h1 = getHex(8, 5);
-            setUnitOn(engineer, h1.x, h1.y, Orientation.SW);
-            updateUnit(h0, panzer);
+            t0 = board.getTile(0, 0);
+            setUnitOn(panzer, t0.x, t0.y, Orientation.DEFAULT);
+            t1 = board.getTile(8, 5);
+            setUnitOn(engineer, t1.x, t1.y, Orientation.SW);
+            updateUnit(t0, panzer);
         }
 
         private void setUnitOn(Unit unit, int x, int y, Orientation o)
@@ -292,44 +306,44 @@ public class HexScreen extends AbstractScreen
         public boolean touch(float x, float y, boolean down)
         {
             board.toBoard(x, y, v);
-            Hex hex = getHex((int)v.x, (int)v.y);
-            if (!hex.isOnMap())
+            Tile tile = board.getTile((int)v.x, (int)v.y);
+            if (!tile.isOnMap())
                 return false;
             if (down) {
-                if (!panzer.dragging && panzer.isOn(hex)) {
+                if (!panzer.dragging && panzer.isOn(tile)) {
                     panzer.dragging = true;
-                } else if (!engineer.dragging && engineer.isOn(hex)) {
+                } else if (!engineer.dragging && engineer.isOn(tile)) {
                     engineer.dragging = true;
                 } else {
-                    touchInfo(hex);
+                    touchInfo(tile);
                 }
             } else {
                 if (panzer.dragging) {
-                    updateUnit(hex, panzer);
+                    updateUnit(tile, panzer);
                 } else if (engineer.dragging) {
-                    updateUnit(hex, engineer);
+                    updateUnit(tile, engineer);
                 }
             }
             return true;
         }
 
-        private void touchInfo(Hex hex)
+        private void touchInfo(Tile t)
         {
-            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => %s[%d]", (int)v.x, (int)v.y, hex, board.genKey((int)v.x, (int)v.y)));
+            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => %s[%d]", t.x, t.y, t, board.genKey(t.x, t.y)));
         }
 
-        private void updateUnit(Hex hex, Unit u)
+        private void updateUnit(Tile t, Unit u)
         {
-            touchInfo(hex);
-            u.centerOn(hex.cx, hex.cy);
+            touchInfo(t);
+            u.centerOn(t.cx, t.cy);
             u.dragging = false;
             if (u == panzer)
-                h0 = hex;
+                t0 = t;
             else
-                h1 = hex;
+                t1 = t;
             for (Tile tile: losTiles) tile.disableOverlays();
             for (Tile tile: moveTiles) tile.disableOverlays();
-            board.possibleMoves(u, hex, moveTiles);
+            board.possibleMoves(u, t, moveTiles);
             for (Tile tile: moveTiles) tile.enableOverlay(3, true);
             updateLine();
         }
@@ -345,7 +359,7 @@ public class HexScreen extends AbstractScreen
             line.setPosition(x0, y0);
             line.setSize(d, line.getHeight());
             line.setRotation((float) Math.toDegrees(Math.atan2(dy, dx)));
-            board.lineOfSight(h0, h1, losTiles);
+            board.lineOfSight(t0, t1, losTiles);
             for (Tile tile: losTiles) {
                 if (tile.blocked) tile.enableOverlay(0, Orientation.N);
                 else tile.enableOverlay(2, Orientation.N);
@@ -363,26 +377,6 @@ public class HexScreen extends AbstractScreen
                 return true;
             }
             return false;
-        }
-
-        private Hex getHex(int x, int y)
-        {
-            return (Hex) board.getTile(x, y);
-        }
-
-        private Tile getTile(int x, int y, boolean isOnMap)
-        {
-            if (isOnMap)
-                return tileStorage.getTile(x, y, board::genKey, this::buildTile);
-            return Tile.OffMap;
-        }
-
-        private Tile buildTile(int x, int y)
-        {
-            final Vector2 v = new Vector2();
-            board.centerOf(x, y, v);
-            int k = board.genKey(x, y);
-            return new Hex(x, y, v.x, v.y, k, Terrain.get(k));
         }
 
         public void setHEX_V()
