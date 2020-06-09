@@ -34,10 +34,16 @@ class Unit extends Piece
         super(texture);
         this.hardTarget = hardTarget;
         if (hardTarget) {
-            this.mp = 3;
-        } else {
             this.mp = 2;
+        } else {
+            this.mp = 1;
         }
+    }
+
+    @Override public int roadMarchBonus()
+    {
+        if (hardTarget) return 2;
+        return 0;
     }
 
     @Override public int getAvailableMP()
@@ -50,7 +56,7 @@ class Unit extends Piece
         Terrain dst = ((Hex)to).terrain;
         if (dst == Terrain.HILL) return 3;
         if (!hardTarget) return 1;
-        if (orientation.belongsTo(((Hex)from).roads)) return 1;
+        if (((Hex)from).hasRoad(orientation)) return 1;
         if (dst.difficult()) return 2;
         return 1;
     }
@@ -124,6 +130,11 @@ class Hex extends Tile
         super(x, y, cx, cy);
         this.terrain = terrain;
         this.roads = getRoad(k);
+    }
+
+    @Override public boolean hasRoad(Orientation orientation)
+    {
+        return orientation.belongsTo(roads);
     }
 
     @Override public boolean blockLos(final Tile from, final Tile to, float d, float dt)
