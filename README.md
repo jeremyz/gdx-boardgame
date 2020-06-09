@@ -13,6 +13,13 @@ code is mainly extracted from https://github.com/jeremyz/rustanddust
     - various animations
     - path, movement, line of sight computation
 
+## screenshots
+
+![Line Of Sight - Move](data/los-move.png)
+![Fire Animation](data/anim-fire.png)
+![Move Animation](data/anim-move.png)
+![UI Pack](data/ui-pack.png)
+
 ## install
 
 Add the repository:
