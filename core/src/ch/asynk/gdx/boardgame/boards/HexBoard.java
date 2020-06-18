@@ -312,10 +312,8 @@ public class HexBoard implements Board
         int dx3 = 3 * dx;
         int dy3 = 3 * dy;
 
-        if (dx == 0)
-            return verticalLineOfSight(x0, y0, x1, y1, tiles);
-        if (dx == dy3)
-            return diagonalLineOfSight(x0, y0, x1, y1, tiles);
+        if (dx == 0 || dx == dy3)
+            return diagonalLineOfSight(x0, y0, x1, y1, (dx == 0), q13, tiles, v);
 
         // angle is less than 45°
         boolean flat = (dx > dy3);
@@ -367,58 +365,10 @@ public class HexBoard implements Board
         return tiles.get(tiles.size() - 1).blocked;
     }
 
-    private boolean verticalLineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
-    {
-        int dt = ( (y1 > y0) ? 1 : -1);
-        int x = x0;
-        int y = y0;
-
-
-        Tile from = getTile(x0, y0);
-        Tile to = getTile(x1, y1);
-        float d = distance(x0, y0, x1, y1);
-        tiles.add(from);
-        from.blocked = false;
-        int blocked = 0;
-        boolean losBlocked = false;
-        while ((x != x1) || (y != y1)) {
-
-            y += dt; // up left
-            Tile t = getTile(x, y);
-            if (t.isOnMap()) {
-                tiles.add(t);
-                t.blocked = losBlocked;
-                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
-                    blocked |= 0x01;
-            }
-
-            x += dt; // up right
-            t = getTile(x, y);
-            if (t.isOnMap()) {
-                tiles.add(t);
-                t.blocked = losBlocked;
-                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
-                    blocked |= 0x02;
-            }
-
-            y += dt; // vertical
-            t = getTile(x, y);
-            if (t.isOnMap()) {
-                tiles.add(t);
-                t.blocked = (losBlocked || blocked == 0x03);
-                losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
-            }
-        }
-
-        return tiles.get(tiles.size() - 1).blocked;
-    }
-
-    private boolean diagonalLineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    private boolean diagonalLineOfSight(int x0, int y0, int x1, int y1, boolean vert, boolean q13, Collection<Tile> tiles, Vector2 v)
     {
         int dy = ( (y1 > y0) ? 1 : -1);
         int dx = ( (x1 > x0) ? 1 : -1);
-        // quadrant I && III
-        boolean q13 = (((dx >= 0) && (dy >= 0)) || ((dx < 0) && (dy < 0)));
 
         int x = x0;
         int y = y0;
@@ -432,7 +382,10 @@ public class HexBoard implements Board
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
 
-            x += dx; // right
+            if (vert)
+                y += dy; // up left
+            else
+                x += dx; // right
             Tile t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
@@ -441,9 +394,12 @@ public class HexBoard implements Board
                     blocked |= 0x01;
             }
 
-            y += dy; // up right
-            if (!q13)
-                x -= dx;
+            if (vert)
+                x += dx; // up right
+            else {
+                y += dy; // up right
+                if (!q13) x -= dx;
+            }
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
@@ -452,7 +408,10 @@ public class HexBoard implements Board
                     blocked |= 0x02;
             }
 
-            x += dx; // diagonal
+            if (vert)
+                y += dy; // up
+            else
+                x += dx; // diagonal
             t = getTile(x, y);
             if (t.isOnMap()) {
                 tiles.add(t);
