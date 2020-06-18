@@ -106,7 +106,7 @@ public class SquareBoard implements Board
         return -1;
     }
 
-    @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles, Vector2 v)
     {
         System.err.println("NOT implemented yet.");
         return false;

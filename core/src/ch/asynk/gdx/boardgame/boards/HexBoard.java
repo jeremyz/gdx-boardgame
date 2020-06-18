@@ -278,9 +278,10 @@ public class HexBoard implements Board
 
     // http://zvold.blogspot.com/2010/01/bresenhams-line-drawing-algorithm-on_26.html
     // http://zvold.blogspot.com/2010/02/line-of-sight-on-hexagonal-grid.html
-    @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles)
+    @Override public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles, Vector2 v)
     {
         tiles.clear();
+        v.set(0, 0);
 
         // orthogonal projection
         int ox0 = x0 - ((y0 + 1) / 2);
@@ -327,6 +328,7 @@ public class HexBoard implements Board
         float d = distance(x0, y0, x1, y1);
         tiles.add(from);
         from.blocked = false;
+        boolean contact = false;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
             if (e > 0) {
@@ -357,6 +359,11 @@ public class HexBoard implements Board
                 }
             }
             final Tile t = getTile(x, y);
+            if (losBlocked && !contact) {
+                Orientation o = Orientation.fromTiles(tiles.get(tiles.size() - 1), t);
+                computeContact(from, to, o, t, v, true);
+                contact = true;
+            }
             tiles.add(t);
             t.blocked = losBlocked;
             losBlocked = (losBlocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
@@ -365,7 +372,7 @@ public class HexBoard implements Board
         return tiles.get(tiles.size() - 1).blocked;
     }
 
-    private boolean diagonalLineOfSight(int x0, int y0, int x1, int y1, boolean vert, boolean q13, Collection<Tile> tiles, Vector2 v)
+    private boolean diagonalLineOfSight(int x0, int y0, int x1, int y1, boolean flat, boolean q13, Collection<Tile> tiles, Vector2 v)
     {
         int dy = ( (y1 > y0) ? 1 : -1);
         int dx = ( (x1 > x0) ? 1 : -1);
@@ -379,10 +386,11 @@ public class HexBoard implements Board
         tiles.add(from);
         from.blocked = false;
         int blocked = 0;
+        boolean contact = false;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
 
-            if (vert)
+            if (flat)
                 y += dy; // up left
             else
                 x += dx; // right
@@ -394,7 +402,7 @@ public class HexBoard implements Board
                     blocked |= 0x01;
             }
 
-            if (vert)
+            if (flat)
                 x += dx; // up right
             else {
                 y += dy; // up right
@@ -408,7 +416,7 @@ public class HexBoard implements Board
                     blocked |= 0x02;
             }
 
-            if (vert)
+            if (flat)
                 y += dy; // up
             else
                 x += dx; // diagonal
@@ -416,11 +424,124 @@ public class HexBoard implements Board
             if (t.isOnMap()) {
                 tiles.add(t);
                 t.blocked = (losBlocked || blocked == 0x03);
+                if (t.blocked && !contact) {
+                    boolean vert = (this.orientation == BoardFactory.BoardOrientation.VERTICAL);
+                    Orientation o = computeOrientation(dx, dy, flat, vert);
+                    if (!losBlocked && blocked == 0x03)
+                        computeContact(from, to, o, t, v, false);
+                    else
+                        computeContact(from, to, o.opposite(), tiles.get(tiles.size() - 4), v, false);
+                    contact = true;
+                }
                 losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
             }
         }
 
         return tiles.get(tiles.size() - 1).blocked;
+    }
+
+    private Orientation computeOrientation(int dx, int dy, boolean flat, boolean vert)
+    {
+        if (flat) {
+            if (vert)
+                return (dy == 1 ? Orientation.N : Orientation.S);
+            else
+                return (dx == 1 ? Orientation.NE : Orientation.SW);
+        }
+        if (vert) {
+            if (dx == 1) {
+                if (dy == 1)
+                    return Orientation.NE;
+                else
+                    return Orientation.SE;
+            } else {
+                if (dy == 1)
+                    return Orientation.NW;
+                else
+                    return Orientation.SW;
+            }
+        } else {
+            if (dx == 1) {
+                if (dy == 1)
+                    return Orientation.E;
+                else
+                    return Orientation.SE;
+            } else {
+                if (dy == 1)
+                    return Orientation.NW;
+                else
+                    return Orientation.W;
+            }
+        }
+    }
+
+    private void computeContact(Tile from, Tile to, Orientation o, Tile t, Vector2 v, boolean line)
+    {
+        float dx = to.cx - from.cx;
+        float dy = to.cy - from.cy;
+        float m = dy / dx;
+        float c = from.cy - (m * from.cx);
+        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+            if (o == Orientation.N) {
+                v.set(t.cx, t.cy - dh - side / 2);
+            } else if (o == Orientation.S) {
+                v.set(t.cx, t.cy + dh + side / 2);
+            } else if (o == Orientation.E) {
+                float x = t.cx - dw;
+                float y = from.cy + m * (x - from.cx);
+                v.set(x, y);
+            } else if (o == Orientation.W) {
+                float x = t.cx + dw;
+                float y = from.cy + m * (x - from.cx);
+                v.set(x, y);
+            } else {
+                if (line) {
+                    float k = 0;
+                    float p = ((o == Orientation.SE || o == Orientation.NW) ? slope : -slope);
+                    if (o == Orientation.SE || o == Orientation.SW)
+                        k = (t.cy + dh + side / 2) - (p * t.cx);
+                    else
+                        k = (t.cy - dh - side / 2) - (p * t.cx);
+                    float x = (k - c) / (m - p);
+                    float y = m * x + c;
+                    v.set(x, y);
+                } else {
+                    float x = t.cx + ((o == Orientation.NE || o == Orientation.SE) ? -dw : dw);
+                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? side : -side) / 2;
+                    v.set(x, y);
+                }
+            }
+        } else {
+            if (o == Orientation.E) {
+                v.set(t.cx - dh - side / 2, t.cy);
+            } else if (o == Orientation.W) {
+                v.set(t.cx + dh + side / 2, t.cy);
+            } else if (o == Orientation.N) {
+                float y = t.cy - dw;
+                float x = from.cx + (y - from.cy) / m;
+                v.set(x, y);
+            } else if (o == Orientation.S) {
+                float y = t.cy + dw;
+                float x = from.cx + (y - from.cy) / m;
+                v.set(x, y);
+            } else {
+                if (line) {
+                    float k = 0;
+                    float p = ((o == Orientation.SE || o == Orientation.NW) ? slope : -slope);
+                    if (o == Orientation.SW || o == Orientation.NW)
+                        k = t.cy - (p * (t.cx + dh + side / 2));
+                    else
+                        k = t.cy - (p * (t.cx - dh - side / 2));
+                    float x = (k - c) / (m - p);
+                    float y = m * x + c;
+                    v.set(x, y);
+                } else {
+                    float x = t.cx + ((o == Orientation.NW || o == Orientation.SW) ? side : -side) / 2;
+                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? dw : -dw);
+                    v.set(x, y);
+                }
+            }
+        }
     }
 
     public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles)

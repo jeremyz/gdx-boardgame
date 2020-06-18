@@ -22,11 +22,11 @@ public interface Board extends TileKeyGenerator
 
     public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles);
 
-    public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles);
+    public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles, Vector2 v);
 
-    default public boolean lineOfSight(Tile from, Tile  to, Collection<Tile> tiles)
+    default public boolean lineOfSight(Tile from, Tile  to, Collection<Tile> tiles, Vector2 v)
     {
-        return lineOfSight(from.x, from.y, to.x, to.y, tiles);
+        return lineOfSight(from.x, from.y, to.x, to.y, tiles, v);
     }
 
     enum Geometry
