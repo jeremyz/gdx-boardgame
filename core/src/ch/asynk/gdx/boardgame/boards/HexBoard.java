@@ -70,7 +70,6 @@ public class HexBoard implements Board
         this.dw = w / 2.0f;
         this.dh = side / 2.0f;
         this.h  = side + dh;
-        this.slope = dh / dw;
 
         this.searchCount = 0;
         this.stack = new IterableStack<Tile>(10);
@@ -78,9 +77,11 @@ public class HexBoard implements Board
         if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
             this.aOffset = 0;
             this.tl = (2 * cols - 1);
+            this.slope = dh / dw;
         } else {
             this.aOffset = -60;
             this.tl = (2 * rows - 1);
+            this.slope = dw / dh;
         }
 
         this.adjacents = new Tile[6];
@@ -223,14 +224,14 @@ public class HexBoard implements Board
                 dx -= ((col * this.h) + this.side);
                 dy -= (row * this.w);
                 // upper or lower rectangle
-                if (dy > ((this.dw - dx) / this.slope)) {
-                    if (dy > ((2 * this.dw) - (dx / this.slope))) {
+                if (dy > ((this.dw - dx) * this.slope)) {
+                    if (dy > ((2 * this.dw) - (dx * this.slope))) {
                         // upper right hex
                         col += 1;
                         row += 1;
                     }
                 } else {
-                    if (dy < (dx / this.slope)) {
+                    if (dy < (dx * this.slope)) {
                         // lower right hex
                         col += 1;
                     }
