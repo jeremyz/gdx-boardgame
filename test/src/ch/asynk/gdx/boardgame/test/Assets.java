@@ -34,6 +34,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
     public static final String EXPLOSIONS           = "explosions.png";
     public static final String EXPLOSION_SND        = "explosion.ogg";
     public static final String LINE                 = "line.png";
+    public static final String LINE_R               = "line-r.png";
     public static final String DICE                 = "dice.png";
     public static final String DICE_SND             = "dice.ogg";
     public static final String INFANTRY_MOVE_SND    = "infantry_move.ogg";
@@ -93,6 +94,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         load(EXPLOSIONS, Texture.class);
         load(EXPLOSION_SND, Sound.class);
         load(LINE, Texture.class);
+        load(LINE_R, Texture.class);
         load(DICE, Texture.class);
         load(DICE_SND, Sound.class);
         load(INFANTRY_MOVE_SND, Sound.class);
@@ -119,6 +121,7 @@ public class Assets extends ch.asynk.gdx.boardgame.Assets
         unload(EXPLOSIONS);
         unload(EXPLOSION_SND);
         unload(LINE);
+        unload(LINE_R);
         unload(DICE);
         unload(DICE_SND);
         unload(INFANTRY_MOVE_SND);

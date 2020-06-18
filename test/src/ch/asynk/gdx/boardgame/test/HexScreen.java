@@ -248,6 +248,8 @@ public class HexScreen extends AbstractScreen
         private final Unit panzer;
         private final Unit engineer;
         private final Sprite line;
+        private final Sprite line_r;
+        private boolean blocked;
         public int dx;
         public int dy;
         public int w;
@@ -263,6 +265,7 @@ public class HexScreen extends AbstractScreen
             this.panzer = new Unit(assets.getTexture(assets.PANZER), true);
             this.engineer = new Unit(assets.getTexture(assets.ENGINEER), false);
             this.line = new Sprite(assets.getTexture(assets.LINE));
+            this.line_r = new Sprite(assets.getTexture(assets.LINE_R));
             this.losTiles = new IterableSet<Tile>(15);
             this.moveTiles = new IterableSet<Tile>(20);
             Tile.defaultOverlay = assets.getAtlas(app.assets.HEX_OVERLAYS);
@@ -294,6 +297,7 @@ public class HexScreen extends AbstractScreen
             panzer.draw(batch);
             engineer.draw(batch);
             line.draw(batch);
+            if (blocked) line_r.draw(batch);
         }
 
         public void reset()
@@ -305,7 +309,7 @@ public class HexScreen extends AbstractScreen
             setUnitOn(panzer, t0.x, t0.y, Orientation.DEFAULT);
             t1 = board.getTile(8, 5);
             setUnitOn(engineer, t1.x, t1.y, Orientation.SW);
-            updateUnit(t0, panzer);
+            update(t0, panzer);
         }
 
         private void setUnitOn(Unit unit, int x, int y, Orientation o)
@@ -336,15 +340,15 @@ public class HexScreen extends AbstractScreen
                 }
             } else {
                 if (panzer.dragging) {
-                    updateUnit(tile, panzer);
+                    update(tile, panzer);
                 } else if (engineer.dragging) {
-                    updateUnit(tile, engineer);
+                    update(tile, engineer);
                 }
             }
             return true;
         }
 
-        private void updateUnit(Tile t, Unit u)
+        private void update(Tile t, Unit u)
         {
             touchInfo(t);
             u.centerOn(t.cx, t.cy);
@@ -357,26 +361,30 @@ public class HexScreen extends AbstractScreen
             for (Tile tile: moveTiles) tile.disableOverlays();
             board.possibleMoves(u, t, moveTiles);
             for (Tile tile: moveTiles) tile.enableOverlay(3, Orientation.N);
-            updateLine();
-        }
 
-        private void updateLine()
-        {
-            float x0 = panzer.getCX();
-            float y0 = panzer.getCY();
-            float dx = engineer.getCX() - x0;
-            float dy = engineer.getCY() - y0;
-            float d = (float) Math.sqrt((dx * dx) + (dy * dy));
-            line.setOrigin(0, 0);
-            line.setPosition(x0, y0);
-            line.setSize(d, line.getHeight());
-            line.setRotation((float) Math.toDegrees(Math.atan2(dy, dx)));
-            board.lineOfSight(t0, t1, losTiles);
+            blocked = board.lineOfSight(t0, t1, losTiles, v);
+            if (blocked) {
+                setLine(line, panzer.getCX(), panzer.getCY(), v.x, v.y);
+                setLine(line_r, v.x, v.y, engineer.getCX(), engineer.getCY());
+            } else {
+                setLine(line, panzer.getCX(), panzer.getCY(), engineer.getCX(), engineer.getCY());
+            }
             for (Tile tile: losTiles) {
                 if (tile.blocked) tile.enableOverlay(0, Orientation.N);
                 else tile.enableOverlay(2, Orientation.N);
                 moveTiles.remove(tile);
             }
+        }
+
+        private void setLine(Sprite l, float x0, float y0, float x1, float y1)
+        {
+            float dx = x1 - x0;
+            float dy = y1 - y0;
+            float d = (float) Math.sqrt((dx * dx) + (dy * dy));
+            l.setOrigin(0, 0);
+            l.setPosition(x0, y0);
+            l.setSize(d, l.getHeight());
+            l.setRotation((float) Math.toDegrees(Math.atan2(dy, dx)));
         }
 
         public boolean drag(float dx, float dy)
