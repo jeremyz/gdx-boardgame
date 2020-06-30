@@ -118,4 +118,11 @@ public class SquareBoard implements Board
         tiles.clear();
         return tiles.size();
     }
+
+    @Override public int shortestPath(Piece piece, Tile from, Tile to, Collection<Tile> tiles)
+    {
+        System.err.println("NOT implemented yet.");
+        tiles.clear();
+        return tiles.size();
+    }
 }

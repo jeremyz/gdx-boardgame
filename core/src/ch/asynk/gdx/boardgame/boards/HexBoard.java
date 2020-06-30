@@ -598,4 +598,85 @@ public class HexBoard implements Board
 
         return tiles.size();
     }
+
+    @Override public int shortestPath(Piece piece, Tile from, Tile to, Collection<Tile> tiles)
+    {
+        tiles.clear();
+        searchCount += 1;
+
+        from.acc = 0;
+        from.parent = null;
+        from.searchCount = searchCount;
+
+        if (from == to || !from.isOnMap() || !to.isOnMap())
+            return tiles.size();
+
+        int roadMarchBonus = piece.roadMarchBonus();
+        from.roadMarch = roadMarchBonus > 0;
+        stack.push(from);
+
+        while(!stack.isEmpty()) {
+
+            final Tile src = stack.pop();
+
+            if (src == to) break;
+
+            buildAdjacents(src.x, src.y);
+            for (int i = 0, j = 0; i < 6; i++, j++) {
+                final Tile dst = adjacents[i];
+                if (!dst.isOnMap()) continue;
+
+                if (getAngles()[j] == -1) j++;
+                final Orientation o = Orientation.fromR(getAngles()[j] + aOffset);
+                int cost = piece.moveCost(src, dst, o);
+                if (cost == Integer.MAX_VALUE) continue;    // impracticable
+                cost += src.acc;
+                float total = cost + distance(dst.x, dst.y, to.x, to.y, Board.Geometry.EUCLIDEAN);
+                boolean rm = src.roadMarch && src.hasRoad(o);
+                if (rm) total -= roadMarchBonus;
+
+                boolean add = false;
+                if (dst.searchCount != searchCount) {
+                    dst.searchCount = searchCount;
+                    add = true;
+                } else if ((dst.f > total) || (rm && !dst.roadMarch && dst.f == total)) {
+                    stack.remove(dst);
+                    add = true;
+                }
+
+                if (add) {
+                    dst.acc = cost;
+                    dst.f = total;
+                    dst.roadMarch = rm;
+                    dst.parent = src;
+                    int idx = Integer.MAX_VALUE;
+                    for (int k = 0; k < stack.size(); k++) {
+                        if (stack.get(k).f <= dst.f) {
+                            idx = k;
+                            break;
+                        }
+                    }
+                    if (idx == Integer.MAX_VALUE)
+                        stack.push(dst);
+                    else
+                        stack.insert(dst, idx);
+                }
+            }
+        }
+
+        if (to.searchCount == searchCount) {
+            stack.clear();
+            Tile t = to;
+            while(t != from) {
+                stack.add(t);
+                t = t.parent;
+            }
+            tiles.add(from);
+            while(!stack.isEmpty()) {
+                tiles.add(stack.pop());
+            }
+        }
+
+        return tiles.size();
+    }
 }

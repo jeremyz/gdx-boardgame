@@ -22,6 +22,8 @@ public interface Board extends TileKeyGenerator
 
     public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles);
 
+    public int shortestPath(Piece piece, Tile from, Tile to, Collection<Tile> tiles);
+
     public boolean lineOfSight(int x0, int y0, int x1, int y1, Collection<Tile> tiles, Vector2 v);
 
     default public boolean lineOfSight(Tile from, Tile  to, Collection<Tile> tiles, Vector2 v)
