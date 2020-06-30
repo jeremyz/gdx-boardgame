@@ -23,6 +23,7 @@ public class Tile implements Drawable
     public int acc;
     public int searchCount;
     public boolean roadMarch;
+    public float f;
 
     private Overlays overlays;
 
