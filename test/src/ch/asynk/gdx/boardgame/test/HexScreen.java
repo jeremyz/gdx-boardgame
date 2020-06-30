@@ -21,6 +21,7 @@ import ch.asynk.gdx.boardgame.boards.BoardFactory;
 import ch.asynk.gdx.boardgame.ui.Alignment;
 import ch.asynk.gdx.boardgame.ui.Button;
 import ch.asynk.gdx.boardgame.ui.Root;
+import ch.asynk.gdx.boardgame.utils.IterableArray;
 import ch.asynk.gdx.boardgame.utils.IterableSet;
 
 class Unit extends Piece
@@ -235,8 +236,8 @@ public class HexScreen extends AbstractScreen
 {
     private class MyBoard
     {
-        private final IterableSet<Tile> losTiles;
-        private final IterableSet<Tile> moveTiles;
+        private final IterableArray<Tile> tmpTiles;
+        private final IterableSet<Tile> tilesToDraw;
         private final Vector2 v;
         private final Vector3 v3;
         private final Assets assets;
@@ -266,8 +267,8 @@ public class HexScreen extends AbstractScreen
             this.engineer = new Unit(assets.getTexture(assets.ENGINEER), false);
             this.line = new Sprite(assets.getTexture(assets.LINE));
             this.line_r = new Sprite(assets.getTexture(assets.LINE_R));
-            this.losTiles = new IterableSet<Tile>(15);
-            this.moveTiles = new IterableSet<Tile>(20);
+            this.tmpTiles = new IterableArray<Tile>(15);
+            this.tilesToDraw = new IterableSet<Tile>(20);
             Tile.defaultOverlay = assets.getAtlas(app.assets.HEX_OVERLAYS);
         }
 
@@ -292,8 +293,7 @@ public class HexScreen extends AbstractScreen
         public void draw(SpriteBatch batch)
         {
             batch.draw(map, dx, dy, map.getWidth()/2, map.getHeight()/2, map.getWidth(), map.getHeight(), 1, 1, r, 0, 0, map.getWidth(), map.getHeight(), false, false);
-            for (Tile tile: losTiles) tile.draw(batch);
-            for (Tile tile: moveTiles) tile.draw(batch);
+            for (Tile tile: tilesToDraw) tile.draw(batch);
             panzer.draw(batch);
             engineer.draw(batch);
             line.draw(batch);
@@ -303,8 +303,8 @@ public class HexScreen extends AbstractScreen
         public void reset()
         {
             v.set(0, 0);
-            losTiles.clear();
-            moveTiles.clear();
+            tmpTiles.clear();
+            tilesToDraw.clear();
             t0 = board.getTile(0, 0);
             setUnitOn(panzer, t0.x, t0.y, Orientation.DEFAULT);
             t1 = board.getTile(8, 5);
@@ -357,22 +357,29 @@ public class HexScreen extends AbstractScreen
                 t0 = t;
             else
                 t1 = t;
-            for (Tile tile: losTiles) tile.disableOverlays();
-            for (Tile tile: moveTiles) tile.disableOverlays();
-            board.possibleMoves(u, t, moveTiles);
-            for (Tile tile: moveTiles) tile.enableOverlay(3, Orientation.N);
-
-            blocked = board.lineOfSight(t0, t1, losTiles, v);
+            for (Tile tile: tilesToDraw) tile.disableOverlays();
+            tilesToDraw.clear();
+            board.possibleMoves(u, t, tmpTiles);
+            for (Tile tile: tmpTiles) {
+                tilesToDraw.add(tile);
+                tile.enableOverlay(3, Orientation.N);
+            }
+            board.shortestPath(panzer, t0, t1, tmpTiles);
+            for (Tile tile: tmpTiles) {
+                tilesToDraw.add(tile);
+                tile.enableOverlay(12, Orientation.N);
+            }
+            blocked = board.lineOfSight(t0, t1, tmpTiles, v);
+            for (Tile tile: tmpTiles) {
+                tilesToDraw.add(tile);
+                if (tile.blocked) tile.enableOverlay(0, Orientation.N);
+                else tile.enableOverlay(2, Orientation.N);
+            }
             if (blocked) {
                 setLine(line, panzer.getCX(), panzer.getCY(), v.x, v.y);
                 setLine(line_r, v.x, v.y, engineer.getCX(), engineer.getCY());
             } else {
                 setLine(line, panzer.getCX(), panzer.getCY(), engineer.getCX(), engineer.getCY());
-            }
-            for (Tile tile: losTiles) {
-                if (tile.blocked) tile.enableOverlay(0, Orientation.N);
-                else tile.enableOverlay(2, Orientation.N);
-                moveTiles.remove(tile);
             }
         }
 
