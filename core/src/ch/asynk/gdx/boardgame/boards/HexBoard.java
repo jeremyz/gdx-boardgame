@@ -544,7 +544,7 @@ public class HexBoard implements Board
         }
     }
 
-    public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles)
+    @Override public int possibleMoves(Piece piece, Tile from, Collection<Tile> tiles)
     {
         tiles.clear();
         searchCount += 1;
@@ -587,7 +587,7 @@ public class HexBoard implements Board
                     dst.roadMarch = rm;
                     stack.push(dst);
                     tiles.add(dst);
-                } else if (r > dst.acc || (!dst.roadMarch && rm)) {
+                } else if (r > dst.acc || (rm && (r + roadMarchBonus > dst.acc + (dst.roadMarch ? roadMarchBonus : 0)))) {
                     dst.acc = r;
                     dst.parent = src;
                     dst.roadMarch = rm;
