@@ -23,6 +23,6 @@
     - [x] Adjacents
     - [x] Line Of Sight
     - [x] Reachable Tiles ::: BFS
-    - [ ] Shortest Path ::: A*
+    - [x] Shortest Path ::: A*
     - [ ] Range Of Influence (LOS - Fire Power)
     - [ ] Battle lines (Kruskal + farthest apart units are the flank units)
