@@ -14,7 +14,7 @@ public class HexBoard implements Board
     private final float side;   // length of the side of the hex
     private final float x0;     // bottom left x offset
     private final float y0;     // bottom left y offset
-    private final BoardFactory.BoardOrientation orientation;
+    private final boolean vertical;
 
     private final int cols;     // # colmuns
     private final int rows;     // # rows
@@ -63,7 +63,7 @@ public class HexBoard implements Board
         this.side = side;
         this.x0 = x0;
         this.y0 = y0;
-        this.orientation = boardOrientation;
+        this.vertical = (boardOrientation == BoardFactory.BoardOrientation.VERTICAL);
         this.tileProvider = tileProvider;
 
         this.w  = side * 1.73205f;
@@ -74,7 +74,7 @@ public class HexBoard implements Board
         this.searchCount = 0;
         this.stack = new IterableStack<Tile>(10);
 
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             this.aOffset = 0;
             this.tl = (2 * cols - 1);
             this.slope = dh / dw;
@@ -91,7 +91,7 @@ public class HexBoard implements Board
 
     @Override public int size()
     {
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             return (rows / 2) * tl + ((rows % 2) * cols);
         } else {
             return (cols / 2) * tl + ((cols % 2) * rows);
@@ -105,7 +105,7 @@ public class HexBoard implements Board
 
     @Override public int[] getAngles()
     {
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             return vAngles;
         } else {
             return hAngles;
@@ -128,7 +128,7 @@ public class HexBoard implements Board
     @Override public int genKey(int x, int y)
     {
         if (!isOnMap(x, y)) return -1;
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             int n = y / 2;
             int i =  x - n + n * tl;
             if ((y % 2) != 0) {
@@ -147,7 +147,7 @@ public class HexBoard implements Board
 
     @Override public boolean isOnMap(int x, int y)
     {
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             if ((y < 0) || (y >= rows)) return false;
             if ((x < ((y + 1) / 2)) || (x >= (cols + (y / 2)))) return false;
         } else {
@@ -162,7 +162,7 @@ public class HexBoard implements Board
         float cx = this.x0;
         float cy = this.y0;
 
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             cx += (this.dw + (x * this.w) - (y * this.dw));
             cy += (this.dh + (y * this.h));
         } else {
@@ -178,7 +178,7 @@ public class HexBoard implements Board
         int col = -1;
         int row = -1;
 
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             // compute row
             float dy = y - this.y0;
             row = (int) (dy / this.h);
@@ -425,8 +425,7 @@ public class HexBoard implements Board
                 tiles.add(t);
                 t.blocked = (losBlocked || blocked == 0x03);
                 if (t.blocked && !contact) {
-                    boolean vert = (this.orientation == BoardFactory.BoardOrientation.VERTICAL);
-                    Orientation o = computeOrientation(dx, dy, flat, vert);
+                    Orientation o = computeOrientation(dx, dy, flat);
                     if (!losBlocked && blocked == 0x03)
                         computeContact(from, to, o, t, v, false);
                     else
@@ -440,15 +439,15 @@ public class HexBoard implements Board
         return tiles.get(tiles.size() - 1).blocked;
     }
 
-    private Orientation computeOrientation(int dx, int dy, boolean flat, boolean vert)
+    private Orientation computeOrientation(int dx, int dy, boolean flat)
     {
         if (flat) {
-            if (vert)
+            if (vertical)
                 return (dy == 1 ? Orientation.N : Orientation.S);
             else
                 return (dx == 1 ? Orientation.NE : Orientation.SW);
         }
-        if (vert) {
+        if (vertical) {
             if (dx == 1) {
                 if (dy == 1)
                     return Orientation.NE;
@@ -481,7 +480,7 @@ public class HexBoard implements Board
         float dy = to.cy - from.cy;
         float m = dy / dx;
         float c = from.cy - (m * from.cx);
-        if (this.orientation == BoardFactory.BoardOrientation.VERTICAL) {
+        if (vertical) {
             if (o == Orientation.N) {
                 v.set(t.cx, t.cy - dh - side / 2);
             } else if (o == Orientation.S) {
