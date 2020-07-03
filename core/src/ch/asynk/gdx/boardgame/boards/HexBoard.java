@@ -28,14 +28,14 @@ public class HexBoard implements Board
     private int searchCount;    // to differentiate move computations
     private IterableStack<Tile> stack;
 
-    private final int tl;       // tiles in 2 consecutive lines
+    private final int tl;       // # tiles in 2 consecutive columns
 
     //  BoardOrientation.VERTICAL : 2 vertical sides : 2 vertices pointing up and down
     //  coordinates
     //  \
     //   \___
-    //   cols are horizontal
-    //   rows are at -120°
+    //   cols are at   0°
+    //   rows are at 120°
     //   bottom left is the bottom vertice of the most bottom-left vertical hex side of the map
     //
     //  BoardOrientation.HORIZONTAL : 2 horizontal sides : 2 vertices pointing left and right
@@ -44,8 +44,8 @@ public class HexBoard implements Board
     //  |
     //   \
     //    \
-    //   cols are at +120°
-    //   rows are vertical°
+    //   cols are at -60°
+    //   rows are at   90°
     //   bottom left is the left vertice of the most bottom-left horizontal hex side of the map
 
     // [0] is 0° facing East
@@ -58,11 +58,7 @@ public class HexBoard implements Board
 
     public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation, TileProvider tileProvider)
     {
-        this.cols = cols;
-        this.rows = rows;
         this.side = side;
-        this.x0 = x0;
-        this.y0 = y0;
         this.vertical = (boardOrientation == BoardFactory.BoardOrientation.VERTICAL);
         this.tileProvider = tileProvider;
 
@@ -75,14 +71,21 @@ public class HexBoard implements Board
         this.stack = new IterableStack<Tile>(10);
 
         if (vertical) {
+            this.x0 = x0;
+            this.y0 = y0;
+            this.cols = cols;
+            this.rows = rows;
             this.aOffset = 0;
-            this.tl = (2 * cols - 1);
             this.slope = dh / dw;
         } else {
+            this.x0 = y0;
+            this.y0 = x0;
+            this.cols = rows;
+            this.rows = cols;
             this.aOffset = -60;
-            this.tl = (2 * rows - 1);
             this.slope = dw / dh;
         }
+        this.tl = (2 * this.cols - 1);
 
         this.adjacents = new Tile[6];
         for (int i = 0; i < 6; i++)
@@ -91,11 +94,7 @@ public class HexBoard implements Board
 
     @Override public int size()
     {
-        if (vertical) {
-            return (rows / 2) * tl + ((rows % 2) * cols);
-        } else {
-            return (cols / 2) * tl + ((cols % 2) * rows);
-        }
+        return (rows / 2) * tl + ((rows % 2) * cols);
     }
 
     @Override public Tile getTile(int x, int y)
@@ -129,117 +128,107 @@ public class HexBoard implements Board
     {
         if (!isOnMap(x, y)) return -1;
         if (vertical) {
-            int n = y / 2;
-            int i =  x - n + n * tl;
-            if ((y % 2) != 0) {
-                i += (cols - 1);
-            }
-            return i;
+            return _genKey(x, y);
         } else {
-            int n = x / 2;
-            int i =  y - n + n * tl;
-            if ((x % 2) != 0) {
-                i += (rows - 1);
-            }
-            return i;
+            return _genKey(y, x);
         }
+    }
+
+    private int _genKey(int x, int y)
+    {
+        int n = y / 2;
+        int i =  x - n + n * tl;
+        if ((y % 2) != 0) {
+            i += (cols - 1);
+        }
+        return i;
     }
 
     @Override public boolean isOnMap(int x, int y)
     {
         if (vertical) {
-            if ((y < 0) || (y >= rows)) return false;
-            if ((x < ((y + 1) / 2)) || (x >= (cols + (y / 2)))) return false;
+            return _isOnMap(x, y);
         } else {
-            if ((x < 0) || (x >= cols)) return false;
-            if ((y < ((x + 1) / 2)) || (y >= (rows + (x / 2)))) return false;
+            return _isOnMap(y, x);
         }
+    }
+
+    private boolean _isOnMap(int x, int y)
+    {
+        if ((y < 0) || (y >= rows)) return false;
+        if ((x < ((y + 1) / 2)) || (x >= (cols + (y / 2)))) return false;
         return true;
     }
 
     @Override public void centerOf(int x, int y, Vector2 v)
     {
-        float cx = this.x0;
-        float cy = this.y0;
-
         if (vertical) {
-            cx += (this.dw + (x * this.w) - (y * this.dw));
-            cy += (this.dh + (y * this.h));
+            _centerOf(x, y, v, false);
         } else {
-            cx += (this.dh + (x * this.h));
-            cy += (this.dw + (y * this.w) - (x * this.dw));
+            _centerOf(y, x, v, true);
         }
+    }
 
-        v.set(cx, cy);
+    private void _centerOf(int x, int y, Vector2 v, boolean swap)
+    {
+        float cx = this.x0 + (this.dw + (x * this.w) - (y * this.dw));
+        float cy = this.y0 + (this.dh + (y * this.h));
+        if (swap) {
+            v.set(cy, cx);
+        } else {
+            v.set(cx, cy);
+        }
     }
 
     @Override public void toBoard(float x, float y, Vector2 v)
     {
+        if (vertical) {
+            _toBoard(x, y, v, false);
+        } else {
+            _toBoard(y, x, v, true);
+        }
+    }
+
+    private void _toBoard(float x, float y, Vector2 v, boolean swap)
+    {
         int col = -1;
         int row = -1;
 
-        if (vertical) {
-            // compute row
-            float dy = y - this.y0;
-            row = (int) (dy / this.h);
-            if (dy < 0f) row -= 1;
+        // compute row
+        float dy = y - this.y0;
+        row = (int) (dy / this.h);
+        if (dy < 0f) row -= 1;
 
-            // compute col
-            float dx = x - this.x0 + (row * this.dw);
-            col = (int) (dx / this.w);
-            if (dx < 0f) col -= 1;
+        // compute col
+        float dx = x - this.x0 + (row * this.dw);
+        col = (int) (dx / this.w);
+        if (dx < 0f) col -= 1;
 
-            // upper rectangle or hex body
-            if (dy > ((row * this.h) + this.side)) {
-                dy -= ((row * this.h) + this.side);
-                dx -= (col * this.w);
-                // upper left or right rectangle
-                if (dx < this.dw) {
-                    if (dy > (dx * this.slope)) {
-                        // upper left hex
-                        row += 1;
-                    }
-                } else {
-                    // if (dy > ((2 * this.dh) - (dx * this.slope))) {
-                    if (dy > ((this.w - dx) * this.slope)) {
-                        // upper right hex
-                        row += 1;
-                        col += 1;
-                    }
+        // upper rectangle or hex body
+        if (dy > ((row * this.h) + this.side)) {
+            dy -= ((row * this.h) + this.side);
+            dx -= (col * this.w);
+            // upper left or right rectangle
+            if (dx < this.dw) {
+                if (dy > (dx * this.slope)) {
+                    // upper left hex
+                    row += 1;
                 }
-            }
-        } else {
-            // compute col
-            float dx = x - this.x0;
-            col = (int) (dx / this.h);
-            if (dx < 0f) col -= 1;
-
-            // compute row
-            float dy = y - this.y0 + (col * this.dw);
-            row = (int) (dy / this.w);
-            if (dy < 0f) row -= 1;
-
-            // right rectangle or hex body
-            if (dx > ((col * this.h) + this.side)) {
-                dx -= ((col * this.h) + this.side);
-                dy -= (row * this.w);
-                // upper or lower rectangle
-                if (dy > ((this.dw - dx) * this.slope)) {
-                    if (dy > ((2 * this.dw) - (dx * this.slope))) {
-                        // upper right hex
-                        col += 1;
-                        row += 1;
-                    }
-                } else {
-                    if (dy < (dx * this.slope)) {
-                        // lower right hex
-                        col += 1;
-                    }
+            } else {
+                // if (dy > ((2 * this.dh) - (dx * this.slope))) {
+                if (dy > ((this.w - dx) * this.slope)) {
+                    // upper right hex
+                    row += 1;
+                    col += 1;
                 }
             }
         }
 
-        v.set(col, row);
+        if (swap) {
+            v.set(row, col);
+        } else {
+            v.set(col, row);
+        }
     }
 
     @Override public float distance(int x0, int y0, int x1, int y1, Geometry geometry)
