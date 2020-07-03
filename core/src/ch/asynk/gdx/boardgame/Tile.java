@@ -45,7 +45,7 @@ public class Tile implements Drawable
         }
     }
 
-    public boolean isOnMap()
+    public boolean isOnBoard()
     {
         return onMap;
     }

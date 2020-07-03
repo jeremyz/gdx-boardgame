@@ -40,7 +40,7 @@ public class SquareBoard implements Board
 
     @Override public Tile getTile(int x, int y)
     {
-        return tileProvider.getTile(x, y, isOnMap(x, y));
+        return tileProvider.getTile(x, y, isOnBoard(x, y));
     }
 
     @Override public int[] getAngles() { return angles; }
@@ -64,7 +64,7 @@ public class SquareBoard implements Board
         return (y * cols + x);
     }
 
-    @Override public boolean isOnMap(int x, int y)
+    @Override public boolean isOnBoard(int x, int y)
     {
         if (x < 0 || x >= cols || y < 0 || y >= rows) return false;
         return true;

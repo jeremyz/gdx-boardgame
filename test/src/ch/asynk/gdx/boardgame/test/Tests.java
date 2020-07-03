@@ -76,9 +76,9 @@ public class Tests
         check((g == k), title, "Key", k);
     }
 
-    private Tile getTile(int x, int y, boolean isOnMap)
+    private Tile getTile(int x, int y, boolean isOnBoard)
     {
-        if (isOnMap)
+        if (isOnBoard)
             return tileStorage.getTile(x, y, board::genKey, this::buildTile);
         return Tile.OffMap;
     }

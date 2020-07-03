@@ -275,9 +275,9 @@ public class HexScreen extends AbstractScreen
         public int getWidth() { return map.getWidth(); }
         public int getHeight() { return map.getHeight(); }
 
-        private Tile getTile(int x, int y, boolean isOnMap)
+        private Tile getTile(int x, int y, boolean isOnBoard)
         {
-            if (isOnMap)
+            if (isOnBoard)
                 return tileStorage.getTile(x, y, board::genKey, this::buildTile);
             return Tile.OffMap;
         }
@@ -328,7 +328,7 @@ public class HexScreen extends AbstractScreen
         {
             board.toBoard(x, y, v);
             Tile tile = board.getTile((int)v.x, (int)v.y);
-            if (!tile.isOnMap())
+            if (!tile.isOnBoard())
                 return false;
             if (down) {
                 if (!panzer.dragging && panzer.isOn(tile)) {

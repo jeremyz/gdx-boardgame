@@ -13,7 +13,7 @@ public interface Board extends TileKeyGenerator
     public int[] getAngles();
     public Tile getTile(int x, int y);
 
-    public boolean isOnMap(int x, int y);
+    public boolean isOnBoard(int x, int y);
     public void centerOf(int x, int y, Vector2 v);
     public void toBoard(float x, float y, Vector2 v);
 

@@ -99,7 +99,7 @@ public class HexBoard implements Board
 
     @Override public Tile getTile(int x, int y)
     {
-        return tileProvider.getTile(x, y, isOnMap(x, y));
+        return tileProvider.getTile(x, y, isOnBoard(x, y));
     }
 
     @Override public int[] getAngles()
@@ -126,7 +126,7 @@ public class HexBoard implements Board
 
     @Override public int genKey(int x, int y)
     {
-        if (!isOnMap(x, y)) return -1;
+        if (!isOnBoard(x, y)) return -1;
         if (vertical) {
             return _genKey(x, y);
         } else {
@@ -144,16 +144,16 @@ public class HexBoard implements Board
         return i;
     }
 
-    @Override public boolean isOnMap(int x, int y)
+    @Override public boolean isOnBoard(int x, int y)
     {
         if (vertical) {
-            return _isOnMap(x, y);
+            return _isOnBoard(x, y);
         } else {
-            return _isOnMap(y, x);
+            return _isOnBoard(y, x);
         }
     }
 
-    private boolean _isOnMap(int x, int y)
+    private boolean _isOnBoard(int x, int y)
     {
         if ((y < 0) || (y >= rows)) return false;
         if ((x < ((y + 1) / 2)) || (x >= (cols + (y / 2)))) return false;
@@ -384,7 +384,7 @@ public class HexBoard implements Board
             else
                 x += dx; // right
             Tile t = getTile(x, y);
-            if (t.isOnMap()) {
+            if (t.isOnBoard()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
                 if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
@@ -398,7 +398,7 @@ public class HexBoard implements Board
                 if (!q13) x -= dx;
             }
             t = getTile(x, y);
-            if (t.isOnMap()) {
+            if (t.isOnBoard()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
                 if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
@@ -410,7 +410,7 @@ public class HexBoard implements Board
             else
                 x += dx; // diagonal
             t = getTile(x, y);
-            if (t.isOnMap()) {
+            if (t.isOnBoard()) {
                 tiles.add(t);
                 t.blocked = (losBlocked || blocked == 0x03);
                 if (t.blocked && !contact) {
@@ -541,7 +541,7 @@ public class HexBoard implements Board
         from.parent = null;
         from.searchCount = searchCount;
 
-        if (from.acc <= 0 || !from.isOnMap())
+        if (from.acc <= 0 || !from.isOnBoard())
             return tiles.size();
 
         int roadMarchBonus = piece.roadMarchBonus();
@@ -556,7 +556,7 @@ public class HexBoard implements Board
             buildAdjacents(src.x, src.y);
             for (int i = 0, j = 0; i < 6; i++, j++) {
                 final Tile dst = adjacents[i];
-                if (!dst.isOnMap()) continue;
+                if (!dst.isOnBoard()) continue;
 
                 if (getAngles()[j] == -1) j++;
                 final Orientation o = Orientation.fromR(getAngles()[j] + aOffset);
@@ -596,7 +596,7 @@ public class HexBoard implements Board
         from.parent = null;
         from.searchCount = searchCount;
 
-        if (from == to || !from.isOnMap() || !to.isOnMap())
+        if (from == to || !from.isOnBoard() || !to.isOnBoard())
             return tiles.size();
 
         int roadMarchBonus = piece.roadMarchBonus();
@@ -612,7 +612,7 @@ public class HexBoard implements Board
             buildAdjacents(src.x, src.y);
             for (int i = 0, j = 0; i < 6; i++, j++) {
                 final Tile dst = adjacents[i];
-                if (!dst.isOnMap()) continue;
+                if (!dst.isOnBoard()) continue;
 
                 if (getAngles()[j] == -1) j++;
                 final Orientation o = Orientation.fromR(getAngles()[j] + aOffset);
