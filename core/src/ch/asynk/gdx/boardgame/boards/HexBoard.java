@@ -471,9 +471,9 @@ public class HexBoard implements Board
         float c = from.cy - (m * from.cx);
         if (vertical) {
             if (o == Orientation.N) {
-                v.set(t.cx, t.cy - dh - side / 2);
+                v.set(t.cx, t.cy - side);
             } else if (o == Orientation.S) {
-                v.set(t.cx, t.cy + dh + side / 2);
+                v.set(t.cx, t.cy + side);
             } else if (o == Orientation.E) {
                 float x = t.cx - dw;
                 float y = from.cy + m * (x - from.cx);
@@ -487,23 +487,23 @@ public class HexBoard implements Board
                     float k = 0;
                     float p = ((o == Orientation.SE || o == Orientation.NW) ? slope : -slope);
                     if (o == Orientation.SE || o == Orientation.SW)
-                        k = (t.cy + dh + side / 2) - (p * t.cx);
+                        k = (t.cy + side) - (p * t.cx);
                     else
-                        k = (t.cy - dh - side / 2) - (p * t.cx);
+                        k = (t.cy - side) - (p * t.cx);
                     float x = (k - c) / (m - p);
                     float y = m * x + c;
                     v.set(x, y);
                 } else {
                     float x = t.cx + ((o == Orientation.NE || o == Orientation.SE) ? -dw : dw);
-                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? side : -side) / 2;
+                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? dh : -dh);
                     v.set(x, y);
                 }
             }
         } else {
             if (o == Orientation.E) {
-                v.set(t.cx - dh - side / 2, t.cy);
+                v.set(t.cx - side, t.cy);
             } else if (o == Orientation.W) {
-                v.set(t.cx + dh + side / 2, t.cy);
+                v.set(t.cx + side, t.cy);
             } else if (o == Orientation.N) {
                 float y = t.cy - dw;
                 float x = from.cx + (y - from.cy) / m;
@@ -517,14 +517,14 @@ public class HexBoard implements Board
                     float k = 0;
                     float p = ((o == Orientation.SE || o == Orientation.NW) ? slope : -slope);
                     if (o == Orientation.SW || o == Orientation.NW)
-                        k = t.cy - (p * (t.cx + dh + side / 2));
+                        k = t.cy - (p * (t.cx + side));
                     else
-                        k = t.cy - (p * (t.cx - dh - side / 2));
+                        k = t.cy - (p * (t.cx - side));
                     float x = (k - c) / (m - p);
                     float y = m * x + c;
                     v.set(x, y);
                 } else {
-                    float x = t.cx + ((o == Orientation.NW || o == Orientation.SW) ? side : -side) / 2;
+                    float x = t.cx + ((o == Orientation.NW || o == Orientation.SW) ? dh: -dh);
                     float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? dw : -dw);
                     v.set(x, y);
                 }
