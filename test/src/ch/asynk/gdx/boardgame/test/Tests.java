@@ -31,6 +31,7 @@ public class Tests
     {
         board = BoardFactory.getBoard(10, 9, BoardFactory.BoardType.HEX, 110, 50, 103, BoardFactory.BoardOrientation.VERTICAL, this::getTile);
         tileStorage = new ArrayTileStorage(board.size());
+        check((board.size() == 86), "Vertical ", "size", board.size());
         testTouch(899, 602, 5, 3, 812, 653, 32);
         testTouch(906, 593, 5, 2, 907, 488, 23);
         testTouch(916, 601, 6, 3, 1002, 653, 33);
@@ -40,6 +41,7 @@ public class Tests
     {
         board = BoardFactory.getBoard(9, 10, BoardFactory.BoardType.HEX, 110, 103, 50, BoardFactory.BoardOrientation.HORIZONTAL, this::getTile);
         tileStorage = new ArrayTileStorage(board.size());
+        check((board.size() == 86), "Horizontal ", "size", board.size());
         testTouch(705, 1103, 3, 7, 653, 1193, 34);
         testTouch(707, 1092, 3, 6, 653, 1002, 33);
         testTouch(715, 1096, 4, 7, 818, 1097, 43);
@@ -55,7 +57,7 @@ public class Tests
         check((t.y == y), title, "y", t.y);
         check(((int)t.cx == cx), title, "cx", (int)t.cx);
         check(((int)t.cy == cy), title, "cy", (int)t.cy);
-        check((g == k), title, "Key", g);
+        check((g == k), title, "Key", k);
     }
 
     private Tile getTile(int x, int y, boolean isOnMap)
