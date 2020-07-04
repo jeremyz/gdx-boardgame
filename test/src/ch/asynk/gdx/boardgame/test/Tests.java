@@ -39,6 +39,18 @@ public class Tests
         testTouch(899, 602, 5, 3, 812, 653, 32);
         testTouch(906, 593, 5, 2, 907, 488, 23);
         testTouch(916, 601, 6, 3, 1002, 653, 33);
+        testTouch(1768, 205, 9, 0, 1859, 158, 9);
+        testTouch(1781, 218, 9, 0, 1859, 158, 9);
+        testTouch(1851, 258, 9, 0, 1859, 158, 9);
+        testTouch(1874, 257, 9, 0, 1859, 158, 9);
+        testTouch(1939, 218, 9, 0, 1859, 158, 9);
+        testTouch(1950, 201, 9, 0, 1859, 158, 9);
+        testTouch(1951, 111, 9, 0, 1859, 158, 9);
+        testTouch(1940, 100, 9, 0, 1859, 158, 9);
+        testTouch(1868, 59, 9, 0, 1859, 158, 9);
+        testTouch(1851, 59, 9, 0, 1859, 158, 9);
+        testTouch(1779, 99, 9, 0, 1859, 158, 9);
+        testTouch(1768, 115, 9, 0, 1859, 158, 9);
     }
 
     private void runHexHorizontal()
@@ -53,6 +65,18 @@ public class Tests
         testTouch(705, 1103, 3, 7, 653, 1193, 34);
         testTouch(707, 1092, 3, 6, 653, 1002, 33);
         testTouch(715, 1096, 4, 7, 818, 1097, 43);
+        testTouch(1423, 224, 8, 4, 1478, 145, 76);
+        testTouch(1448, 235, 8, 4, 1478, 145, 76);
+        testTouch(1516, 234, 8, 4, 1478, 145, 76);
+        testTouch(1538, 218, 8, 4, 1478, 145, 76);
+        testTouch(1578, 152, 8, 4, 1478, 145, 76);
+        testTouch(1575, 137, 8, 4, 1478, 145, 76);
+        testTouch(1537, 63, 8, 4, 1478, 145, 76);
+        testTouch(1515, 56, 8, 4, 1478, 145, 76);
+        testTouch(1437, 53, 8, 4, 1478, 145, 76);
+        testTouch(1421, 64, 8, 4, 1478, 145, 76);
+        testTouch(1380, 130, 8, 4, 1478, 145, 76);
+        testTouch(1386, 161, 8, 4, 1478, 145, 76);
     }
 
     private void testCenter(int x, int y, int cx, int cy)
