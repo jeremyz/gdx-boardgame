@@ -291,8 +291,7 @@ public class HexBoard implements Board
             if ((y0 % 2) == 0) {
                 dx += xs;
             } else {
-                dx -= xs;
-                Math.abs(dx);
+                dx = Math.abs(dx - xs);
             }
         }
 
