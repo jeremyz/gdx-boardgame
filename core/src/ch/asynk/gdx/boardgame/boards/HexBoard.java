@@ -410,21 +410,17 @@ public class HexBoard implements Board
             else
                 x += dx; // diagonal
             t = getTile(x, y);
-            if (t.isOnBoard()) {
-                tiles.add(t);
-                t.blocked = (losBlocked || blocked == 0x03);
-                if (t.blocked && !contact) {
-                    Orientation o = computeOrientation(dx, dy, flat);
-                    if (!losBlocked && blocked == 0x03)
-                        computeContact(from, to, o, t, v, false);
-                    else
-                        computeContact(from, to, o.opposite(), tiles.get(tiles.size() - 4), v, false);
-                    contact = true;
-                }
-                losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
-            } else {
-                losBlocked = true;
+            tiles.add(t);
+            t.blocked = (losBlocked || blocked == 0x03);
+            if (t.blocked && !contact) {
+                Orientation o = computeOrientation(dx, dy, flat);
+                if (!losBlocked && blocked == 0x03)
+                    computeContact(from, to, o, t, v, false);
+                else
+                    computeContact(from, to, o.opposite(), tiles.get(tiles.size() - 4), v, false);
+                contact = true;
             }
+            losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
         }
 
         return tiles.get(tiles.size() - 1).blocked;
