@@ -385,6 +385,8 @@ public class HexBoard implements Board
                 t.blocked = losBlocked;
                 if (t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)))
                     blocked |= 0x01;
+            } else {
+                blocked |= 0x01;
             }
 
             if (flat)
@@ -399,6 +401,8 @@ public class HexBoard implements Board
                 t.blocked = losBlocked;
                 if (t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)))
                     blocked |= 0x02;
+            } else {
+                blocked |= 0x02;
             }
 
             if (flat)
@@ -418,6 +422,8 @@ public class HexBoard implements Board
                     contact = true;
                 }
                 losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
+            } else {
+                losBlocked = true;
             }
         }
 
