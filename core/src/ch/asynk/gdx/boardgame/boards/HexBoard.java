@@ -270,10 +270,10 @@ public class HexBoard implements Board
         v.set(0, 0);
 
         // orthogonal projection
-        int ox0 = x0 - ((y0 + 1) / 2);
-        int ox1 = x1 - ((y1 + 1) / 2);
+        float ox0 = x0 - ((y0 + 1) / 2f);
+        float ox1 = x1 - ((y1 + 1) / 2f);
         int dy = y1 - y0;
-        int dx = ox1 - ox0;
+        float dx = (ox1 - ox0);
 
         // quadrant I && III
         boolean q13 = (((dx >= 0) && (dy >= 0)) || ((dx < 0) && (dy < 0)));
@@ -287,15 +287,8 @@ public class HexBoard implements Board
         // dx counts half width
         dy = Math.abs(dy);
         dx = Math.abs(2 * dx);
-        if ((dy % 2) == 1) {
-            if ((y0 % 2) == 0) {
-                dx += xs;
-            } else {
-                dx = Math.abs(dx - xs);
-            }
-        }
 
-        int dx3 = 3 * dx;
+        int dx3 = (int)(3 * dx);
         int dy3 = 3 * dy;
 
         if (dx == 0 || dx == dy3)
@@ -306,7 +299,7 @@ public class HexBoard implements Board
 
         int x = x0;
         int y = y0;
-        int e = -2 * dx;
+        int e = (int)(-2 * dx);
 
         Tile from = getTile(x0, y0);
         Tile to = getTile(x1, y1);
