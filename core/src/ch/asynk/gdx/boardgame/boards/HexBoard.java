@@ -254,14 +254,11 @@ public class HexBoard implements Board
             if (dx > dy) {
                 if (dx > dz)
                     return dx;
-                else
-                    return dz;
             } else {
                 if (dy > dz)
                     return dy;
-                else
-                    return dz;
             }
+            return dz;
         }
     }
 
@@ -314,7 +311,7 @@ public class HexBoard implements Board
 
         Tile from = getTile(x0, y0);
         Tile to = getTile(x1, y1);
-        float d = distance(x0, y0, x1, y1);
+        float d = distance(x0, y0, x1, y1, Board.Geometry.EUCLIDEAN);
         tiles.add(from);
         from.blocked = false;
         boolean contact = false;
@@ -355,7 +352,7 @@ public class HexBoard implements Board
             }
             tiles.add(t);
             t.blocked = losBlocked;
-            losBlocked = (losBlocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
+            losBlocked = (losBlocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
         }
 
         return tiles.get(tiles.size() - 1).blocked;
@@ -371,7 +368,7 @@ public class HexBoard implements Board
 
         Tile from = getTile(x0, y0);
         Tile to = getTile(x1, y1);
-        float d = distance(x0, y0, x1, y1);
+        float d = distance(x0, y0, x1, y1, Board.Geometry.EUCLIDEAN);
         tiles.add(from);
         from.blocked = false;
         int blocked = 0;
@@ -387,7 +384,7 @@ public class HexBoard implements Board
             if (t.isOnBoard()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
-                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
+                if (t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)))
                     blocked |= 0x01;
             }
 
@@ -401,7 +398,7 @@ public class HexBoard implements Board
             if (t.isOnBoard()) {
                 tiles.add(t);
                 t.blocked = losBlocked;
-                if (t.blockLos(from, to, d, distance(x0, y0, x, y)))
+                if (t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)))
                     blocked |= 0x02;
             }
 
@@ -421,7 +418,7 @@ public class HexBoard implements Board
                         computeContact(from, to, o.opposite(), tiles.get(tiles.size() - 4), v, false);
                     contact = true;
                 }
-                losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y)));
+                losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
             }
         }
 
