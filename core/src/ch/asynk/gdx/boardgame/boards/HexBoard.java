@@ -434,30 +434,16 @@ public class HexBoard implements Board
             else
                 return (dx == 1 ? Orientation.NE : Orientation.SW);
         }
-        if (vertical) {
-            if (dx == 1) {
-                if (dy == 1)
-                    return Orientation.NE;
-                else
-                    return Orientation.SE;
-            } else {
-                if (dy == 1)
-                    return Orientation.NW;
-                else
-                    return Orientation.SW;
-            }
+        if (dx == 1) {
+            if (dy == 1)
+                return (vertical ? Orientation.NE : Orientation.E);
+            else
+                return (vertical ? Orientation.SE : Orientation.SE);
         } else {
-            if (dx == 1) {
-                if (dy == 1)
-                    return Orientation.E;
-                else
-                    return Orientation.SE;
-            } else {
-                if (dy == 1)
-                    return Orientation.NW;
-                else
-                    return Orientation.W;
-            }
+            if (dy == 1)
+                return (vertical ? Orientation.NW : Orientation.NW);
+            else
+                return (vertical ? Orientation.SW : Orientation.W);
         }
     }
 
