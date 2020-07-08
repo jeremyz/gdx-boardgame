@@ -431,10 +431,10 @@ public class HexBoard implements Board
             if (dy == 1)
                 return (vertical ? Orientation.NE : Orientation.E);
             else
-                return (vertical ? Orientation.SE : Orientation.SE);
+                return Orientation.SE;
         } else {
             if (dy == 1)
-                return (vertical ? Orientation.NW : Orientation.NW);
+                return Orientation.NW;
             else
                 return (vertical ? Orientation.SW : Orientation.W);
         }
