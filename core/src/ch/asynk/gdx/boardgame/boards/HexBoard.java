@@ -368,6 +368,7 @@ public class HexBoard implements Board
         boolean contact = false;
         boolean losBlocked = false;
         while ((x != x1) || (y != y1)) {
+            int idx = 4;
 
             if (flat)
                 y += dy; // up left
@@ -381,6 +382,7 @@ public class HexBoard implements Board
                     blocked |= 0x01;
             } else {
                 blocked |= 0x01;
+                idx = 3;
             }
 
             if (flat)
@@ -397,6 +399,7 @@ public class HexBoard implements Board
                     blocked |= 0x02;
             } else {
                 blocked |= 0x02;
+                idx = 3;
             }
 
             if (flat)
@@ -411,7 +414,7 @@ public class HexBoard implements Board
                 if (!losBlocked && blocked == 0x03)
                     computeContact(from, to, o, t, v, false);
                 else
-                    computeContact(from, to, o.opposite(), tiles.get(tiles.size() - 4), v, false);
+                    computeContact(from, to, o.opposite(), tiles.get(tiles.size() - idx), v, false);
                 contact = true;
             }
             losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
