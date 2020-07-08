@@ -444,7 +444,7 @@ public class HexBoard implements Board
     {
         float dx = to.cx - from.cx;
         float dy = to.cy - from.cy;
-        float m = dy / dx;
+        float m = (dx == 0 ? Float.MAX_VALUE : dy / dx);
         float c = from.cy - (m * from.cx);
         if (vertical) {
             if (o == Orientation.N) {
