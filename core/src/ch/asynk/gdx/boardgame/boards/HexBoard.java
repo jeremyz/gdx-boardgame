@@ -23,6 +23,7 @@ public class HexBoard implements Board
     private final float dh;     // hex top : s/2
     private final float h;      // square height : s + dh
     private final float slope;  // dh / dw
+    private final float islope; // dw / dh
 
     private int aOffset;        // to fix Orientation computation from adjacents
     private int searchCount;    // to differentiate move computations
@@ -66,6 +67,8 @@ public class HexBoard implements Board
         this.dw = w / 2.0f;
         this.dh = side / 2.0f;
         this.h  = side + dh;
+        this.slope = dh / dw;
+        this.islope = dw / dh;
 
         this.searchCount = 0;
         this.stack = new IterableStack<Tile>(10);
@@ -76,14 +79,12 @@ public class HexBoard implements Board
             this.cols = cols;
             this.rows = rows;
             this.aOffset = 0;
-            this.slope = dh / dw;
         } else {
             this.x0 = y0;
             this.y0 = x0;
             this.cols = rows;
             this.rows = cols;
             this.aOffset = -60;
-            this.slope = dw / dh;
         }
         this.tl = (2 * this.cols - 1);
 
@@ -487,7 +488,7 @@ public class HexBoard implements Board
             } else {
                 if (line) {
                     float k = 0;
-                    float p = ((o == Orientation.SE || o == Orientation.NW) ? slope : -slope);
+                    float p = ((o == Orientation.SE || o == Orientation.NW) ? islope : -islope);
                     if (o == Orientation.SW || o == Orientation.NW)
                         k = t.cy - (p * (t.cx + side));
                     else
