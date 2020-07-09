@@ -4,7 +4,10 @@
 
 is a [libgdx](https://libgdx.badlogicgames.com/) based framework to build 2D boardgames.
 
-code is mainly extracted from https://github.com/jeremyz/rustanddust
+code is mainly extracted from [rustanddust](https://github.com/jeremyz/rustanddust).
+check [godot-hexgrid](https://github.com/jeremyz/godot-hexgrid) for the [godot](https://godotengine.org/)/gdscript implementation.
+
+base map made with [gimp](https://www.gimp.org) and my plugin [hexmap](https://github.com/jeremyz/hexmap)
 
 ## features
 
