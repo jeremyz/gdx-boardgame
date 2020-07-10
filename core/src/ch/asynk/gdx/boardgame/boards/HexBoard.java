@@ -601,7 +601,7 @@ public class HexBoard implements Board
                 if (dst.searchCount != searchCount) {
                     dst.searchCount = searchCount;
                     add = true;
-                } else if ((dst.f > total) || (rm && !dst.roadMarch && dst.f == total)) {
+                } else if ((dst.f > total) || (rm && !dst.roadMarch && Math.abs(dst.f - total) < 0.001)) {
                     stack.remove(dst);
                     add = true;
                 }
