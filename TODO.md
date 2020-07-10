@@ -21,7 +21,7 @@
  - Algos
     - [x] Distance
     - [x] Adjacents
-    - [x] Line Of Sight
+    - [x] 3D Line Of Sight
     - [x] Reachable Tiles ::: BFS
     - [x] Shortest Path ::: A*
     - [ ] Range Of Influence (LOS - Fire Power)

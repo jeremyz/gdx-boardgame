@@ -14,7 +14,7 @@ base map made with [gimp](https://www.gimp.org) and my plugin [hexmap](https://g
     - moveable, zoomable board with tile identification on touch
     - moveable, orientable pieces
     - various animations
-    - path, movement, line of sight computation
+    - 3D line of sight, possible moves, shortest path
 
 ## screenshots
 
