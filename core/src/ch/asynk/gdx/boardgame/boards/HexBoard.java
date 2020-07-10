@@ -22,8 +22,8 @@ public class HexBoard implements Board
     private final float dw;     // half hex : w/2
     private final float dh;     // hex top : s/2
     private final float h;      // square height : s + dh
-    private final float slope;  // dh / dw
-    private final float islope; // dw / dh
+    private final float m;      // dh / dw
+    private final float im;     // dw / dh
 
     private int aOffset;        // to fix Orientation computation from adjacents
     private int searchCount;    // to differentiate move computations
@@ -67,8 +67,8 @@ public class HexBoard implements Board
         this.dw = w / 2.0f;
         this.dh = side / 2.0f;
         this.h  = side + dh;
-        this.slope = dh / dw;
-        this.islope = dw / dh;
+        this.m = dh / dw;
+        this.im = dw / dh;
 
         this.searchCount = 0;
         this.stack = new IterableStack<Tile>(10);
@@ -211,13 +211,12 @@ public class HexBoard implements Board
             dx -= (col * this.w);
             // upper left or right rectangle
             if (dx < this.dw) {
-                if (dy > (dx * this.slope)) {
+                if (dy > (dx * this.m)) {
                     // upper left hex
                     row += 1;
                 }
             } else {
-                // if (dy > ((2 * this.dh) - (dx * this.slope))) {
-                if (dy > ((this.w - dx) * this.slope)) {
+                if (dy > ((this.w - dx) * this.m)) {
                     // upper right hex
                     row += 1;
                     col += 1;
@@ -463,7 +462,7 @@ public class HexBoard implements Board
                 v.set(x, from.cy + m * (x - from.cx));
             } else {
                 if (line) {
-                    float p = ((o == Orientation.SE || o == Orientation.NW) ? slope : -slope);
+                    float p = ((o == Orientation.SE || o == Orientation.NW) ? m : -m);
                     float k = t.cy - (p * t.cx);
                     if (o == Orientation.SE || o == Orientation.SW)
                         k += side;
@@ -491,7 +490,7 @@ public class HexBoard implements Board
             } else {
                 if (line) {
                     float k = 0;
-                    float p = ((o == Orientation.SE || o == Orientation.NW) ? islope : -islope);
+                    float p = ((o == Orientation.SE || o == Orientation.NW) ? im : -im);
                     if (o == Orientation.SW || o == Orientation.NW)
                         k = t.cy - (p * (t.cx + side));
                     else
