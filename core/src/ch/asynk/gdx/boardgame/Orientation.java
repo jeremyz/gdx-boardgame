@@ -88,16 +88,16 @@ public enum Orientation
     public static Orientation fromR(float r)
     {
         if (r < 0) r += 360f;
-             if ( E.r != -1 && (r > ( E.r - delta)) && (r < ( E.r + delta))) return  E;
-        else if (NE.r != -1 && (r > (NE.r - delta)) && (r < (NE.r + delta))) return NE;
-        else if ( N.r != -1 && (r > ( N.r - delta)) && (r < ( N.r + delta))) return  N;
-        else if (NW.r != -1 && (r > (NW.r - delta)) && (r < (NW.r + delta))) return NW;
-        else if ( W.r != -1 && (r > ( W.r - delta)) && (r < ( W.r + delta))) return  W;
-        else if (SW.r != -1 && (r > (SW.r - delta)) && (r < (SW.r + delta))) return SW;
-        else if ( S.r != -1 && (r > ( S.r - delta)) && (r < ( S.r + delta))) return  S;
-        else if (SE.r != -1 && (r > (SE.r - delta)) && (r < (SE.r + delta))) return SE;
-        else return KEEP;
-
+        int v = ((int)(r + 2) / 10 * 10);
+        if (v == E.r) return E;
+        else if (v == NE.r) return NE;
+        else if (v == N.r) return N;
+        else if (v == NW.r) return NW;
+        else if (v == W.r) return W;
+        else if (v == SW.r) return SW;
+        else if (v == S.r) return S;
+        else if (v == SE.r) return SE;
+        return KEEP;
     }
 
     public static Orientation fromTiles(Tile from, Tile to)
