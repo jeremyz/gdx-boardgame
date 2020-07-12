@@ -96,7 +96,7 @@ public class Tile implements Drawable
 
     @Override public String toString()
     {
-        return "[" + x + ", " + y + "] => [" + cx + "," + cy + "]";
+        return "[" + x + ";" + y + "] => [" + (int)cx + ";" + (int)cy + "]";
     }
 
     @Override public void draw(Batch batch)
