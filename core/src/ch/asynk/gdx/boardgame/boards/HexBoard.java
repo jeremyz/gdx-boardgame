@@ -11,13 +11,13 @@ import ch.asynk.gdx.boardgame.utils.IterableStack;
 
 public class HexBoard implements Board
 {
-    private final float side;   // length of the side of the hex
     private final float x0;     // bottom left x offset
     private final float y0;     // bottom left y offset
     private final boolean vertical;
 
     private final int cols;     // # colmuns
     private final int rows;     // # rows
+    private final float s;      // length of the side of the hex
     private final float w;      // side to side orthogonal distance
     private final float dw;     // half hex : w/2
     private final float dh;     // hex top : s/2
@@ -57,16 +57,16 @@ public class HexBoard implements Board
     private final Tile[] adjacents;
     private final TileProvider tileProvider;
 
-    public HexBoard(int cols, int rows, float side, float x0, float y0, BoardFactory.BoardOrientation boardOrientation, TileProvider tileProvider)
+    public HexBoard(int cols, int rows, float s, float x0, float y0, BoardFactory.BoardOrientation boardOrientation, TileProvider tileProvider)
     {
-        this.side = side;
+        this.s = s;
         this.vertical = (boardOrientation == BoardFactory.BoardOrientation.VERTICAL);
         this.tileProvider = tileProvider;
 
-        this.w  = side * 1.73205f;
+        this.w  = s * 1.73205f;
         this.dw = w / 2.0f;
-        this.dh = side / 2.0f;
-        this.h  = side + dh;
+        this.dh = s / 2.0f;
+        this.h  = s + dh;
         this.m = dh / dw;
         this.im = dw / dh;
 
@@ -206,8 +206,8 @@ public class HexBoard implements Board
         if (dx < 0f) col -= 1;
 
         // upper rectangle or hex body
-        if (dy > ((row * this.h) + this.side)) {
-            dy -= ((row * this.h) + this.side);
+        if (dy > ((row * this.h) + this.s)) {
+            dy -= ((row * this.h) + this.s);
             dx -= (col * this.w);
             // upper left or right rectangle
             if (dx < this.dw) {
@@ -338,8 +338,9 @@ public class HexBoard implements Board
             }
             final Tile t = getTile(x, y);
             if (losBlocked && !contact) {
-                Orientation o = Orientation.fromTiles(tiles.get(tiles.size() - 1), t);
-                computeContact(from, to, o, t, v, true);
+                final Tile prev = tiles.get(tiles.size() - 1);
+                Orientation o = Orientation.fromTiles(prev, t);
+                computeContact(from, to, prev, o, v, true);
                 contact = true;
             }
             tiles.add(t);
@@ -410,10 +411,11 @@ public class HexBoard implements Board
             t.blocked = (losBlocked || blocked == 0x03);
             if (t.blocked && !contact) {
                 Orientation o = computeOrientation(dx, dy, flat);
-                if (!losBlocked && blocked == 0x03)
-                    computeContact(from, to, o, t, v, false);
-                else
-                    computeContact(from, to, o.opposite(), tiles.get(tiles.size() - idx), v, false);
+                if (!losBlocked && blocked == 0x03) {
+                    computeContact(from, to, t, o, v, false);
+                } else {
+                    computeContact(from, to, tiles.get(tiles.size() - idx), o, v, false);
+                }
                 contact = true;
             }
             losBlocked = (t.blocked || t.blockLos(from, to, d, distance(x0, y0, x, y, Board.Geometry.EUCLIDEAN)));
@@ -443,63 +445,61 @@ public class HexBoard implements Board
         }
     }
 
-    private void computeContact(Tile from, Tile to, Orientation o, Tile t, Vector2 v, boolean line)
+    private void computeContact(Tile from, Tile to, Tile t, Orientation o, Vector2 v, boolean line)
     {
         float dx = to.cx - from.cx;
         float dy = to.cy - from.cy;
-        float m = (dx == 0 ? Float.MAX_VALUE : dy / dx);
-        float c = from.cy - (m * from.cx);
+        float n = (dx == 0 ? Float.MAX_VALUE : dy / dx);
+        float c = from.cy - (n * from.cx);
         if (vertical) {
             if (o == Orientation.N) {
-                v.set(t.cx, t.cy - side);
+                v.set(t.cx, t.cy + s);
             } else if (o == Orientation.S) {
-                v.set(t.cx, t.cy + side);
+                v.set(t.cx, t.cy - s);
             } else if (o == Orientation.E) {
-                float x = t.cx - dw;
-                v.set(x, from.cy + m * (x - from.cx));
-            } else if (o == Orientation.W) {
                 float x = t.cx + dw;
-                v.set(x, from.cy + m * (x - from.cx));
+                v.set(x, from.cy + n * (x - from.cx));
+            } else if (o == Orientation.W) {
+                float x = t.cx - dw;
+                v.set(x, from.cy + n * (x - from.cx));
             } else {
                 if (line) {
                     float p = ((o == Orientation.SE || o == Orientation.NW) ? m : -m);
                     float k = t.cy - (p * t.cx);
-                    if (o == Orientation.SE || o == Orientation.SW)
-                        k += side;
-                    else
-                        k -= side;
-                    float x = (k - c) / (m - p);
-                    v.set(x, m * x + c);
+                    if (o == Orientation.SE || o == Orientation.SW) k -= s;
+                    else k += s;
+                    float x = (k - c) / (n - p);
+                    v.set(x, n * x + c);
                 } else {
-                    float x = t.cx + ((o == Orientation.NE || o == Orientation.SE) ? -dw : dw);
-                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? dh : -dh);
+                    float x = t.cx + ((o == Orientation.NE || o == Orientation.SE) ?  dw : -dw);
+                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? -dh :  dh);
                     v.set(x, y);
                 }
             }
         } else {
             if (o == Orientation.E) {
-                v.set(t.cx - side, t.cy);
+                v.set(t.cx + s, t.cy);
             } else if (o == Orientation.W) {
-                v.set(t.cx + side, t.cy);
+                v.set(t.cx - s, t.cy);
             } else if (o == Orientation.N) {
-                float y = t.cy - dw;
-                v.set(from.cx + (y - from.cy) / m, y);
-            } else if (o == Orientation.S) {
                 float y = t.cy + dw;
-                v.set(from.cx + (y - from.cy) / m, y);
+                v.set(from.cx + (y - from.cy) / n, y);
+            } else if (o == Orientation.S) {
+                float y = t.cy - dw;
+                v.set(from.cx + (y - from.cy) / n, y);
             } else {
                 if (line) {
                     float k = 0;
                     float p = ((o == Orientation.SE || o == Orientation.NW) ? im : -im);
                     if (o == Orientation.SW || o == Orientation.NW)
-                        k = t.cy - (p * (t.cx + side));
+                        k = t.cy - (p * (t.cx - s));
                     else
-                        k = t.cy - (p * (t.cx - side));
-                    float x = (k - c) / (m - p);
-                    v.set(x, m * x + c);
+                        k = t.cy - (p * (t.cx + s));
+                    float x = (k - c) / (n - p);
+                    v.set(x, n * x + c);
                 } else {
-                    float x = t.cx + ((o == Orientation.NW || o == Orientation.SW) ? dh: -dh);
-                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? dw : -dw);
+                    float x = t.cx + ((o == Orientation.NW || o == Orientation.SW) ? -dh: dh);
+                    float y = t.cy + ((o == Orientation.SE || o == Orientation.SW) ? -dw : dw);
                     v.set(x, y);
                 }
             }
