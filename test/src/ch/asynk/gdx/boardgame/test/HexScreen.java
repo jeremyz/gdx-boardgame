@@ -319,9 +319,9 @@ public class HexScreen extends AbstractScreen
             unit.setRotation(o.r());
         }
 
-        private void touchInfo(Tile t)
+        private void touchInfo(int x, int y, Tile t)
         {
-            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => %s[%d]", t.x, t.y, t, board.genKey(t.x, t.y)));
+            GdxBoardTest.debug("BoardScreen", String.format("touchDown [%d;%d] => [%d;%d] => %s[%d]", x, y, t.x, t.y, t, board.genKey(t.x, t.y)));
         }
 
         public boolean touch(float x, float y, boolean down)
@@ -336,12 +336,14 @@ public class HexScreen extends AbstractScreen
                 } else if (!engineer.dragging && engineer.isOn(tile)) {
                     engineer.dragging = true;
                 } else {
-                    touchInfo(tile);
+                    touchInfo((int)x, (int)y, tile);
                 }
             } else {
                 if (panzer.dragging) {
+                    touchInfo((int)x, (int)y, tile);
                     update(tile, panzer);
                 } else if (engineer.dragging) {
+                    touchInfo((int)x, (int)y, tile);
                     update(tile, engineer);
                 }
             }
@@ -350,7 +352,6 @@ public class HexScreen extends AbstractScreen
 
         private void update(Tile t, Unit u)
         {
-            touchInfo(t);
             u.centerOn(t.cx, t.cy);
             u.dragging = false;
             if (u == panzer)
