@@ -7,6 +7,7 @@ import ch.asynk.gdx.boardgame.tilestorages.TileStorage;
 import ch.asynk.gdx.boardgame.tilestorages.ArrayTileStorage;
 import ch.asynk.gdx.boardgame.boards.Board;
 import ch.asynk.gdx.boardgame.boards.BoardFactory;
+import ch.asynk.gdx.boardgame.Orientation;
 
 public class Tests
 {
@@ -51,6 +52,12 @@ public class Tests
         testTouch(1851, 59, 9, 0, 1859, 158, 9);
         testTouch(1779, 99, 9, 0, 1859, 158, 9);
         testTouch(1768, 115, 9, 0, 1859, 158, 9);
+        testOrientation(5, 5, 0);
+        testOrientation(5, 6, 60);
+        testOrientation(4, 6, 120);
+        testOrientation(3, 5, 180);
+        testOrientation(3, 4, 240);
+        testOrientation(4, 4, 300);
     }
 
     private void runHexHorizontal()
@@ -77,6 +84,12 @@ public class Tests
         testTouch(1421, 64, 8, 4, 1478, 145, 76);
         testTouch(1380, 130, 8, 4, 1478, 145, 76);
         testTouch(1386, 161, 8, 4, 1478, 145, 76);
+        testOrientation(5, 6, 30);
+        testOrientation(4, 6, 90);
+        testOrientation(3, 5, 150);
+        testOrientation(3, 4, 210);
+        testOrientation(4, 4, 270);
+        testOrientation(5, 5, 330);
     }
 
     private void testCenter(int x, int y, int cx, int cy)
@@ -98,6 +111,12 @@ public class Tests
         check(((int)t.cx == cx), title, "cx", (int)t.cx);
         check(((int)t.cy == cy), title, "cy", (int)t.cy);
         check((g == k), title, "Key", k);
+    }
+
+    private void testOrientation(int tx, int ty, int a)
+    {
+        Orientation o = Orientation.fromTiles(board.getTile(4, 5), board.getTile(tx, ty));
+        check((o.r()== a), "Orientation : ", String.format("[4, 5] -> [%d;%d] -> %d°", tx, ty, a), o.r());
     }
 
     private Tile getTile(int x, int y, boolean isOnBoard)
