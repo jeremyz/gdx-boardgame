@@ -2,19 +2,19 @@
 [![](https://jitpack.io/v/jeremyz/gdx-boardgame.svg)](https://jitpack.io/#jeremyz/gdx-boardgame)
 [![Build Status](https://travis-ci.org/jeremyz/gdx-boardgame.svg?branch=master)](https://travis-ci.org/jeremyz/gdx-boardgame)
 
-is a [libgdx](https://libgdx.badlogicgames.com/) based framework to build 2D boardgames.
+is a [libgdx](https://libgdx.badlogicgames.com/) based framework to build 2D hex map boardgames.
 
 code is mainly extracted from [rustanddust](https://github.com/jeremyz/rustanddust).
 check [godot-hexgrid](https://github.com/jeremyz/godot-hexgrid) for the [godot](https://godotengine.org/)/gdscript implementation.
 
-base map made with [gimp](https://www.gimp.org) and my plugin [hexmap](https://github.com/jeremyz/hexmap)
+base map made with [hexmap](https://github.com/jeremyz/hexmap) a [gimp](https://www.gimp.org) plugin.
 
 ## features
 
+    - 3D line of sight, possible moves, shortest path
     - moveable, zoomable board with tile identification on touch
     - moveable, orientable pieces
     - various animations
-    - 3D line of sight, possible moves, shortest path
 
 ## screenshots
 
