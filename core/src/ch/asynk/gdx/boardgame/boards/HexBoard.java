@@ -340,7 +340,7 @@ public class HexBoard implements Board
             if (losBlocked && !contact) {
                 final Tile prev = tiles.get(tiles.size() - 1);
                 Orientation o = Orientation.fromTiles(prev, t);
-                computeContact(from, to, prev, o, v, true);
+                computeContact(from, to, prev, o, v);
                 contact = true;
             }
             tiles.add(t);
@@ -412,9 +412,9 @@ public class HexBoard implements Board
             if (t.blocked && !contact) {
                 Orientation o = computeOrientation(dx, dy, flat);
                 if (!losBlocked && blocked == 0x03) {
-                    computeContact(from, to, t, o.opposite(), v, false);
+                    computeContact(from, to, t, o.opposite(), v);
                 } else {
-                    computeContact(from, to, tiles.get(tiles.size() - idx), o, v, false);
+                    computeContact(from, to, tiles.get(tiles.size() - idx), o, v);
                 }
                 contact = true;
             }
@@ -445,7 +445,7 @@ public class HexBoard implements Board
         }
     }
 
-    private void computeContact(Tile from, Tile to, Tile t, Orientation o, Vector2 v, boolean line)
+    private void computeContact(Tile from, Tile to, Tile t, Orientation o, Vector2 v)
     {
         float dx = to.cx - from.cx;
         float dy = to.cy - from.cy;
